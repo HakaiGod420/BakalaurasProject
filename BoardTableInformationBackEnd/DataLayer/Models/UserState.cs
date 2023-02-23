@@ -1,4 +1,4 @@
-﻿using DataLayer.Enum;
+﻿using ModelLayer.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

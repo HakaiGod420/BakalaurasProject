@@ -1,5 +1,6 @@
 using DataLayer.DBContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BoardTableInformationBackEnd
 {
@@ -10,13 +11,14 @@ namespace BoardTableInformationBackEnd
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(
+                builder.Configuration.GetConnectionString("MainDatabaseConectionStrings")));
 
+            builder.Services.SetupDependencies();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(
-                builder.Configuration.GetConnectionString("MainDatabaseConectionStrings")));
 
             var app = builder.Build();
 

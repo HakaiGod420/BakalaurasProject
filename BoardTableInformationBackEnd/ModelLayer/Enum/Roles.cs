@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLayer.Enum
+namespace ModelLayer.Enum
 {
-    public enum UserStates
+    public enum Roles
     {
-        Active = 1,
-        Suspended = 2,
-        Blocked = 3,
+        Admin = 1,
+        User = 2
     }
 }

@@ -1,4 +1,4 @@
-﻿using DataLayer.Enum;
+﻿using ModelLayer.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,8 +24,10 @@ namespace DataLayer.Models
         public string UserName { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
+
+        [Required]
+        public byte[] PasswordSalt { get; set; }
 
         [Required]
         public DateTime RegistrationTime { get; set; }
