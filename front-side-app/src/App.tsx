@@ -7,16 +7,19 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import ShortDescription from "./components/ShortDescription";
 import Footer from "./components/Footer";
+import Login from "./pages/login";
+import MainPage from "./pages/mainPage";
+import Reigster from "./pages/register";
 
 function App() {
   return (
     <div>
       <Navbar />
       <Content>
-        <Hero />
-        <ShortDescription />
         <Routes>
-          <Route path="/" />
+          <Route path="/" element={<MainPage />} />
+          <Route path="/login/*" element={<Login />} />
+          <Route path="/register/*" element={<Reigster />} />
         </Routes>
       </Content>
       <Footer />
