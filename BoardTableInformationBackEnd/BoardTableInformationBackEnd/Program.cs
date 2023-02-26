@@ -16,11 +16,21 @@ namespace BoardTableInformationBackEnd
 
             builder.Services.SetupDependencies();
             builder.Services.AddControllers();
+
+            builder.Services.AddCors(p => p.AddPolicy("corspolicy", builder =>
+            {
+                builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+            }));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+            app.UseRouting();
+            app.UseCors("corspolicy");
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

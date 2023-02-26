@@ -1,5 +1,9 @@
+import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { SERVER_API } from "../services/constants/ClienConstants";
+import { ErrorBasic } from "../services/types/Error";
+import { RegisterData } from "../services/types/User";
 
 function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -8,6 +12,31 @@ function RegisterForm() {
   const [rePassword, setRePassword] = useState("");
   const [hidenErr, setErrShow] = useState(true);
   const [errorName, setErrorName] = useState("");
+  const navigate = useNavigate();
+
+  const registerToWeb = async () => {
+    const crediantals: RegisterData = {
+      userName: usernameSetted,
+      email: email,
+      password: password,
+      rePassword: rePassword,
+    };
+
+    await axios
+      .post(SERVER_API + "/api/user/register", crediantals)
+      .then((res) => {
+        console.log(res);
+        navigate("/login");
+      })
+      .catch((error) => {
+        const errorBasic: ErrorBasic = {
+          status: error.response.status,
+          code: error.code,
+          message: error.message,
+        };
+        console.log(errorBasic);
+      });
+  };
 
   return (
     <section className="text-gray-600 body-font bg-[#000300]">
@@ -85,6 +114,7 @@ function RegisterForm() {
             />
           </div>
           <button
+            onClick={registerToWeb}
             disabled={
               email === "" ||
               password === "" ||

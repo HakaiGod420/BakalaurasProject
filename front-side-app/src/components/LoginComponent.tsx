@@ -1,14 +1,61 @@
+import { Alert, message } from "antd";
+import axios from "axios";
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import login from "../services/api/UserServics";
+import { SERVER_API } from "../services/constants/ClienConstants";
+import { ErrorBasic } from "../services/types/Error";
+import { LoginData } from "../services/types/User";
 
 function LoginComponent() {
   const [password, setPassword] = useState("");
   const [hidenErr, setErrShow] = useState(false);
   const [errorName, setErrorName] = useState("");
   const [username, setUsername] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const login = async () => {
+    const crediantals: LoginData = {
+      userName: username,
+      password: password,
+    };
+    const loading = toast.loading("Trying to log in");
+    await axios
+      .post(SERVER_API + "/api/user/login", crediantals)
+      .then((res) => {
+        setShowError(false);
+        toast.success("Successfully login in", {
+          id: loading,
+        });
+        window.location.replace("/");
+      })
+      .catch((error) => {
+        const errorBasic: ErrorBasic = {
+          status: error.response.status,
+          code: error.code,
+          message: error.message,
+        };
+        if (errorBasic.status == 400) {
+          setErrorName("Wrong crendiantials. Please check it");
+          setShowError(true);
+          toast.error("Failed to login", {
+            id: loading,
+          });
+        }
+      });
+  };
+
+  const loginToWeb = async () => {
+    await login();
+  };
 
   return (
     <section className="text-gray-600 body-font bg-[#000300]">
+      <div>
+        <Toaster />
+      </div>
       <div className="container px-5 py-24 mx-auto flex flex-wrap items-center max-w-[1240px]">
         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
           <h1 className="title-font font-medium text-3xl text-[#00df9a]">
@@ -19,7 +66,7 @@ function LoginComponent() {
           <h2 className="text-gray-900 text-lg font-medium title-font mb-5">
             Sign In
           </h2>
-
+          {showError && <Alert message={errorName} type="error" showIcon />}
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -53,18 +100,13 @@ function LoginComponent() {
             />
           </div>
           <button
+            onClick={loginToWeb}
             disabled={username === "" || password === ""}
             className="disabled:bg-gray-500 text-black bg-[#00df9a] border-0 py-2 px-8 focus:outline-none hover:bg-[#1c9e75] rounded text-lg font-bold"
           >
             Login
           </button>
-          <div>
-            {!hidenErr ? (
-              <p className=" justify-center text-center text-xs font-bold text-[#ff4f4f] mt-3">
-                {errorName}
-              </p>
-            ) : null}
-          </div>
+          <div></div>
           <p className="text-xs text-gray-500 mt-3">
             Not a member?{" "}
             <Link
