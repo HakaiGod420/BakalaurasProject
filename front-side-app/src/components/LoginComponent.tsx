@@ -2,9 +2,11 @@ import { Alert, message } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import login from "../services/api/UserServics";
 import { SERVER_API } from "../services/constants/ClienConstants";
+import { validTokenAtom } from "../services/constants/globalStates";
 import { ErrorBasic } from "../services/types/Error";
 import { LoginData } from "../services/types/User";
 
@@ -15,7 +17,8 @@ function LoginComponent() {
   const [username, setUsername] = useState("");
   const [showError, setShowError] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-
+  const navigate = useNavigate();
+  const [validToken, setValidToken] = useRecoilState(validTokenAtom);
   const login = async () => {
     const crediantals: LoginData = {
       userName: username,
@@ -29,7 +32,9 @@ function LoginComponent() {
         toast.success("Successfully login in", {
           id: loading,
         });
-        window.location.replace("/");
+        localStorage.setItem("token", JSON.stringify({ token: res.data }));
+        setValidToken(true);
+        navigate("/");
       })
       .catch((error) => {
         const errorBasic: ErrorBasic = {
@@ -53,9 +58,7 @@ function LoginComponent() {
 
   return (
     <section className="text-gray-600 body-font bg-[#000300]">
-      <div>
-        <Toaster />
-      </div>
+      <div></div>
       <div className="container px-5 py-24 mx-auto flex flex-wrap items-center max-w-[1240px]">
         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
           <h1 className="title-font font-medium text-3xl text-[#00df9a]">

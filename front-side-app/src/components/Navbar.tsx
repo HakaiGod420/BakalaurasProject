@@ -1,11 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { validTokenAtom } from "../services/constants/globalStates";
+import {
+  CheckJWTAndSession,
+  CheckJWTIsAdmin,
+} from "../services/midlewear/AuthVerify";
 
 export default function Navbar() {
   const [nav, setNav] = useState(true);
   const [tokenValid, setTokenValidation] = useState<boolean | undefined>(false);
   const [isAdmin, setIfAdmin] = useState<boolean | undefined>(false);
+  const [validToken, setValidToken] = useRecoilState(validTokenAtom);
+
+  useEffect(() => {
+    const validateToken = async () => {
+      const check = await CheckJWTAndSession();
+      setTokenValidation(check);
+    };
+    const checkIfAdmin = async () => {
+      const check = await CheckJWTIsAdmin();
+      setIfAdmin(check);
+    };
+    validateToken();
+    checkIfAdmin();
+  }, []);
 
   const handleNav = () => {
     setNav(!nav);
@@ -21,7 +41,7 @@ export default function Navbar() {
       <header className="sticky top-0 bg-[#000300] z-10">
         <div className="flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white">
           <Link to={"/"}>
-            <h1 className=" w-full text-3xl font-bold text-[#00df9a]">
+            <h1 className=" w-full text-2xl font-bold text-[#00df9a]">
               TABLETOPGAMES.
             </h1>
           </Link>
@@ -30,11 +50,11 @@ export default function Navbar() {
               <li className="p-4">Home</li>
             </Link>
             <Link to="/companies">
-              <li className="p-4">Companies</li>
+              <li className="p-4">Tabletop games</li>
             </Link>
             <li className="p-4">About</li>
             <li className="p-4">
-              {!tokenValid ? (
+              {!validToken ? (
                 <Link to={"/login"}>
                   <button className="bg-white w-[150px] rounded-md font-medium py-2 my-[-20px] text-black hover:bg-green-600 hover:transition-colors">
                     Sign In
@@ -50,7 +70,7 @@ export default function Navbar() {
               )}
             </li>
             <li className="p-4">
-              {tokenValid && isAdmin ? (
+              {validToken && isAdmin ? (
                 <Link to={"/admin"}>
                   <button className="bg-white w-[150px] rounded-md font-medium py-2 my-[-20px] text-black">
                     Admin CP
@@ -70,7 +90,7 @@ export default function Navbar() {
                 : "fixed hidden left-[-100%]"
             }
           >
-            <h1 className=" w-full text-3xl font-bold text-[#00df9a] m-4">
+            <h1 className=" w-full text-2xl font-bold text-[#00df9a] m-4">
               TABLETOPGAMES.
             </h1>
             <ul className="uppercase p-4">
@@ -78,7 +98,7 @@ export default function Navbar() {
                 <li className="p-4 border-b border-gray-600">Home</li>
               </Link>
               <Link to="/companies">
-                <li className="p-4 border-b border-gray-600">Companies</li>
+                <li className="p-4 border-b border-gray-600">Tabletop games</li>
               </Link>
               <li className="p-4 border-b border-gray-600">About</li>
               {!tokenValid ? (

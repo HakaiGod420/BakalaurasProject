@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { SERVER_API } from "../services/constants/ClienConstants";
 import { ErrorBasic } from "../services/types/Error";
@@ -22,10 +23,14 @@ function RegisterForm() {
       rePassword: rePassword,
     };
 
+    const loading = toast.loading("Creating account");
     await axios
       .post(SERVER_API + "/api/user/register", crediantals)
       .then((res) => {
         console.log(res);
+        toast.success("Successfully created account", {
+          id: loading,
+        });
         navigate("/login");
       })
       .catch((error) => {
@@ -34,12 +39,16 @@ function RegisterForm() {
           code: error.code,
           message: error.message,
         };
+        toast.error("Error", {
+          id: loading,
+        });
         console.log(errorBasic);
       });
   };
 
   return (
     <section className="text-gray-600 body-font bg-[#000300]">
+      <Toaster />
       <div className="container px-5 py-24 mx-auto flex flex-wrap items-center max-w-[1240px]">
         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
           <h1 className="title-font font-medium text-3xl text-[#00df9a]">
