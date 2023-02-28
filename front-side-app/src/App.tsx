@@ -12,9 +12,19 @@ import MainPage from "./pages/mainPage";
 import Register from "./pages/register";
 import { Toaster } from "react-hot-toast";
 import { CheckJWTAndSession } from "./services/midlewear/AuthVerify";
-import { atom } from "recoil";
+import { atom, useRecoilState } from "recoil";
+import { validTokenAtom } from "./services/constants/globalStates";
 
 function App() {
+  const [validToken, setValidToken] = useRecoilState(validTokenAtom);
+  useEffect(() => {
+    const validateToken = async () => {
+      const check = await CheckJWTAndSession();
+      setValidToken(check);
+    };
+    validateToken();
+  }, []);
+
   return (
     <div>
       <Navbar />

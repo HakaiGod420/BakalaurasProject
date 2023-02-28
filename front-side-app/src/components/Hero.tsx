@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
+import { useRecoilState } from "recoil";
+import { validTokenAtom } from "../services/constants/globalStates";
 
 export default function Hero() {
-  const [tokenValid, setTokenValidation] = useState<boolean | undefined>(false);
+  const [validToken, setValidToken] = useRecoilState(validTokenAtom);
 
   return (
     <div className="text-white">
@@ -36,7 +38,7 @@ export default function Hero() {
             deletionSpeed={10}
           />
         </div>
-        {!tokenValid ? (
+        {!validToken ? (
           <Link to={"/login"}>
             <button className="bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black hover:bg-white hover:transition-colors">
               Sign In

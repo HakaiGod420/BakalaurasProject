@@ -14,19 +14,6 @@ export default function Navbar() {
   const [isAdmin, setIfAdmin] = useState<boolean | undefined>(false);
   const [validToken, setValidToken] = useRecoilState(validTokenAtom);
 
-  useEffect(() => {
-    const validateToken = async () => {
-      const check = await CheckJWTAndSession();
-      setTokenValidation(check);
-    };
-    const checkIfAdmin = async () => {
-      const check = await CheckJWTIsAdmin();
-      setIfAdmin(check);
-    };
-    validateToken();
-    checkIfAdmin();
-  }, []);
-
   const handleNav = () => {
     setNav(!nav);
   };

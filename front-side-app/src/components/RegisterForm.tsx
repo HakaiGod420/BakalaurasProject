@@ -1,5 +1,6 @@
+import { Alert } from "antd";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { SERVER_API } from "../services/constants/ClienConstants";
@@ -11,9 +12,13 @@ function RegisterForm() {
   const [usernameSetted, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
-  const [hidenErr, setErrShow] = useState(true);
+  const [hidenErr, setErrShow] = useState(false);
   const [errorName, setErrorName] = useState("");
   const navigate = useNavigate();
+
+  function isValidEmail(email: string) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
 
   const registerToWeb = async () => {
     const crediantals: RegisterData = {
@@ -31,9 +36,11 @@ function RegisterForm() {
         toast.success("Successfully created account", {
           id: loading,
         });
+        setErrShow(false);
         navigate("/login");
       })
       .catch((error) => {
+        setErrShow(true);
         const errorBasic: ErrorBasic = {
           status: error.response.status,
           code: error.code,
@@ -42,7 +49,15 @@ function RegisterForm() {
         toast.error("Error", {
           id: loading,
         });
-        console.log(errorBasic);
+
+        if (password != rePassword) {
+          setErrorName("Passwords must match");
+          return;
+        }
+
+        if (!isValidEmail(email)) {
+          setErrorName("Email is not valid");
+        }
       });
   };
 
@@ -59,7 +74,7 @@ function RegisterForm() {
           <h2 className="text-gray-900 text-lg font-medium title-font mb-5">
             Sign Up
           </h2>
-
+          {hidenErr && <Alert message={errorName} type="error" showIcon />}
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -134,13 +149,6 @@ function RegisterForm() {
           >
             Register
           </button>
-          <div>
-            {!hidenErr ? (
-              <p className=" justify-center text-center text-xs font-bold text-[#ff4f4f] mt-3">
-                {errorName}
-              </p>
-            ) : null}
-          </div>
           <p className="text-xs text-gray-500 mt-3">
             Already are member?{" "}
             <Link

@@ -13,6 +13,7 @@ export async function CheckJWTAndSession() {
     // @ts-ignore
     if (decoded.exp < Date.now() / 1000) {
         localStorage.clear();
+        localStorage.clear();
         return false;
     }
     return true;
