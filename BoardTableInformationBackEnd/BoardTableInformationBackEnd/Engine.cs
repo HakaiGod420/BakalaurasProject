@@ -1,4 +1,5 @@
 ﻿using DataLayer.DBContext;
+using DataLayer.Repositories.GameBoard;
 using DataLayer.Repositories.User;
 using ServiceLayer.Interfaces;
 using ServiceLayer.Services;
@@ -12,7 +13,7 @@ namespace BoardTableInformationBackEnd
 
             serviceCollection.AddScoped<IUserService, UserService>();
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
-            
+            serviceCollection.AddScoped<IGameBoardService,GameBoardRepository>();            
         }
     }
 }
