@@ -10,8 +10,8 @@ namespace BoardTableInformationBackEnd.Controllers
     [Route("/api/gameboard")]
     public class GameBoardController : ControllerBase
     {
-        private readonly IGameBoardService _gameBoardService;
-        public GameBoardController(IGameBoardService gameBoardService)
+        private readonly IGameBoardRepository _gameBoardService;
+        public GameBoardController(IGameBoardRepository gameBoardService)
         {
             _gameBoardService = gameBoardService;
         }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLayer.Repositories.GameBoard
+namespace ServiceLayer.Interfaces
 {
-    public interface IGameBoardService
+    public interface IBoardGameService
     {
     }
 }

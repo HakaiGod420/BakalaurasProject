@@ -1,4 +1,6 @@
 ﻿using DataLayer.DBContext;
+using DataLayer.Repositories.BoardType;
+using DataLayer.Repositories.Category;
 using DataLayer.Repositories.GameBoard;
 using DataLayer.Repositories.User;
 using ServiceLayer.Interfaces;
@@ -13,7 +15,9 @@ namespace BoardTableInformationBackEnd
 
             serviceCollection.AddScoped<IUserService, UserService>();
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
-            serviceCollection.AddScoped<IGameBoardService,GameBoardRepository>();            
+            serviceCollection.AddScoped<IGameBoardRepository,GameBoardRepository>();
+            serviceCollection.AddScoped<ICategoryRepository, CategoryRepository>();
+            serviceCollection.AddScoped<IBoardTypeRepository, BoardTypeRepository>();
         }
     }
 }
