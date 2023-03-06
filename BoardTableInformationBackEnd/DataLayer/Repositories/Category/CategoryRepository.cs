@@ -1,4 +1,5 @@
 ﻿using DataLayer.DBContext;
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,16 @@ namespace DataLayer.Repositories.Category
             _dbContext = dbContext;
         }
 
-        public async Task<bool> CheckIfExists(string categoryName)
+        public async Task<CategoryEntity> CreateCategory(CategoryEntity category)
         {
-            return await _dbContext.Categories.AnyAsync(c => c.CategoryName == categoryName);
+            _dbContext.Categories.Add(category);
+            await _dbContext.SaveChangesAsync();
+            return category;
+        }
+
+        public async Task<CategoryEntity?> GetCategory(string categoryName)
+        {
+            return await _dbContext.Categories.FirstOrDefaultAsync(x => x.CategoryName == categoryName);
         }
     }
 }

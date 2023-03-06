@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class gameboardv1 : Migration
+    public partial class gameboardv15 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,6 +61,7 @@ namespace DataLayer.Migrations
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Rules = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Thubnail_Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     TableBoardStateId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -103,31 +104,7 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BoardGameEntityBoardTypeEntity",
-                columns: table => new
-                {
-                    BoardTypesBoardTypeId = table.Column<int>(type: "int", nullable: false),
-                    BoardsBoardGameId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BoardGameEntityBoardTypeEntity", x => new { x.BoardTypesBoardTypeId, x.BoardsBoardGameId });
-                    table.ForeignKey(
-                        name: "FK_BoardGameEntityBoardTypeEntity_BoardGames_BoardsBoardGameId",
-                        column: x => x.BoardsBoardGameId,
-                        principalTable: "BoardGames",
-                        principalColumn: "BoardGameId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BoardGameEntityBoardTypeEntity_BoardTypes_BoardTypesBoardTypeId",
-                        column: x => x.BoardTypesBoardTypeId,
-                        principalTable: "BoardTypes",
-                        principalColumn: "BoardTypeId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BoardGameEntityCategoryEntity",
+                name: "BoardGameCategory",
                 columns: table => new
                 {
                     BoardsBoardGameId = table.Column<int>(type: "int", nullable: false),
@@ -135,18 +112,42 @@ namespace DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BoardGameEntityCategoryEntity", x => new { x.BoardsBoardGameId, x.CategoriesCategoryId });
+                    table.PrimaryKey("PK_BoardGameCategory", x => new { x.BoardsBoardGameId, x.CategoriesCategoryId });
                     table.ForeignKey(
-                        name: "FK_BoardGameEntityCategoryEntity_BoardGames_BoardsBoardGameId",
+                        name: "FK_BoardGameCategory_BoardGames_BoardsBoardGameId",
                         column: x => x.BoardsBoardGameId,
                         principalTable: "BoardGames",
                         principalColumn: "BoardGameId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BoardGameEntityCategoryEntity_Categories_CategoriesCategoryId",
+                        name: "FK_BoardGameCategory_Categories_CategoriesCategoryId",
                         column: x => x.CategoriesCategoryId,
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BoardGameType",
+                columns: table => new
+                {
+                    BoardTypesBoardTypeId = table.Column<int>(type: "int", nullable: false),
+                    BoardsBoardGameId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoardGameType", x => new { x.BoardTypesBoardTypeId, x.BoardsBoardGameId });
+                    table.ForeignKey(
+                        name: "FK_BoardGameType_BoardGames_BoardsBoardGameId",
+                        column: x => x.BoardsBoardGameId,
+                        principalTable: "BoardGames",
+                        principalColumn: "BoardGameId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BoardGameType_BoardTypes_BoardTypesBoardTypeId",
+                        column: x => x.BoardTypesBoardTypeId,
+                        principalTable: "BoardTypes",
+                        principalColumn: "BoardTypeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -177,13 +178,8 @@ namespace DataLayer.Migrations
                 column: "BoardGameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BoardGameEntityBoardTypeEntity_BoardsBoardGameId",
-                table: "BoardGameEntityBoardTypeEntity",
-                column: "BoardsBoardGameId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BoardGameEntityCategoryEntity_CategoriesCategoryId",
-                table: "BoardGameEntityCategoryEntity",
+                name: "IX_BoardGameCategory_CategoriesCategoryId",
+                table: "BoardGameCategory",
                 column: "CategoriesCategoryId");
 
             migrationBuilder.CreateIndex(
@@ -197,6 +193,11 @@ namespace DataLayer.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BoardGameType_BoardsBoardGameId",
+                table: "BoardGameType",
+                column: "BoardsBoardGameId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Images_BoardGameId",
                 table: "Images",
                 column: "BoardGameId");
@@ -208,19 +209,19 @@ namespace DataLayer.Migrations
                 name: "AditionalFiles");
 
             migrationBuilder.DropTable(
-                name: "BoardGameEntityBoardTypeEntity");
+                name: "BoardGameCategory");
 
             migrationBuilder.DropTable(
-                name: "BoardGameEntityCategoryEntity");
+                name: "BoardGameType");
 
             migrationBuilder.DropTable(
                 name: "Images");
 
             migrationBuilder.DropTable(
-                name: "BoardTypes");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "BoardTypes");
 
             migrationBuilder.DropTable(
                 name: "BoardGames");

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20230302185936_game-board-v1")]
-    partial class gameboardv1
+    [Migration("20230306165653_game-board-v1.5")]
+    partial class gameboardv15
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,7 +36,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("BoardsBoardGameId");
 
-                    b.ToTable("BoardGameEntityBoardTypeEntity");
+                    b.ToTable("BoardGameType", (string)null);
                 });
 
             modelBuilder.Entity("BoardGameEntityCategoryEntity", b =>
@@ -51,7 +51,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("CategoriesCategoryId");
 
-                    b.ToTable("BoardGameEntityCategoryEntity");
+                    b.ToTable("BoardGameCategory", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.Models.AditionalFileEntity", b =>
@@ -112,6 +112,10 @@ namespace DataLayer.Migrations
 
                     b.Property<int>("TableBoardStateId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Thubnail_Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()

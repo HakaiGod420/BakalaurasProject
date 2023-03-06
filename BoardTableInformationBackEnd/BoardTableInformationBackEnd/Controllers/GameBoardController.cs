@@ -10,8 +10,8 @@ namespace BoardTableInformationBackEnd.Controllers
     [Route("/api/gameboard")]
     public class GameBoardController : ControllerBase
     {
-        private readonly IGameBoardRepository _gameBoardService;
-        public GameBoardController(IGameBoardRepository gameBoardService)
+        private readonly IBoardGameService _gameBoardService;
+        public GameBoardController(IBoardGameService gameBoardService)
         {
             _gameBoardService = gameBoardService;
         }
@@ -20,6 +20,7 @@ namespace BoardTableInformationBackEnd.Controllers
         [ProducesResponseType(typeof(CreateBoardGame), StatusCodes.Status201Created)]
         public async Task<IActionResult> Create(CreateBoardGame boardGameModel)
         {
+            await _gameBoardService.CreateGameBoard(boardGameModel);
             /*
             if (registerModel.Password != registerModel.RePassword)
             {

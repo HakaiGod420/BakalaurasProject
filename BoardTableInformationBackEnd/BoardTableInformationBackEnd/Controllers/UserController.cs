@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ModelLayer.DTO;
 using ServiceLayer.Interfaces;
 
@@ -15,6 +16,7 @@ namespace BoardTableInformationBackEnd.Controllers
             _userService = userService;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCustomerData(int id)

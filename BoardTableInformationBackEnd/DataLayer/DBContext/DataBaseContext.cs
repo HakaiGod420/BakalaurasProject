@@ -46,6 +46,16 @@ namespace DataLayer.DBContext
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<BoardGameEntity>()
+                .HasMany(x => x.Categories)
+                .WithMany(y => y.Boards)
+                .UsingEntity(j => j.ToTable("BoardGameCategory"));
+
+            builder.Entity<BoardGameEntity>()
+                .HasMany(x => x.BoardTypes)
+                .WithMany(y => y.Boards)
+                .UsingEntity(j => j.ToTable("BoardGameType"));
+
             /*
             builder.Entity<ImageEntity>().
                 HasKey(x => new { x.BoardGameId });

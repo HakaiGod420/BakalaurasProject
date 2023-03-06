@@ -125,6 +125,8 @@ namespace ServiceLayer.Services
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
+                audience: _configuration.GetSection("Jwt:Audience").Value,
+                issuer: _configuration.GetSection("Jwt:Issuer").Value,
                 claims: claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: cred);

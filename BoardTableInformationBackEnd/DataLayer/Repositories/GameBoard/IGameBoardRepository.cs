@@ -9,6 +9,6 @@ namespace DataLayer.Repositories.GameBoard
 {
     public interface IGameBoardRepository
     {
-        public Task<BoardGameEntity?> AddGameBoard(BoardGameEntity tableBoard);
+        public Task<BoardGameEntity> AddGameBoard(BoardGameEntity tableBoard);
     }
 }

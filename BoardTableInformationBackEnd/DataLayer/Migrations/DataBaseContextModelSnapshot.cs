@@ -34,7 +34,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("BoardsBoardGameId");
 
-                    b.ToTable("BoardGameEntityBoardTypeEntity");
+                    b.ToTable("BoardGameType", (string)null);
                 });
 
             modelBuilder.Entity("BoardGameEntityCategoryEntity", b =>
@@ -49,7 +49,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("CategoriesCategoryId");
 
-                    b.ToTable("BoardGameEntityCategoryEntity");
+                    b.ToTable("BoardGameCategory", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.Models.AditionalFileEntity", b =>

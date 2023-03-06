@@ -1,8 +1,10 @@
 ﻿using DataLayer.DBContext;
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,9 +19,16 @@ namespace DataLayer.Repositories.BoardType
             _dbContext = dbContext;
         }
 
-        public async Task<bool> CheckIfExists(string typeBoardName)
+        public async Task<BoardTypeEntity> CreateType(BoardTypeEntity boardType)
         {
-            return await _dbContext.BoardTypes.AnyAsync(x => x.BoardTypeName == typeBoardName);
+            _dbContext.BoardTypes.Add(boardType);
+            await _dbContext.SaveChangesAsync();
+            return boardType;
+        }
+
+        public async Task<BoardTypeEntity?> GetType(string typeBoardName)
+        {
+            return await _dbContext.BoardTypes.FirstOrDefaultAsync(x => x.BoardTypeName == typeBoardName);
         }
     }
 }

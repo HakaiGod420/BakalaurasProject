@@ -16,7 +16,7 @@ namespace DataLayer.Repositories.GameBoard
         {
             _dbContext = dbContext;
         }
-        public async Task<BoardGameEntity?> AddGameBoard(BoardGameEntity tableBoard)
+        public async Task<BoardGameEntity> AddGameBoard(BoardGameEntity tableBoard)
         {
             await _dbContext.BoardGames.AddAsync(tableBoard);
             _dbContext.SaveChanges();
