@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginComponent from "../components/LoginComponent";
 import { CheckJWTAndSession } from "../services/midlewear/AuthVerify";
 
 function Login() {
-  const [tokenValid, setTokenValidation] = useState<boolean | undefined>(false);
+  const [, setTokenValidation] = useState<boolean | undefined>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,12 +12,12 @@ function Login() {
       const check = await CheckJWTAndSession();
       setTokenValidation(check);
 
-      if (check == true) {
+      if (check === true) {
         navigate("/");
       }
     };
     validateToken();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="bg-white text-black">

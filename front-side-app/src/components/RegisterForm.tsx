@@ -1,10 +1,9 @@
 import { Alert } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { SERVER_API } from "../services/constants/ClienConstants";
-import { ErrorBasic } from "../services/types/Error";
 import { RegisterData } from "../services/types/User";
 
 function RegisterForm() {
@@ -41,16 +40,11 @@ function RegisterForm() {
       })
       .catch((error) => {
         setErrShow(true);
-        const errorBasic: ErrorBasic = {
-          status: error.response.status,
-          code: error.code,
-          message: error.message,
-        };
         toast.error("Error", {
           id: loading,
         });
 
-        if (password != rePassword) {
+        if (password !== rePassword) {
           setErrorName("Passwords must match");
           return;
         }

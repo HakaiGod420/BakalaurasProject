@@ -42,5 +42,10 @@ namespace DataLayer.Repositories.User
 
             return null;
         }
+
+        public async Task<bool> UsernameExist(string username)
+        {
+            return await _dbContext.Users.AnyAsync(x => x.UserName.Equals(username));
+        }
     }
 }

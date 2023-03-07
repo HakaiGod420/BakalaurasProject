@@ -1,10 +1,9 @@
-import { Alert, message } from "antd";
+import { Alert } from "antd";
 import axios from "axios";
-import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import login from "../services/api/UserServics";
 import { SERVER_API } from "../services/constants/ClienConstants";
 import { validTokenAtom } from "../services/constants/globalStates";
 import { ErrorBasic } from "../services/types/Error";
@@ -12,13 +11,11 @@ import { LoginData } from "../services/types/User";
 
 function LoginComponent() {
   const [password, setPassword] = useState("");
-  const [hidenErr, setErrShow] = useState(false);
   const [errorName, setErrorName] = useState("");
   const [username, setUsername] = useState("");
   const [showError, setShowError] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
-  const [validToken, setValidToken] = useRecoilState(validTokenAtom);
+  const [, setValidToken] = useRecoilState(validTokenAtom);
   const login = async () => {
     const crediantals: LoginData = {
       userName: username,
@@ -42,7 +39,7 @@ function LoginComponent() {
           code: error.code,
           message: error.message,
         };
-        if (errorBasic.status == 400) {
+        if (errorBasic.status === 400) {
           setErrorName("Wrong crendiantials. Please check it");
           setShowError(true);
           toast.error("Failed to login", {

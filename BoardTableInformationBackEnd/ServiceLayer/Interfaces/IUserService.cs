@@ -10,7 +10,7 @@ namespace ServiceLayer.Interfaces
     public interface IUserService
     {
         public Task<UserViewModel?> GetUser(int id);
-        public Task<UserViewModel> RegisterUser(UserRegisterModel user);
+        public Task<UserViewModel?> RegisterUser(UserRegisterModel user);
         public Task<string?> Login(LoginUserModel loginUser);
 
     }

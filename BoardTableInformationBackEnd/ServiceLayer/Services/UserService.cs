@@ -46,8 +46,15 @@ namespace ServiceLayer.Services
             return null;
         }
 
-        public async Task<UserViewModel> RegisterUser(UserRegisterModel user)
+        public async Task<UserViewModel?> RegisterUser(UserRegisterModel user)
         {
+            var userNameExist = await _repository.UsernameExist(user.UserName);
+
+            if (userNameExist)
+            {
+                return null;
+            }
+
             var enityUser = new UserEntity();
 
             CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -115,9 +122,10 @@ namespace ServiceLayer.Services
         {
             List<Claim> claims = new List<Claim>
             {
+               new Claim("UserId", user.UserId.ToString()),
                new Claim("Username", user.UserName),
                new Claim("Email", user.Email),
-               new Claim("Role", user.RoleId.ToString()),
+               new Claim(ClaimTypes.Role, user.RoleId.ToString()),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));

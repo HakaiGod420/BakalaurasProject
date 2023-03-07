@@ -40,8 +40,6 @@ namespace ModelLayer.DTO
         [MaxLength(5)]
         public List<CreateAditionalFiles>? AditionalFiles { get; set; }
 
-        public int UserId { get; set; }
-
         public bool SaveAsDraft { get; set; } = false;
     }
 }

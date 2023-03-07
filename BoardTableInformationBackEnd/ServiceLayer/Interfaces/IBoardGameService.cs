@@ -9,6 +9,6 @@ namespace ServiceLayer.Interfaces
 {
     public interface IBoardGameService
     {
-        public Task<bool> CreateGameBoard(CreateBoardGame board);
+        public Task<CreatedGameBoard> CreateGameBoard(CreateBoardGame board,int userId);
     }
 }

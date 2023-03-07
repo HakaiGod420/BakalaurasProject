@@ -1,4 +1,3 @@
-import React from "react";
 import { Image } from "antd";
 import { Link } from "react-router-dom";
 
@@ -18,10 +17,10 @@ export default function ShortDescription() {
           <p className="text-[#00df9a] font-bold uppercase ">
             YOUR FAVORITE TABLE TOP GAME ITS HERE
           </p>
-          <h1 className="md:text-4xl sm:text-3xl text-2xl font-bold py-2">
+          <h1 className="md:text-4xl sm:text-3xl text-2xl font-bold py-2 text-black">
             Select your tabletop game and see who wants to play it
           </h1>
-          <p className="">
+          <p className="text-black">
             Tabletop games provide a great opportunity to disconnect from
             screens and engage in face-to-face interactions. With a variety of
             games available, from classics like chess and Monopoly to newer

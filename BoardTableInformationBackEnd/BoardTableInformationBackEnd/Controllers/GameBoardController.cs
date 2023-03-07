@@ -1,8 +1,10 @@
 ﻿using DataLayer.Repositories.GameBoard;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.DTO;
 using ServiceLayer.Interfaces;
 using ServiceLayer.Services;
+using System.Security.Claims;
 
 namespace BoardTableInformationBackEnd.Controllers
 {
@@ -16,25 +18,16 @@ namespace BoardTableInformationBackEnd.Controllers
             _gameBoardService = gameBoardService;
         }
 
+        [Authorize]
         [HttpPost("create")]
-        [ProducesResponseType(typeof(CreateBoardGame), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CreatedGameBoard), StatusCodes.Status201Created)]
         public async Task<IActionResult> Create(CreateBoardGame boardGameModel)
         {
-            await _gameBoardService.CreateGameBoard(boardGameModel);
-            /*
-            if (registerModel.Password != registerModel.RePassword)
-            {
-                return BadRequest("Password must match");
-            }
+            var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
 
-            var userView = await _userService.RegisterUser(registerModel);
+            var createdGameBoard = await _gameBoardService.CreateGameBoard(boardGameModel,id);
 
-            if (userView == null)
-            {
-                return NotFound();
-            }
-            */
-            return new CreatedResult(String.Empty, "");
+            return new CreatedResult(String.Empty, createdGameBoard);
         }
     }
 }

@@ -32,6 +32,7 @@ namespace BoardTableInformationBackEnd.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(UserRegisterModel), StatusCodes.Status201Created)]
         public async Task<IActionResult> RegisterUser(UserRegisterModel registerModel)
         {
@@ -45,13 +46,14 @@ namespace BoardTableInformationBackEnd.Controllers
 
             if (userView == null)
             {
-                return NotFound();
+                return BadRequest("Username already exists");
             }
 
             return new CreatedResult(String.Empty,userView);
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(LoginUserModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> LoginUser(LoginUserModel loginModel)
         {

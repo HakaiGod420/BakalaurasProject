@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
 import { useRecoilState } from "recoil";
 import { validTokenAtom } from "../services/constants/globalStates";
 
 export default function Hero() {
-  const [validToken, setValidToken] = useRecoilState(validTokenAtom);
+  const [validToken] = useRecoilState(validTokenAtom);
 
   return (
     <div className="text-white">

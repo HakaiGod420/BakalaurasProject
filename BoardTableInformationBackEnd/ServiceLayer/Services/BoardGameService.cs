@@ -37,7 +37,7 @@ namespace ServiceLayer.Services
             _aditionalFilesRepository = aditionalFilesRepository;
         }
 
-        public async Task<bool> CreateGameBoard(CreateBoardGame board)
+        public async Task<CreatedGameBoard> CreateGameBoard(CreateBoardGame board,int userId)
         {
             var gameBoard = new BoardGameEntity
             {
@@ -50,8 +50,8 @@ namespace ServiceLayer.Services
                 UpdateTime = null,
                 Rules = board.Rules,
                 Thubnail_Location = board.ThumbnailName,
-                UserId = board.UserId,
-                TableBoardStateId = ModelLayer.Enum.TableBoardState.Reviewing
+                UserId = userId,
+                TableBoardStateId = board.SaveAsDraft ? ModelLayer.Enum.TableBoardState.Reviewing : ModelLayer.Enum.TableBoardState.Draft,
             };
 
             foreach(var item in board.Categories)
@@ -83,7 +83,13 @@ namespace ServiceLayer.Services
             }
 
             
-            return true;
+            return new CreatedGameBoard
+            {
+                Id = gameBoard.BoardGameId,
+                Title = gameBoard.Title,
+                CreatedAt = gameBoard.CreationTime,
+
+            };
         }
 
         private async Task<CategoryEntity> GetCategory(string categoryName)

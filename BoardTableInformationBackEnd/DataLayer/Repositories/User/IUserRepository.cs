@@ -13,5 +13,6 @@ namespace DataLayer.Repositories.User
         public Task<UserEntity?> GetUser(int id);
         public Task<UserEntity?> RegisterUser(UserEntity user);
         public Task<UserEntity?> GetPasswords(string username);
+        public Task<bool> UsernameExist(string username);
     }
 }
