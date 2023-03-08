@@ -1,44 +1,49 @@
 import jwt_decode from "jwt-decode";
 
+type JWTDeCode = {
+  UserId: string;
+  Username: string;
+  Email: string;
+  Role: string;
+  iat: number;
+  exp: number;
+  iss: string;
+};
+
 export async function CheckJWTAndSession() {
+  const token = JSON.parse(localStorage.getItem("token") || "false");
 
-    const token = JSON.parse(localStorage.getItem("token") || "false")
+  if (token === false) {
+    return false;
+  }
 
-    if (token == false) {
-        return false;
-    }
+  const decoded: JWTDeCode = jwt_decode(token.token);
 
-    const decoded = jwt_decode(token.token)
-
-    // @ts-ignore
-    if (decoded.exp < Date.now() / 1000) {
-        localStorage.clear();
-        localStorage.clear();
-        return false;
-    }
-    return true;
+  // @ts-ignore
+  if (decoded.exp < Date.now() / 1000) {
+    localStorage.clear();
+    localStorage.clear();
+    return false;
+  }
+  return true;
 }
 
 export async function CheckJWTIsAdmin() {
+  const token = JSON.parse(localStorage.getItem("token") || "false");
 
-    const token = JSON.parse(localStorage.getItem("token") || "false")
-
-    if (token == false) {
-        return false;
-    }
-
-    const decoded = jwt_decode(token.token)
-
-    // @ts-ignore
-    if (decoded.exp < Date.now() / 1000) {
-        localStorage.clear();
-        return false;
-    }
-    // @ts-ignore
-    if (decoded.IsAdmin == true) {
-        // @ts-ignore
-        return true;
-    }
+  if (token === false) {
     return false;
+  }
 
+  const decoded: JWTDeCode = jwt_decode(token.token);
+
+  if (decoded.exp < Date.now() / 1000) {
+    localStorage.clear();
+    return false;
+  }
+
+  if (decoded.Role === "Admin") {
+    return true;
+  }
+  return false;
 }

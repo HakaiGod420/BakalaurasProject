@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
 import { useRecoilState } from "recoil";
-import { validTokenAtom } from "../services/constants/globalStates";
+import { validTokenAtom } from "../services/constants/recoil/globalStates";
 
 export default function Hero() {
   const [validToken] = useRecoilState(validTokenAtom);

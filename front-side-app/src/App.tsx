@@ -9,18 +9,30 @@ import Navbar from "./components/Navbar";
 import Login from "./pages/login";
 import MainPage from "./pages/mainPage";
 import Register from "./pages/register";
-import { validTokenAtom } from "./services/constants/globalStates";
-import { CheckJWTAndSession } from "./services/midlewear/AuthVerify";
+import TableBoadGames from "./pages/tableBoadGames";
+import {
+  isAdminAtom,
+  validTokenAtom,
+} from "./services/constants/recoil/globalStates";
+import {
+  CheckJWTAndSession,
+  CheckJWTIsAdmin,
+} from "./services/midlewear/AuthVerify";
 
 function App() {
   const [, setValidToken] = useRecoilState(validTokenAtom);
+  const [, setIsAdmin] = useRecoilState(isAdminAtom);
+
   useEffect(() => {
     const validateToken = async () => {
       const check = await CheckJWTAndSession();
+      const adminCheck = await CheckJWTIsAdmin();
+
+      setIsAdmin(adminCheck);
       setValidToken(check);
     };
     validateToken();
-  }, [setValidToken]);
+  }, [setValidToken, setIsAdmin]);
 
   return (
     <div>
@@ -30,6 +42,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login/*" element={<Login />} />
+          <Route path="/tableboardgames/" element={<TableBoadGames />} />
           <Route path="/register/*" element={<Register />} />
         </Routes>
       </Content>

@@ -125,6 +125,7 @@ namespace ServiceLayer.Services
                new Claim("UserId", user.UserId.ToString()),
                new Claim("Username", user.UserName),
                new Claim("Email", user.Email),
+               new Claim("Role", user.RoleId.ToString()),
                new Claim(ClaimTypes.Role, user.RoleId.ToString()),
             };
 

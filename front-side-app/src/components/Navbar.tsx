@@ -2,11 +2,14 @@ import { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { validTokenAtom } from "../services/constants/globalStates";
+import {
+  isAdminAtom,
+  validTokenAtom,
+} from "../services/constants/recoil/globalStates";
 
 export default function Navbar() {
   const [nav, setNav] = useState(true);
-  const [isAdmin] = useState<boolean | undefined>(false);
+  const [isAdmin] = useRecoilState(isAdminAtom);
   const [validToken] = useRecoilState(validTokenAtom);
 
   const handleNav = () => {
@@ -21,7 +24,7 @@ export default function Navbar() {
   return (
     <div>
       <script src="https://unpkg.com/@themesberg/flowbite@1.1.1/dist/flowbite.bundle.js"></script>
-      <header className="sticky top-0 bg-[#000300] z-10">
+      <header className="sticky top-0 bg-[#111827] z-10">
         <div className="flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white">
           <Link to={"/"}>
             <h1 className=" w-full text-2xl font-bold text-[#00df9a]">
@@ -42,7 +45,7 @@ export default function Navbar() {
                 </li>
                 <li>
                   <Link
-                    to="#"
+                    to="/tableboardgames"
                     className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-green-700 md:p-0"
                   >
                     Table Game Boards
@@ -99,6 +102,11 @@ export default function Navbar() {
                     <li>
                       <Link to={"#"}>Settings</Link>
                     </li>
+                    {isAdmin && (
+                      <li>
+                        <Link to={"#"}>Admin CP</Link>
+                      </li>
+                    )}
                     <li>
                       <Link onClick={signOff} to={""}>
                         Logout
@@ -108,18 +116,13 @@ export default function Navbar() {
                 </div>
               )}
             </li>
-            <li className="p-4">
-              {validToken && isAdmin ? (
-                <Link to={"/admin"}>
-                  <button className="bg-white w-[150px] rounded-md font-medium py-2 my-[-20px] text-black">
-                    Admin CP
-                  </button>
-                </Link>
-              ) : null}
-            </li>
           </ul>
           <div className="block md:hidden" onClick={handleNav}>
-            {!nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
+            {!nav ? (
+              <AiOutlineClose className="sticky" size={20} />
+            ) : (
+              <AiOutlineMenu className="sticky" size={20} />
+            )}
           </div>
 
           <div
@@ -141,6 +144,11 @@ export default function Navbar() {
                 <li className="p-4 border-b border-gray-600">
                   <Link to="#">Settings</Link>
                 </li>
+                {validToken && isAdmin && (
+                  <Link to={"/admin"}>
+                    <li className="p-4 border-b border-gray-600">Admin CP</li>
+                  </Link>
+                )}
               </ul>
             )}
 
@@ -149,7 +157,7 @@ export default function Navbar() {
               <Link to={"/"}>
                 <li className="p-4 border-b border-gray-600">Home</li>
               </Link>
-              <Link to="/companies">
+              <Link to="/tableboardgames">
                 <li className="p-4 border-b border-gray-600">Tabletop games</li>
               </Link>
               <li className="p-4 border-b border-gray-600">About</li>
@@ -162,12 +170,6 @@ export default function Navbar() {
                   <li className="p-4 border-b border-gray-600">Sign Off</li>
                 </Link>
               )}
-
-              {validToken && isAdmin ? (
-                <Link to={"/admin"}>
-                  <li className="p-4 border-b border-gray-600">Admin CP</li>
-                </Link>
-              ) : null}
             </ul>
           </div>
         </div>

@@ -5,7 +5,11 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { SERVER_API } from "../services/constants/ClienConstants";
-import { validTokenAtom } from "../services/constants/globalStates";
+import {
+  isAdminAtom,
+  validTokenAtom,
+} from "../services/constants/recoil/globalStates";
+import { CheckJWTIsAdmin } from "../services/midlewear/AuthVerify";
 import { ErrorBasic } from "../services/types/Error";
 import { LoginData } from "../services/types/User";
 
@@ -13,14 +17,20 @@ function LoginComponent() {
   const [password, setPassword] = useState("");
   const [errorName, setErrorName] = useState("");
   const [username, setUsername] = useState("");
+
   const [showError, setShowError] = useState(false);
+
   const navigate = useNavigate();
+
   const [, setValidToken] = useRecoilState(validTokenAtom);
+  const [, setIsAdmin] = useRecoilState(isAdminAtom);
+
   const login = async () => {
     const crediantals: LoginData = {
       userName: username,
       password: password,
     };
+
     const loading = toast.loading("Trying to log in");
     await axios
       .post(SERVER_API + "/api/user/login", crediantals)
@@ -51,6 +61,8 @@ function LoginComponent() {
 
   const loginToWeb = async () => {
     await login();
+    const isAdmin: boolean = await CheckJWTIsAdmin();
+    setIsAdmin(isAdmin);
   };
 
   return (

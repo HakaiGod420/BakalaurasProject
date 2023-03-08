@@ -33,7 +33,6 @@ export default function ShortDescription() {
               Go To Games
             </button>
           </Link>
-          .
         </div>
       </div>
     </div>
