@@ -9,3 +9,4 @@ export const isAdminAtom = atom({
   key: "isAdmin",
   default: false,
 });
+

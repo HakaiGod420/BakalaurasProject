@@ -8,7 +8,7 @@ export default function ShortDescription() {
         <div className="object-cover w-[380px] mx-auto my-4">
           <Image
             preview={false}
-            className="object-cover w-[350px] mx-auto my-4"
+            className="object-cover w-[350px] mx-auto my-4 rounded-lg"
             src={require("../assets/images/ImagesGameBoard.jpg")}
             alt=""
           />

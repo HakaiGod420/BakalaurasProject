@@ -66,7 +66,7 @@ function LoginComponent() {
   };
 
   return (
-    <section className="text-gray-600 body-font bg-[#000300]">
+    <section className="text-gray-600 body-font bg-[#111827]">
       <div></div>
       <div className="container px-5 py-24 mx-auto flex flex-wrap items-center max-w-[1240px]">
         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">

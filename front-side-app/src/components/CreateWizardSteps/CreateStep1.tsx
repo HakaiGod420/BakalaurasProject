@@ -1,12 +1,21 @@
 import { useState } from "react";
 import { useWizard } from "react-use-wizard";
+import { TabletopGameCreation } from "../../services/types/TabletopGame";
 
-function CreateStep1() {
-  const { handleStep, previousStep, nextStep } = useWizard();
+interface Props {
+  stepNumber: number;
+  setStepNumber: React.Dispatch<React.SetStateAction<number>>;
+  tableTopGame: TabletopGameCreation;
+}
+
+function CreateStep1({ stepNumber, setStepNumber, tableTopGame }: Props) {
+  const { handleStep, nextStep } = useWizard();
 
   const [gameTitle, setGameTitle] = useState<string>("");
 
-  const inputHandler = () => {
+  const inputHandlerNext = () => {
+    setStepNumber(stepNumber + 1);
+    tableTopGame.Title = gameTitle;
     nextStep();
   };
 
@@ -33,7 +42,7 @@ function CreateStep1() {
         <button
           disabled={gameTitle === ""}
           className="btn m-2 min-w-[10%]"
-          onClick={() => inputHandler()}
+          onClick={() => inputHandlerNext()}
         >
           Next
         </button>
