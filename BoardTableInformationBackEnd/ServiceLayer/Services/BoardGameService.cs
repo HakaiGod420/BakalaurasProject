@@ -141,5 +141,10 @@ namespace ServiceLayer.Services
             };
             return await _aditionalFilesRepository.AddFile(newFile);
         }
+
+        public async Task<List<BoardGameSimpleDto>> GetBoardGamesForSelect(string stringPart)
+        {
+            return await _gameBoardRepository.GetBoardsSimple(stringPart);
+        }
     }
 }

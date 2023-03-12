@@ -4,6 +4,8 @@ import { useWizard } from "react-use-wizard";
 interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
+  rules: string | undefined;
+  setRules: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 function CreateStep4({ stepNumber, setStepNumber }: Props) {
@@ -27,46 +29,47 @@ function CreateStep4({ stepNumber, setStepNumber }: Props) {
   };
 
   return (
-    <div>
+    <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
-        <h1 className=" uppercase font-bold text-[20px]">
+        <h1 className="text-center uppercase font-bold text-[20px]">
           Tabletop game rules
         </h1>
-        <p className="p-2">
+        <p className="p-4 text-center">
           Write the rules of the tabletop game you are creating now. You can
           skip this step, but others may not know how to play your game.
         </p>
         <div className="mb-5">
-          <div className=" font-bold flex justify-center">
+          <div className=" p-2 font-bold flex justify-center">
             <p>Game Rules</p>
           </div>
           <div className="p-2 flex justify-center">
             <textarea
+              value={rules}
               onChange={(e) => setRules(e.target.value)}
-              className="input input-bordered input-success w-full max-w-2xs max-h-[400px] min-h-[100px]"
+              className="input input-bordered input-success w-full max-w-2xs max-h-[400px] min-h-[160px]"
             />
           </div>
         </div>
       </div>
       <div className="flex justify-center p-2 m-1">
         <button
-          className="btn m-2 min-w-[10%]"
+          className="btn m-2 min-w-[100px]"
           onClick={() => inputHandlerPrevious()}
         >
           Previous
         </button>
 
-        {rules !== "" ? (
+        {rules !== "" && rules !== undefined ? (
           <button
             disabled={rules.length <= 100}
-            className="btn m-2 min-w-[10%]"
+            className="btn m-2 min-w-[100px]"
             onClick={() => inputHandlerNext()}
           >
             Next
           </button>
         ) : (
           <button
-            className="btn m-2 min-w-[10%]"
+            className="btn m-2 min-w-[100px]"
             onClick={() => inputHandlerSkip()}
           >
             Skip

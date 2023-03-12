@@ -1,5 +1,7 @@
 ﻿using DataLayer.DBContext;
 using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
+using ModelLayer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,15 @@ namespace DataLayer.Repositories.GameBoard
             await _dbContext.BoardGames.AddAsync(tableBoard);
             _dbContext.SaveChanges();
             return tableBoard;
+        }
+
+        public async Task<List<BoardGameSimpleDto>> GetBoardsSimple(string titlePart)
+        {
+            var result = await _dbContext.BoardGames.AsQueryable()
+                .Where(x => x.Title.StartsWith(titlePart))
+                .Select(x => new BoardGameSimpleDto { Id = x.BoardGameId, Title = x.Title })
+                .ToListAsync();
+            return result; 
         }
     }
 }

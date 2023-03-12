@@ -11,7 +11,7 @@ namespace ModelLayer.DTO
     public class CreateBoardGame
     {
 
-        [Required]
+        [Required]  
         [MaxLength(200)]
         public string Title { get; set; }
 

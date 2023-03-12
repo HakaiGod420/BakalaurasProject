@@ -10,6 +10,12 @@ namespace DataLayer.Models
 {
     public class UserEntity
     {
+        public UserEntity()
+        {
+            ActiveGamesParcipators = new HashSet<ActiveGameEntity>();
+            ActiveGamesCreators = new HashSet<ActiveGameEntity>();
+        }
+
         [Key]
         public int UserId { get; set; }
 
@@ -40,5 +46,8 @@ namespace DataLayer.Models
 
         [Required]
         public string Email { get; set; }
+
+        public virtual ICollection<ActiveGameEntity> ActiveGamesParcipators { get; set; }
+        public virtual ICollection<ActiveGameEntity> ActiveGamesCreators { get; set; }
     }
 }

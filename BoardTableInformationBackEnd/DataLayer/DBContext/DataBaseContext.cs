@@ -20,6 +20,9 @@ namespace DataLayer.DBContext
         public virtual DbSet<AditionalFileEntity> AditionalFiles { get; set; }
         public virtual DbSet<ImageEntity> Images { get; set; }
         public virtual DbSet<TableBoardStateEntity> TableBoardStates { get; set; }
+        public virtual DbSet<ActiveGameEntity> ActiveGames { get; set; }
+        public virtual DbSet<AddressEntity> Addresses { get; set; }
+        public virtual DbSet<ActiveGameStateEntity> ActiveGameStates { get; set; }
 
         public DataBaseContext()
         {
@@ -56,7 +59,20 @@ namespace DataLayer.DBContext
                 .WithMany(y => y.Boards)
                 .UsingEntity(j => j.ToTable("BoardGameType"));
 
+            builder.Entity<UserEntity>()
+                .HasMany(x => x.ActiveGamesParcipators)
+                .WithMany(y => y.Users)
+                .UsingEntity(j => j.ToTable("UserActiveGame"));
+
+            builder.Entity<UserEntity>().HasMany(x => x.ActiveGamesCreators)
+                .WithOne(j => j.Creator).OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<AddressEntity>().HasMany(x => x.ActiveGameInThisAddress).WithOne(j => j.Address);
+
+            builder.Entity<ActiveGameEntity>().HasOne(x => x.Creator).WithMany(j => j.ActiveGamesCreators);
+
             /*
+             * 
             builder.Entity<ImageEntity>().
                 HasKey(x => new { x.BoardGameId });
 

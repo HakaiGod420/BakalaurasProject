@@ -10,5 +10,6 @@ namespace ServiceLayer.Interfaces
     public interface IBoardGameService
     {
         public Task<CreatedGameBoard> CreateGameBoard(CreateBoardGame board,int userId);
+        public Task<List<BoardGameSimpleDto>> GetBoardGamesForSelect(string stringPart);
     }
 }

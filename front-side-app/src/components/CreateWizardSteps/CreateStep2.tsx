@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useWizard } from "react-use-wizard";
 import { TabletopGameCreation } from "../../services/types/TabletopGame";
 
@@ -6,23 +5,33 @@ interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
   tableTopGame: TabletopGameCreation;
+
+  playerAge: number | undefined;
+  setAge: React.Dispatch<React.SetStateAction<number | undefined>>;
+  playerCount: number | undefined;
+  setPlayerCount: React.Dispatch<React.SetStateAction<number | undefined>>;
+  averageTime: number | undefined;
+  setAverageTime: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
-function CreateStep2({ stepNumber, setStepNumber, tableTopGame }: Props) {
+function CreateStep2({
+  stepNumber,
+  setStepNumber,
+  tableTopGame,
+  playerAge,
+  setAge,
+  playerCount,
+  setPlayerCount,
+  averageTime,
+  setAverageTime,
+}: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
-
-  const [playerAge, setPlayerAge] = useState<number>(0);
-  const [playingTime, setPlayingTime] = useState<number>(0);
-  const [playerCount, setPlayerCount] = useState<number>(0);
 
   const blockInvalidChar = (e: any) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);
-    tableTopGame.PlayingTime = playingTime;
-    tableTopGame.PLayingAge = playerAge;
-    console.log(tableTopGame);
     nextStep();
   };
 
@@ -32,12 +41,12 @@ function CreateStep2({ stepNumber, setStepNumber, tableTopGame }: Props) {
   };
 
   return (
-    <div>
+    <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
-        <h1 className=" uppercase font-bold text-[20px]">
+        <h1 className=" p-2 text-center uppercase font-bold text-[20px]">
           Players information
         </h1>
-        <p className="p-2">
+        <p className="p-2 text-center">
           Now you need to specify how old players should be to play this game
           and how long it takes on average to beat one round.
         </p>
@@ -49,24 +58,10 @@ function CreateStep2({ stepNumber, setStepNumber, tableTopGame }: Props) {
             <input
               min={0}
               onKeyDown={blockInvalidChar}
-              onChange={(e) => setPlayerAge(parseInt(e.target.value))}
+              onChange={(e) => setAge(parseInt(e.target.value))}
               type="number"
+              value={playerAge}
               placeholder="Player Age"
-              className="input input-bordered input-success w-full max-w-xs"
-            />
-          </div>
-        </div>
-        <div>
-          <div className=" font-bold flex justify-center">
-            <p>Average playing time for one game</p>
-          </div>
-          <div className="p-2 flex justify-center">
-            <input
-              min={0}
-              onKeyDown={blockInvalidChar}
-              onChange={(e) => setPlayingTime(parseInt(e.target.value))}
-              type="number"
-              placeholder="Playing time"
               className="input input-bordered input-success w-full max-w-xs"
             />
           </div>
@@ -81,7 +76,24 @@ function CreateStep2({ stepNumber, setStepNumber, tableTopGame }: Props) {
               onKeyDown={blockInvalidChar}
               onChange={(e) => setPlayerCount(parseInt(e.target.value))}
               type="number"
+              value={playerCount}
               placeholder="Players count"
+              className="input input-bordered input-success w-full max-w-xs"
+            />
+          </div>
+        </div>
+        <div>
+          <div className=" font-bold flex justify-center">
+            <p>Average playing time for one game</p>
+          </div>
+          <div className="p-2 flex justify-center">
+            <input
+              min={0}
+              onKeyDown={blockInvalidChar}
+              onChange={(e) => setAverageTime(parseInt(e.target.value))}
+              value={averageTime}
+              type="number"
+              placeholder="Playing time"
               className="input input-bordered input-success w-full max-w-xs"
             />
           </div>
@@ -89,15 +101,20 @@ function CreateStep2({ stepNumber, setStepNumber, tableTopGame }: Props) {
       </div>
       <div className="flex justify-center p-2 m-1">
         <button
-          className="btn m-2 min-w-[10%]"
+          className="btn m-2 min-w-[100px]"
           onClick={() => inputHandlerPrevious()}
         >
           Previous
         </button>
 
         <button
-          disabled={playerAge <= 0 || playingTime <= 0}
-          className="btn m-2 min-w-[10%]"
+          disabled={
+            playerAge === undefined ||
+            playerCount === undefined ||
+            playerCount <= 0 ||
+            playerAge <= 0
+          }
+          className="btn m-2 min-w-[100px]"
           onClick={() => inputHandlerNext()}
         >
           Next

@@ -30,3 +30,18 @@ export interface AditionalFile {
   Name: string;
   Location: string;
 }
+
+export interface Invatation {
+  Title: string;
+  PlayersNeed: number;
+  Map_X_Cords: number;
+  Map_Y_Cords: number;
+}
+
+export interface Address {
+  City: string;
+  StreenName: string;
+  Province: string;
+  PostalCode: string;
+  FullAddrss: string;
+}

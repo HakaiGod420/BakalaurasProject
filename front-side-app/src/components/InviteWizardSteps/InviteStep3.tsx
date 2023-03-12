@@ -1,4 +1,6 @@
+import "leaflet/dist/leaflet.css";
 import { useState } from "react";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
@@ -6,7 +8,7 @@ interface Props {
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function CreateStep6({ stepNumber, setStepNumber }: Props) {
+function InviteStep3({ stepNumber, setStepNumber }: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
@@ -29,23 +31,26 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
-        <h1 className="text-center uppercase font-bold text-[20px]">Images</h1>
+        <h1 className="text-center uppercase font-bold text-[20px]">
+          Add Addres where everything will be happening
+        </h1>
         <p className="text-center p-2">
           Write the rules of the tabletop game you are creating now. You can
           skip this step, but others may not know how to play your game.
         </p>
-        <div className="mb-5">
-          <div className=" font-bold flex justify-center">
-            <p>Upload Additional files</p>
-          </div>
-          <div className="flex justify-center mt-5">
-            <input
-              multiple={false}
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-              className="file-input file-input-bordered file-input-md w-full max-w-xs"
+        <div style={{ height: "500px" }} className=" ">
+          <MapContainer
+            center={[51.505, -0.09]}
+            zoom={13}
+            scrollWheelZoom={false}
+            style={{ height: "100%", minHeight: "100%" }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-          </div>
+            <Marker position={[51.505, -0.09]}></Marker>
+          </MapContainer>
         </div>
       </div>
       <div className="flex justify-center p-2 m-1">
@@ -55,26 +60,15 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
         >
           Previous
         </button>
-
-        {rules !== "" ? (
-          <button
-            disabled={rules.length <= 100}
-            className="btn m-2 min-w-[100px]"
-            onClick={() => inputHandlerNext()}
-          >
-            Next
-          </button>
-        ) : (
-          <button
-            className="btn m-2 min-w-[100px]"
-            onClick={() => inputHandlerSkip()}
-          >
-            Skip
-          </button>
-        )}
+        <button
+          className="btn m-2 min-w-[100px]"
+          onClick={() => inputHandlerNext()}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
 }
 
-export default CreateStep6;
+export default InviteStep3;

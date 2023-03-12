@@ -29,5 +29,17 @@ namespace BoardTableInformationBackEnd.Controllers
 
             return new CreatedResult(String.Empty, createdGameBoard);
         }
+
+        [HttpGet("getBoardsSimple")]
+        [ProducesResponseType(typeof(List<BoardGameSimpleDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetBoards(string searchTerm)
+        {
+          
+
+            var listOfBoards = await _gameBoardService.GetBoardGamesForSelect(searchTerm);
+
+            return new OkObjectResult(listOfBoards);
+        }
+
     }
 }

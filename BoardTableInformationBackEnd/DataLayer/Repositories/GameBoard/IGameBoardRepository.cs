@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models;
+using ModelLayer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace DataLayer.Repositories.GameBoard
     public interface IGameBoardRepository
     {
         public Task<BoardGameEntity> AddGameBoard(BoardGameEntity tableBoard);
+        public Task<List<BoardGameSimpleDto>> GetBoardsSimple(string titlePart);
     }
 }

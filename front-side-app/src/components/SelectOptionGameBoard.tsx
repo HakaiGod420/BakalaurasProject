@@ -1,6 +1,7 @@
 import { Image } from "antd";
 import { useRecoilState } from "recoil";
 import { validTokenAtom } from "../services/constants/recoil/globalStates";
+import CreateInvitationModal from "./CreateInvitationModal";
 import CreateTabletopGameModal from "./CreateTabletopGameModal";
 
 function SelectOptionGameBoard() {
@@ -48,7 +49,7 @@ function SelectOptionGameBoard() {
           </div>
           <div className="grid h-10 flex-grow card rounded-box place-items-center">
             <div className="min-w-full min-h-full">
-              <CreateTabletopGameModal />
+              <CreateInvitationModal />
             </div>
           </div>
         </div>
