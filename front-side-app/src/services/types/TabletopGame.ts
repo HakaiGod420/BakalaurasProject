@@ -45,3 +45,8 @@ export interface Address {
   PostalCode: string;
   FullAddrss: string;
 }
+
+export interface SimpleTableTop {
+  Id: string;
+  Title: string;
+}

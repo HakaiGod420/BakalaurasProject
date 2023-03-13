@@ -1,4 +1,10 @@
+import axios from "axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { useWizard } from "react-use-wizard";
+import { SERVER_API } from "../../services/constants/ClienConstants";
+import { ErrorBasic } from "../../services/types/Error";
+import { SimpleTableTop } from "../../services/types/TabletopGame";
 
 interface Props {
   stepNumber: number;
@@ -10,9 +16,50 @@ interface Props {
 function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
   const { handleStep, nextStep } = useWizard();
 
-  const inputHandlerNext = () => {
-    setStepNumber(stepNumber + 1);
-    nextStep();
+  const [error, setError] = useState<boolean>(false);
+
+  const getGame = async () => {
+    const loading = toast.loading("Searching table top game");
+    await axios
+      .get(SERVER_API + "/api/gameboard/getBoardsSimple/", {
+        params: { searchTerm: title },
+      })
+      .then((res) => {
+        console.log(res.data);
+        const Titles: SimpleTableTop[] = res.data;
+        if (Titles.length === 0) {
+          toast.error("Not such games was found", {
+            id: loading,
+          });
+          setError(true);
+          return;
+        }
+        toast.success("Game was founded", {
+          id: loading,
+        });
+      })
+      .catch((error) => {
+        setError(true);
+        const errorBasic: ErrorBasic = {
+          status: error.response.status,
+          code: error.code,
+          message: error.message,
+        };
+        if (errorBasic.status === 400) {
+        }
+        toast.error("Error ocurred", {
+          id: loading,
+        });
+      });
+  };
+
+  const inputHandlerNext = async () => {
+    await getGame();
+    if (error) {
+      console.log(error);
+      setStepNumber(stepNumber + 1);
+      nextStep();
+    }
   };
 
   return (
