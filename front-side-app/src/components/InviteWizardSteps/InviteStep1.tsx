@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useWizard } from "react-use-wizard";
 import { SERVER_API } from "../../services/constants/ClienConstants";
@@ -16,7 +16,7 @@ interface Props {
 function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
   const { handleStep, nextStep } = useWizard();
 
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(true);
 
   const getGame = async () => {
     const loading = toast.loading("Searching table top game");
@@ -25,15 +25,16 @@ function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
         params: { searchTerm: title },
       })
       .then((res) => {
-        console.log(res.data);
         const Titles: SimpleTableTop[] = res.data;
         if (Titles.length === 0) {
           toast.error("Not such games was found", {
             id: loading,
           });
           setError(true);
+          console.log(res.data);
           return;
         }
+        setError(false);
         toast.success("Game was founded", {
           id: loading,
         });
@@ -50,17 +51,21 @@ function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
         toast.error("Error ocurred", {
           id: loading,
         });
+        return;
       });
+    return;
   };
 
   const inputHandlerNext = async () => {
     await getGame();
-    if (error) {
-      console.log(error);
+  };
+
+  useEffect(() => {
+    if (!error) {
       setStepNumber(stepNumber + 1);
       nextStep();
     }
-  };
+  }, [error]);
 
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
@@ -89,7 +94,7 @@ function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
           <button
             disabled={title === ""}
             className="btn m-2 min-w-[100px]"
-            onClick={() => inputHandlerNext()}
+            onClick={inputHandlerNext}
           >
             Next
           </button>

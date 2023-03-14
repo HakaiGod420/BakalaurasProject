@@ -17,12 +17,14 @@ namespace BoardTableInformationBackEnd
 
             serviceCollection.AddScoped<IUserService, UserService>();
             serviceCollection.AddScoped<IBoardGameService, BoardGameService>();
+            serviceCollection.AddScoped<IInvatationService, InvatationService>();
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
             serviceCollection.AddScoped<IGameBoardRepository,GameBoardRepository>();
             serviceCollection.AddScoped<ICategoryRepository, CategoryRepository>();
             serviceCollection.AddScoped<IBoardTypeRepository, BoardTypeRepository>();
             serviceCollection.AddScoped<IImageRepository, ImageRepository>();
             serviceCollection.AddScoped<IAditionalFilesRepository, AditionalFilesRepository>();
+
         }
     }
 }

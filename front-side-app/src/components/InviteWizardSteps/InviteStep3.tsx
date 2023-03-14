@@ -4,34 +4,26 @@ import { useState } from "react";
 import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import { useWizard } from "react-use-wizard";
 import marker from "../../assets/images/market.png";
+import { MapCoordinates } from "../../services/types/Miscellaneous";
 interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
+  mapCoords: MapCoordinates;
+  setMapsCoords: React.Dispatch<React.SetStateAction<MapCoordinates>>;
 }
 
-interface Lating {
-  Lat: number;
-  Lng: number;
-}
-const defaultLating: Lating = {
-  Lat: 0,
-  Lng: 0,
-};
-
-function InviteStep3({ stepNumber, setStepNumber }: Props) {
+function InviteStep3({
+  stepNumber,
+  setStepNumber,
+  mapCoords,
+  setMapsCoords,
+}: Props) {
   const icon = L.icon({ iconUrl: marker, iconSize: [40, 40] });
   const { handleStep, previousStep, nextStep } = useWizard();
-  const [mapLtgLtd, setMapLtgLtd] = useState<Lating>(defaultLating);
 
-  const [rules, setRules] = useState<string>("");
   const [markerShow, setMarkerShow] = useState<boolean>(false);
 
   const inputHandlerNext = () => {
-    setStepNumber(stepNumber + 1);
-    nextStep();
-  };
-
-  const inputHandlerSkip = () => {
     setStepNumber(stepNumber + 1);
     nextStep();
   };
@@ -45,12 +37,12 @@ function InviteStep3({ stepNumber, setStepNumber }: Props) {
     const map = useMapEvents({
       click(e) {
         if (e.latlng.lat !== 0 || e.latlng.lng !== 0) {
-          const newCords: Lating = {
+          const newCords: MapCoordinates = {
             Lat: e.latlng.lat,
             Lng: e.latlng.lng,
           };
           console.log(newCords);
-          setMapLtgLtd(newCords);
+          setMapsCoords(newCords);
           setMarkerShow(true);
         }
       },
@@ -59,11 +51,11 @@ function InviteStep3({ stepNumber, setStepNumber }: Props) {
   };
 
   const GetLatLng = (e: L.LatLng) => {
-    const lating: Lating = {
+    const lating: MapCoordinates = {
       Lat: e.lat,
       Lng: e.lng,
     };
-    setMapLtgLtd(lating);
+    setMapsCoords(lating);
   };
 
   return (
@@ -73,8 +65,9 @@ function InviteStep3({ stepNumber, setStepNumber }: Props) {
           Add Address where everything will be happening
         </h1>
         <p className="text-center p-2">
-          Write the rules of the tabletop game you are creating now. You can
-          skip this step, but others may not know how to play your game.
+          To host your own table top event and invite other players to join you,
+          please select a location on the map by clicking with your mouse. You
+          can zoom in and out of the map to find the best spot for your event.
         </p>
         <div style={{ height: "500px" }} className=" rounded-lg">
           <MapContainer
@@ -88,11 +81,11 @@ function InviteStep3({ stepNumber, setStepNumber }: Props) {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {markerShow && (
+            {(mapCoords.Lat !== 0 || mapCoords.Lng !== 0) && (
               <Marker
                 draggable={true}
                 icon={icon}
-                position={[mapLtgLtd.Lat, mapLtgLtd.Lng]}
+                position={[mapCoords.Lat, mapCoords.Lng]}
                 eventHandlers={{
                   mouseup: (e) => GetLatLng(e.latlng),
                 }}

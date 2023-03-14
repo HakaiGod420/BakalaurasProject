@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
+  parcipantsCount: number | undefined;
+  setParcipantsCount: Dispatch<SetStateAction<number | undefined>>;
+  minimalParcipantsAge: number | undefined;
+  setMinimalParcipantsAge: Dispatch<SetStateAction<number | undefined>>;
 }
 
-function InviteStep2({ stepNumber, setStepNumber }: Props) {
+function InviteStep2({
+  stepNumber,
+  setStepNumber,
+  setParcipantsCount,
+  parcipantsCount,
+  minimalParcipantsAge,
+  setMinimalParcipantsAge,
+}: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
@@ -33,15 +44,19 @@ function InviteStep2({ stepNumber, setStepNumber }: Props) {
           What kind of people your searching
         </h1>
         <p className="text-center p-2">
-          Write the rules of the tabletop game you are creating now. You can
-          skip this step, but others may not know how to play your game.
+          To ensure that your table top game event is enjoyable and suitable for
+          everyone, please enter the maximum number of participants you can
+          accommodate and the minimum age requirement for your event. You can
+          change these settings at any time before the event starts.
         </p>
         <div>
           <div className=" font-bold flex justify-center">
-            <p>Parcipants count</p>
+            <p>Participants count</p>
           </div>
           <div className="p-2 flex justify-center">
             <input
+              onChange={(e) => setParcipantsCount(Number(e.target.value))}
+              value={parcipantsCount}
               type="number"
               placeholder="Max Parcinpants Number"
               className="input input-bordered input-success w-full max-w-xs"
@@ -50,11 +65,13 @@ function InviteStep2({ stepNumber, setStepNumber }: Props) {
         </div>
         <div>
           <div className=" font-bold flex justify-center">
-            <p>Minimal parcipants age</p>
+            <p>Minimal participants age</p>
           </div>
           <div className="p-2 flex justify-center">
             <input
               type="number"
+              onChange={(e) => setMinimalParcipantsAge(Number(e.target.value))}
+              value={minimalParcipantsAge}
               placeholder="Minimal parcipants age"
               className="input input-bordered input-success w-full max-w-xs"
             />
@@ -69,6 +86,12 @@ function InviteStep2({ stepNumber, setStepNumber }: Props) {
           Previous
         </button>
         <button
+          disabled={
+            parcipantsCount === undefined ||
+            parcipantsCount === 0 ||
+            minimalParcipantsAge === 0 ||
+            minimalParcipantsAge === undefined
+          }
           className="btn m-2 min-w-[100px]"
           onClick={() => inputHandlerNext()}
         >

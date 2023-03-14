@@ -1,6 +1,6 @@
 import { DatePicker } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useState } from "react";
 import { useWizard } from "react-use-wizard";
@@ -10,9 +10,12 @@ dayjs.extend(customParseFormat);
 interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
+
+  date: Dayjs | undefined | null;
+  setDate: React.Dispatch<React.SetStateAction<Dayjs | undefined | null>>;
 }
 
-function InviteStep4({ stepNumber, setStepNumber }: Props) {
+function InviteStep4({ stepNumber, setStepNumber, date, setDate }: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
@@ -58,25 +61,31 @@ function InviteStep4({ stepNumber, setStepNumber }: Props) {
           Finish your invatation
         </h1>
         <p className="text-center p-2">
-          Write the rules of the tabletop game you are creating now. You can
-          skip this step, but others may not know how to play your game.
+          To join the fun and excitement of playing table board games with other
+          enthusiasts, please select a date from the calendar below and confirm
+          your attendance. We look forward to seeing you there!
         </p>
         <div>
           <div className=" font-bold flex justify-center">
             <p>Meet date</p>
           </div>
-          <div className="p-2 flex justify-center">
+          <div className="p-2 flex justify-center ">
             <DatePicker
-              style={{ backgroundColor: "white", color: "red" }}
+              className="bg-[#7c8088] hover:border-green-500 min-h-[50px] min-w-[200px]"
+              style={{
+                color: "#FFFFFF",
+                fontWeight: "bold",
+                colorAdjust: "revert",
+              }}
               format="YYYY-MM-DD HH:mm:ss"
               disabledDate={disabledDate}
               disabledTime={disabledDateTime}
               showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+              value={date}
+              onChange={(e) => setDate(e)}
               dateRender={(current) => {
                 return (
-                  <div className="ant-picker-cell-inner" style={{}}>
-                    {current.date()}
-                  </div>
+                  <div className="ant-picker-cell-inner">{current.date()}</div>
                 );
               }}
             />

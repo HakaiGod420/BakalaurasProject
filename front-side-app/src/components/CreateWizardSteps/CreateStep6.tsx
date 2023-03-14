@@ -29,7 +29,9 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
-        <h1 className="text-center uppercase font-bold text-[20px]">Images</h1>
+        <h1 className="text-center uppercase font-bold text-[20px]">
+          Aditional Files
+        </h1>
         <p className="text-center p-2">
           Write the rules of the tabletop game you are creating now. You can
           skip this step, but others may not know how to play your game.

@@ -1,14 +1,25 @@
+import { Dayjs } from "dayjs";
 import { useState } from "react";
 import { Wizard } from "react-use-wizard";
+import { MapCoordinates } from "../services/types/Miscellaneous";
 import InviteStep1 from "./InviteWizardSteps/InviteStep1";
 import InviteStep2 from "./InviteWizardSteps/InviteStep2";
 import InviteStep3 from "./InviteWizardSteps/InviteStep3";
 import InviteStep4 from "./InviteWizardSteps/InviteStep4";
 
+const defaultCords: MapCoordinates = {
+  Lat: 0,
+  Lng: 0,
+};
+
 function CreateInvitationModal() {
   const [stepNumber, setStetpNumber] = useState<number>(1);
 
   const [title, setTitle] = useState<string>("");
+  const [maxParcipants, setMaxParcipants] = useState<number>();
+  const [minimalAge, setMinimalAge] = useState<number>();
+  const [mapCoords, setMapCoords] = useState<MapCoordinates>(defaultCords);
+  const [date, setDate] = useState<Dayjs | null>();
 
   const Footer = () => (
     <div className="mt-5 flex justify-center">
@@ -85,14 +96,22 @@ function CreateInvitationModal() {
               <InviteStep2
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
+                parcipantsCount={maxParcipants}
+                setParcipantsCount={setMaxParcipants}
+                minimalParcipantsAge={minimalAge}
+                setMinimalParcipantsAge={setMinimalAge}
               />
               <InviteStep3
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
+                mapCoords={mapCoords}
+                setMapsCoords={setMapCoords}
               />
               <InviteStep4
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
+                date={date}
+                setDate={setDate}
               />
             </Wizard>
           </div>
