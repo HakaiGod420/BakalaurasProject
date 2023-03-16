@@ -1,6 +1,8 @@
 import { Dayjs } from "dayjs";
 import { useState } from "react";
 import { Wizard } from "react-use-wizard";
+import { useRecoilState } from "recoil";
+import { selectedGameBoard } from "../services/constants/recoil/gameboardStates";
 import { MapCoordinates } from "../services/types/Miscellaneous";
 import InviteStep1 from "./InviteWizardSteps/InviteStep1";
 import InviteStep2 from "./InviteWizardSteps/InviteStep2";
@@ -20,6 +22,7 @@ function CreateInvitationModal() {
   const [minimalAge, setMinimalAge] = useState<number>();
   const [mapCoords, setMapCoords] = useState<MapCoordinates>(defaultCords);
   const [date, setDate] = useState<Dayjs | null>();
+  const [selectedGame, setSelectedGame] = useRecoilState(selectedGameBoard);
 
   const Footer = () => (
     <div className="mt-5 flex justify-center">

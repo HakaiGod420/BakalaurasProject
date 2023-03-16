@@ -10,10 +10,12 @@ namespace BoardTableInformationBackEnd.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IAddressService _addressService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService,IAddressService addressService)
         {
             _userService = userService;
+            _addressService = addressService;
         }
 
         [Authorize]
@@ -65,6 +67,21 @@ namespace BoardTableInformationBackEnd.Controllers
             }
 
             return new OkObjectResult(result);
+        }
+
+        [HttpPost("addAddress")]
+        [Authorize]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status201Created)]
+        public async Task<IActionResult> AddUserAddress(AddressCreateDto address)
+        {
+            var result  = await _addressService.AddNewAddress(address);
+
+            if(result == false)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, result);
+            }
+           
+            return new CreatedResult(String.Empty, result);
         }
     }
 }

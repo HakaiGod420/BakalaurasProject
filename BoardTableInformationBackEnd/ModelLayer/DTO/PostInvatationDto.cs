@@ -12,6 +12,6 @@ namespace ModelLayer.DTO
         public int PlayersNeed { get; set; }
         public float Map_X_Cords { get; set; }
         public float Map_Y_Cords { get; set; }
-        public AddressDto Address { get; set; }
+        public AddressCreateDto Address { get; set; }
     }
 }

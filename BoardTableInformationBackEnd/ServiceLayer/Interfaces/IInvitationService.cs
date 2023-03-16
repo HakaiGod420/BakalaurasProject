@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Interfaces
 {
-    public interface IInvatationService
+    public interface IInvitationService
     {
-        public PostInvatationDto PostInvatation(PostInvatationDto data, int id);
+        public Task<PostInvatationDto> PostInvatation(PostInvatationDto data, int id);
     }
 }

@@ -2,9 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useWizard } from "react-use-wizard";
+import { useRecoilState } from "recoil";
 import { SERVER_API } from "../../services/constants/ClienConstants";
+import { selectedGameBoard } from "../../services/constants/recoil/gameboardStates";
 import { ErrorBasic } from "../../services/types/Error";
 import { SimpleTableTop } from "../../services/types/TabletopGame";
+import ChooseGame from "../ChooseGame";
 
 interface Props {
   stepNumber: number;
@@ -14,9 +17,13 @@ interface Props {
 }
 
 function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
-  const { handleStep, nextStep } = useWizard();
+  const { nextStep } = useWizard();
 
   const [error, setError] = useState<boolean>(true);
+
+  const [games, setGame] = useState<SimpleTableTop[]>([]);
+
+  const [selectedGame, setSelectedGame] = useRecoilState(selectedGameBoard);
 
   const getGame = async () => {
     const loading = toast.loading("Searching table top game");
@@ -31,9 +38,9 @@ function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
             id: loading,
           });
           setError(true);
-          console.log(res.data);
           return;
         }
+        setGame(res.data);
         setError(false);
         toast.success("Game was founded", {
           id: loading,
@@ -57,13 +64,22 @@ function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
   };
 
   const inputHandlerNext = async () => {
-    await getGame();
+    if (games.length === 0) {
+      await getGame();
+    } else if (selectedGame !== undefined) {
+      nextStep();
+      setStepNumber(stepNumber + 1);
+    }
+  };
+
+  const inputHandlerPrevious = () => {
+    setSelectedGame(undefined);
+    setGame([]);
   };
 
   useEffect(() => {
     if (!error) {
-      setStepNumber(stepNumber + 1);
-      nextStep();
+      inputHandlerNext();
     }
   }, [error]);
 
@@ -79,18 +95,34 @@ function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
         <h1 className="p-5 uppercase font-bold text-[15px] text-center">
           Title
         </h1>
-        <div>
-          <div className="p-2 flex justify-center">
-            <input
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
-              type="text"
-              placeholder="Tabletop game title"
-              className="input input-bordered input-success w-full max-w-xs"
-            />
+        {games.length !== 0 && (
+          <div>
+            <ChooseGame games={games} />
           </div>
-        </div>
+        )}
+        {games.length === 0 && selectedGame === undefined && (
+          <div>
+            <div className="p-2 flex justify-center">
+              <input
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
+                type="text"
+                placeholder="Tabletop game title"
+                className="input input-bordered input-success w-full max-w-xs"
+              />
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-center p-2 m-1">
+          {selectedGame !== undefined && (
+            <button
+              className="btn m-2 min-w-[100px]"
+              onClick={inputHandlerPrevious}
+            >
+              Return
+            </button>
+          )}
           <button
             disabled={title === ""}
             className="btn m-2 min-w-[100px]"
