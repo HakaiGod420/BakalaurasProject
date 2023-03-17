@@ -20,13 +20,13 @@ namespace DataLayer.Repositories.Address
         public async Task<AddressEntity> AddAddress(AddressEntity address)
         {
             var result = _dbContext.Addresses.Add(address);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             return result.Entity;
         }
 
-        public async Task<AddressEntity?> CheckIfExistAddress(AddressEntity address)
+        public async Task<AddressEntity?> CheckIfExistAddress(string fullAddress)
         {
-            return await _dbContext.Addresses.Where(x => x.FullAddress == address.FullAddress).FirstOrDefaultAsync();
+            return await _dbContext.Addresses.Where(x => x.FullAddress == fullAddress).FirstOrDefaultAsync();
         }
     }
 }

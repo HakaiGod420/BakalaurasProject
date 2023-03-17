@@ -16,6 +16,7 @@ namespace DataLayer.Models
             Categories = new HashSet<CategoryEntity>();
             BoardTypes = new HashSet<BoardTypeEntity>();
             AditionalFiles = new HashSet<AditionalFileEntity>();
+            ActiveGames = new HashSet<ActiveGameEntity>();
         }
         [Key]
         public int BoardGameId { get; set; }
@@ -58,5 +59,6 @@ namespace DataLayer.Models
 
         public TableBoardState TableBoardStateId { get; set; }
         public virtual TableBoardStateEntity TableBoardState { get; set; }
+        public virtual ICollection<ActiveGameEntity> ActiveGames { get; set; }
     }
 }

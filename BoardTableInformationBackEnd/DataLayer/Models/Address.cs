@@ -22,6 +22,7 @@ namespace DataLayer.Models
         public string PostalCode { get; set; }
         public string FullAddress { get; set; }
         public virtual ICollection<ActiveGameEntity> ActiveGameInThisAddress { get; set; }
+
     }
 }
 

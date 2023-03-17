@@ -71,6 +71,8 @@ namespace DataLayer.DBContext
 
             builder.Entity<ActiveGameEntity>().HasOne(x => x.Creator).WithMany(j => j.ActiveGamesCreators);
 
+            builder.Entity<ActiveGameEntity>().HasOne(x=>x.BoardGame).WithMany(j=>j.ActiveGames).OnDelete(DeleteBehavior.Restrict);
+
             /*
              * 
             builder.Entity<ImageEntity>().

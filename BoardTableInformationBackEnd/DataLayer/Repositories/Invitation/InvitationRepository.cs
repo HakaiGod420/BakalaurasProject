@@ -16,9 +16,11 @@ namespace DataLayer.Repositories.Invitation
             _dbContext = dataBaseContext;
         }
 
-        public Task<ActiveGameEntity> AddInvitation(ActiveGameEntity invitation)
+        public async Task<ActiveGameEntity> AddInvitation(ActiveGameEntity invitation)
         {
-            throw new NotImplementedException();
+            await _dbContext.ActiveGames.AddAsync(invitation);
+            await _dbContext.SaveChangesAsync();
+            return invitation;
         }
     }
 }

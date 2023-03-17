@@ -10,6 +10,6 @@ namespace DataLayer.Repositories.Address
     public interface IAddressRepository
     {
         public Task<AddressEntity> AddAddress(AddressEntity address);
-        public Task<AddressEntity?> CheckIfExistAddress(AddressEntity address);
+        public Task<AddressEntity?> CheckIfExistAddress(string fullAddress);
     }
 }

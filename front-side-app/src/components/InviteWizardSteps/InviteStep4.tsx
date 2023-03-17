@@ -13,16 +13,23 @@ interface Props {
 
   date: Dayjs | undefined | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | undefined | null>>;
+
+  finishMethod: () => void;
 }
 
-function InviteStep4({ stepNumber, setStepNumber, date, setDate }: Props) {
+function InviteStep4({
+  stepNumber,
+  setStepNumber,
+  date,
+  setDate,
+  finishMethod,
+}: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
 
   const inputHandlerNext = () => {
-    setStepNumber(stepNumber + 1);
-    nextStep();
+    finishMethod();
   };
 
   const range = (start: number, end: number) => {
@@ -58,7 +65,7 @@ function InviteStep4({ stepNumber, setStepNumber, date, setDate }: Props) {
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
         <h1 className="text-center uppercase font-bold text-[20px]">
-          Finish your invatation
+          Finish your invitation
         </h1>
         <p className="text-center p-2">
           To join the fun and excitement of playing table board games with other

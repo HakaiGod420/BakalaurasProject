@@ -1,8 +1,11 @@
+import axios from "axios";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
 import { Wizard } from "react-use-wizard";
 import { useRecoilState } from "recoil";
+import { SERVER_API } from "../services/constants/ClienConstants";
 import { selectedGameBoard } from "../services/constants/recoil/gameboardStates";
+import { Address, Invitation } from "../services/types/Invitation";
 import { MapCoordinates } from "../services/types/Miscellaneous";
 import InviteStep1 from "./InviteWizardSteps/InviteStep1";
 import InviteStep2 from "./InviteWizardSteps/InviteStep2";
@@ -14,6 +17,14 @@ const defaultCords: MapCoordinates = {
   Lng: 0,
 };
 
+const DefaultAddress: Address = {
+  PostalCode: "",
+  City: "",
+  StreetName: "",
+  HouseNumber: undefined,
+  Province: "",
+};
+
 function CreateInvitationModal() {
   const [stepNumber, setStetpNumber] = useState<number>(1);
 
@@ -23,6 +34,7 @@ function CreateInvitationModal() {
   const [mapCoords, setMapCoords] = useState<MapCoordinates>(defaultCords);
   const [date, setDate] = useState<Dayjs | null>();
   const [selectedGame, setSelectedGame] = useRecoilState(selectedGameBoard);
+  const [address, setAddress] = useState<Address>(DefaultAddress);
 
   const Footer = () => (
     <div className="mt-5 flex justify-center">
@@ -56,6 +68,37 @@ function CreateInvitationModal() {
     setStetpNumber(1);
   };
 
+  const handleOnSubmit = async (invitation: Invitation) => {
+    const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+    axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
+
+    await axios
+      .post(
+        SERVER_API + "/api/gameboardinvitation/createInvitation",
+        invitation
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const publishInvitation = async () => {
+    const Invitation: Invitation = {
+      ActiveGameId: Number(selectedGame?.Id) ?? -1,
+      Address: address,
+      InvitationDate: date?.format("YYYY-MM-DDTHH:MM") ?? "",
+      Map_X_Cords: mapCoords.Lat,
+      Map_Y_Cords: mapCoords.Lng,
+      PlayersNeeded: maxParcipants ?? 0,
+      MinimalAge: minimalAge ?? 0,
+    };
+    await handleOnSubmit(Invitation);
+    console.log(Invitation);
+  };
   return (
     <div className="">
       <label
@@ -109,12 +152,15 @@ function CreateInvitationModal() {
                 stepNumber={stepNumber}
                 mapCoords={mapCoords}
                 setMapsCoords={setMapCoords}
+                address={address}
+                setAddress={setAddress}
               />
               <InviteStep4
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
                 date={date}
                 setDate={setDate}
+                finishMethod={publishInvitation}
               />
             </Wizard>
           </div>
