@@ -1,3 +1,4 @@
+import { FileUpload } from "primereact/fileupload";
 import { useState } from "react";
 import { useWizard } from "react-use-wizard";
 
@@ -10,6 +11,8 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
+
+  const [files, setFiles] = useState<File[]>([]);
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);
@@ -26,6 +29,11 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
     previousStep();
   };
 
+  const setImages = (value: File[]) => {
+    setFiles(files.concat(value));
+    console.log(files.length);
+  };
+
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
@@ -40,13 +48,20 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
           <div className=" font-bold flex justify-center">
             <p>Upload Additional files</p>
           </div>
-          <div className="flex justify-center mt-5">
-            <input
-              multiple={false}
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-              className="file-input file-input-bordered file-input-md w-full max-w-xs"
-            />
+          <div>
+            <div className="card">
+              <FileUpload
+                onUpload={(e) => setImages(e.files)}
+                name="demo[]"
+                multiple
+                accept="file/*"
+                maxFileSize={100000000}
+                customUpload={true}
+                emptyTemplate={
+                  <p className="m-0">Drag and drop files to here to upload.</p>
+                }
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -58,7 +73,7 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
           Previous
         </button>
 
-        {rules !== "" ? (
+        {files?.length !== 0 ? (
           <button
             disabled={rules.length <= 100}
             className="btn m-2 min-w-[100px]"

@@ -14,8 +14,7 @@ namespace DataLayer.Models
         public int ActiveGameId { get; set; }
         public int PlayersNeed { get; set; }
         public int RegistredPlayerCount { get; set; }
-        public ActiveGameState ActiveGameStateId { get; set; }
-        public virtual ActiveGameStateEntity ActiveGameState { get; set; }
+        public ActiveGameState InvitationStateId { get; set; }
         public float Map_X_Cords { get; set; }
         public float Map_Y_Cords { get; set; }
 

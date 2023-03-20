@@ -79,7 +79,7 @@ function CreateTabletopGameModal() {
     <div className="">
       <label
         htmlFor="my-modal-5"
-        className="btn min-h-[70px] min-w-full btn-active btn-primary no-animation hover:bg-green-900"
+        className="btn min-h-[70px] min-w-full btn-active btn-primary no-animation"
       >
         Share your favorite table board game here
       </label>

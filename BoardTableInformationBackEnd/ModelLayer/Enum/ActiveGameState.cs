@@ -8,7 +8,7 @@ namespace ModelLayer.Enum
 {
     public enum ActiveGameState
     {
-        Open = 1,
-        Closed = 2,
+        Open = 3,
+        Closed = 4,
     }
 }

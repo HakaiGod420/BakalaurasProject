@@ -19,6 +19,15 @@ import {
   CheckJWTIsAdmin,
 } from "./services/midlewear/AuthVerify";
 
+//theme
+import "primereact/resources/themes/viva-dark/theme.css";
+
+//core
+import "primereact/resources/primereact.min.css";
+
+import "primeicons/primeicons.css";
+import UserProfile from "./pages/userProfile";
+
 function App() {
   const [, setValidToken] = useRecoilState(validTokenAtom);
   const [, setIsAdmin] = useRecoilState(isAdminAtom);
@@ -44,6 +53,7 @@ function App() {
           <Route path="/login/*" element={<Login />} />
           <Route path="/tableboardgames/" element={<TableBoadGames />} />
           <Route path="/register/*" element={<Register />} />
+          <Route path="/userprofile/:id" element={<UserProfile />} />
         </Routes>
       </Content>
       <Footer />

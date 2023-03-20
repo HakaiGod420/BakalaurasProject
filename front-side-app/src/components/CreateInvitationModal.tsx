@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Dayjs } from "dayjs";
+import { Steps } from "primereact/steps";
 import { useState } from "react";
 import { Wizard } from "react-use-wizard";
 import { useRecoilState } from "recoil";
@@ -26,7 +27,7 @@ const DefaultAddress: Address = {
 };
 
 function CreateInvitationModal() {
-  const [stepNumber, setStetpNumber] = useState<number>(1);
+  const [stepNumber, setStetpNumber] = useState<number>(0);
 
   const [title, setTitle] = useState<string>("");
   const [maxParcipants, setMaxParcipants] = useState<number>();
@@ -36,36 +37,30 @@ function CreateInvitationModal() {
   const [selectedGame, setSelectedGame] = useRecoilState(selectedGameBoard);
   const [address, setAddress] = useState<Address>(DefaultAddress);
 
+  const items = [
+    {
+      label: "Find game",
+    },
+    {
+      label: "Parcipants",
+    },
+    {
+      label: "Address",
+    },
+    {
+      label: "Finish",
+    },
+  ];
+
   const Footer = () => (
-    <div className="mt-5 flex justify-center">
-      <ul className="steps steps-vertical lg:steps-horizontal">
-        <li
-          className={1 <= stepNumber ? "mr-2 step step-primary" : "mr-2 step"}
-        >
-          Find game
-        </li>
-        <li
-          className={2 <= stepNumber ? "mr-2 step step-primary" : " mr-2 step"}
-        >
-          Parcipants
-        </li>
-        <li
-          className={3 <= stepNumber ? "mr-2 step step-primary" : " mr-2 step"}
-        >
-          Address
-        </li>
-        <li
-          className={4 <= stepNumber ? "mr-2 step step-primary" : " mr-2 step"}
-        >
-          Finish
-        </li>
-      </ul>
+    <div className="card">
+      <Steps model={items} activeIndex={stepNumber} />
     </div>
   );
 
   const handleOnClose = () => {
     setTitle("");
-    setStetpNumber(1);
+    setStetpNumber(0);
   };
 
   const handleOnSubmit = async (invitation: Invitation) => {

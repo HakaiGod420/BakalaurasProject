@@ -49,11 +49,11 @@ namespace ServiceLayer.Services
                 BoardGameId = data.ActiveGameId,
                 PlayersNeed = data.PlayersNeeded,
                 RegistredPlayerCount = 0,
-                ActiveGameStateId = ModelLayer.Enum.ActiveGameState.Open,
                 Map_X_Cords = data.Map_X_Cords,
                 Map_Y_Cords = data.Map_Y_Cords,
                 CreatorId = id,
-                AddressId = addressEntity.AddressId
+                AddressId = addressEntity.AddressId,
+                InvitationStateId = ModelLayer.Enum.ActiveGameState.Open,
             };
 
             await _invitationRepository.AddInvitation(invititionEntity);

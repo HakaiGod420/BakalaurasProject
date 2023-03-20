@@ -1,3 +1,4 @@
+import { Chips } from "primereact/chips";
 import { useState } from "react";
 import { useWizard } from "react-use-wizard";
 
@@ -10,6 +11,9 @@ function CreateStep8({ stepNumber, setStepNumber }: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
+
+  const [categories, setCategories] = useState([]);
+  const [types, setTypes] = useState([]);
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);
@@ -26,6 +30,14 @@ function CreateStep8({ stepNumber, setStepNumber }: Props) {
     previousStep();
   };
 
+  const inputHandleAddCategory = (value: any) => {
+    setCategories(value);
+  };
+
+  const inputHandleAddTypes = (value: any) => {
+    setTypes(value);
+  };
+
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
@@ -38,7 +50,30 @@ function CreateStep8({ stepNumber, setStepNumber }: Props) {
         </p>
         <div className="mb-5">
           <div className=" font-bold flex justify-center">
-            <p>Some finish thingys</p>
+            <p>Categories</p>
+          </div>
+        </div>
+        <div>
+          <div className="card p-fluid">
+            <Chips
+              value={categories}
+              onChange={(e) => inputHandleAddCategory(e.value)}
+              separator=","
+            />
+          </div>
+        </div>
+        <div className="mb-5 mt-5">
+          <div className=" font-bold flex justify-center">
+            <p>Types</p>
+          </div>
+        </div>
+        <div>
+          <div className="card p-fluid">
+            <Chips
+              value={types}
+              onChange={(e) => inputHandleAddTypes(e.value)}
+              separator=","
+            />
           </div>
         </div>
       </div>
