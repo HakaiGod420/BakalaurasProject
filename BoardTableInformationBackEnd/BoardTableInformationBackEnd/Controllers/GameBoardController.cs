@@ -21,7 +21,7 @@ namespace BoardTableInformationBackEnd.Controllers
         [Authorize]
         [HttpPost("create")]
         [ProducesResponseType(typeof(CreatedGameBoard), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(CreateBoardGame boardGameModel)
+        public async Task<IActionResult> Create([FromForm]CreateBoardGame boardGameModel)
         {
             var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
 

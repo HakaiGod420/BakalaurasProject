@@ -120,7 +120,7 @@ namespace ServiceLayer.Services
             return type;
         }
 
-        private async Task<ImageEntity> AddImage(CreateImage image,int id)
+        private async Task<ImageEntity> AddImage(CreateImage image, int? id = null)
         {
             var newImage = new ImageEntity
             {

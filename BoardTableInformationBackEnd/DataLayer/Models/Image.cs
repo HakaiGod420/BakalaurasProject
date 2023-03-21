@@ -18,7 +18,7 @@ namespace DataLayer.Models
         [MaxLength(100)]
         public string? Alias { get; set; }
         public virtual BoardGameEntity BoardGame { get; set; }
-        public int BoardGameId { get; set; }
+        public int? BoardGameId { get; set; }
 
     }
 }

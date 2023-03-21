@@ -1,6 +1,13 @@
+import axios from "axios";
 import { useState } from "react";
 import { Wizard } from "react-use-wizard";
-import { TabletopGameCreation } from "../services/types/TabletopGame";
+import { SERVER_API } from "../services/constants/ClienConstants";
+import {
+  BoardType,
+  Category,
+  Image,
+  TabletopGameCreation,
+} from "../services/types/TabletopGame";
 import CreateStep1 from "./CreateWizardSteps/CreateStep1";
 import CreateStep2 from "./CreateWizardSteps/CreateStep2";
 import CreateStep3 from "./CreateWizardSteps/CreateStep3";
@@ -19,6 +26,11 @@ function CreateTabletopGameModal() {
   const [playerCount, setPlayerCount] = useState<number | undefined>(0);
   const [description, setDescription] = useState<string>("");
   const [rules, setRules] = useState<string | undefined>();
+
+  const [categories, setCategories] = useState([]);
+  const [types, setTypes] = useState([]);
+
+  const [files, setFiles] = useState<File[]>([]);
 
   let TableTopGame: TabletopGameCreation = {
     Title: "",
@@ -73,6 +85,89 @@ function CreateTabletopGameModal() {
     setRules(undefined);
     setDescription("");
     setStetpNumber(1);
+  };
+
+  const postTableTopGame = async (tableboardgames: TabletopGameCreation) => {
+    const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+    axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
+
+    await axios
+      .post(SERVER_API + "/api/gameboard/create", tableboardgames, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const postImages = async (formData: FormData) => {
+    await axios
+      .post(SERVER_API + "/api/upload/imagePost", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const publishTableTopGame = async () => {
+    console.log("Publishing game");
+    const formData = new FormData();
+
+    const categoriesMapped: Category[] = [];
+    const typesMapped: BoardType[] = [];
+
+    const images: Image[] = [];
+
+    categories.forEach((category) => {
+      categoriesMapped.push({ CategoryName: category });
+    });
+
+    types.forEach((type) => {
+      typesMapped.push({ BoardTypeName: type });
+    });
+
+    let counter = 1;
+    files.forEach((file) => {
+      const newFileName =
+        counter.toString() +
+        "_" +
+        title.replace(/[^A-Z0-9]+/gi, "_") +
+        "." +
+        file.type.split("/")[1];
+      const location = "Images/" + title.replace(/[^A-Z0-9]+/gi, "_");
+      formData.append("fileNames", newFileName);
+      formData.append("images", file);
+      images.push({ Alias: newFileName, Location: location });
+      counter++;
+    });
+    formData.append("tabletopTitle", title.replace(/[^A-Z0-9]+/gi, "_"));
+
+    await postImages(formData);
+
+    const CreatedTableTopGame: TabletopGameCreation = {
+      Title: title,
+      PlayerCount: playerCount,
+      PLayingAge: playerAge,
+      PlayingTime: averageTime,
+      Description: description,
+      ThumbnailName: "test",
+      Images: images,
+      Categories: categoriesMapped,
+      BoardTypes: typesMapped,
+      AditionalFiles: [],
+      SaveAsDraft: false,
+    };
+    console.log(CreatedTableTopGame);
+    await postTableTopGame(CreatedTableTopGame);
   };
 
   return (
@@ -139,14 +234,21 @@ function CreateTabletopGameModal() {
               <CreateStep8
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
+                categories={categories}
+                setCategories={setCategories}
+                types={types}
+                setTypes={setTypes}
               />
               <CreateStep6
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
+                files={files}
+                setFiles={setFiles}
               />
               <CreateStep7
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
+                publishTabletopGame={publishTableTopGame}
               />
             </Wizard>
           </div>

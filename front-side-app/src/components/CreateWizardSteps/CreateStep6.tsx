@@ -1,18 +1,18 @@
-import { FileUpload } from "primereact/fileupload";
+import { FileUpload, FileUploadHandlerEvent } from "primereact/fileupload";
 import { useState } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
-function CreateStep6({ stepNumber, setStepNumber }: Props) {
+function CreateStep6({ stepNumber, setStepNumber, files, setFiles }: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
-
-  const [files, setFiles] = useState<File[]>([]);
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);
@@ -32,6 +32,15 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
   const setImages = (value: File[]) => {
     setFiles(files.concat(value));
     console.log(files.length);
+  };
+
+  const Upload = (event: FileUploadHandlerEvent) => {
+    const preFiles: File[] = [];
+    event.files.forEach((file) => {
+      preFiles.push(file);
+    });
+    console.log(preFiles);
+    setFiles(preFiles);
   };
 
   return (
@@ -54,9 +63,10 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
                 onUpload={(e) => setImages(e.files)}
                 name="demo[]"
                 multiple
-                accept="file/*"
+                accept="image/*png"
                 maxFileSize={100000000}
                 customUpload={true}
+                uploadHandler={Upload}
                 emptyTemplate={
                   <p className="m-0">Drag and drop files to here to upload.</p>
                 }
@@ -75,7 +85,7 @@ function CreateStep6({ stepNumber, setStepNumber }: Props) {
 
         {files?.length !== 0 ? (
           <button
-            disabled={rules.length <= 100}
+            disabled={files.length > 0 ? false : true}
             className="btn m-2 min-w-[100px]"
             onClick={() => inputHandlerNext()}
           >

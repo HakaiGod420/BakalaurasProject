@@ -21,4 +21,9 @@
     <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Files\Images\" />
+    <Folder Include="Files\AditionalFiles\" />
+  </ItemGroup>
+
 </Project>

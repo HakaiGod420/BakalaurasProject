@@ -4,6 +4,7 @@
 front-side-app/node_modules
 front-side-app/.pnp
 .pnp.js
+BoardTableInformationBackEnd/BoardTableInformationBackEnd/Files/
 
 # testing
 front-side-app/coverage

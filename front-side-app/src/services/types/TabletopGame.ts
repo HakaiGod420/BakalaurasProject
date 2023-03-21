@@ -1,8 +1,8 @@
 export interface TabletopGameCreation {
   Title: string;
-  PlayerCount: number;
-  PLayingAge: number;
-  PlayingTime: number;
+  PlayerCount: number | undefined;
+  PLayingAge: number | undefined;
+  PlayingTime: number | undefined;
   Description: string;
   Rules?: string;
   ThumbnailName: string;

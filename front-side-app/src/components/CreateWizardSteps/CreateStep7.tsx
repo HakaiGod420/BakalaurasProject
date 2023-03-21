@@ -1,25 +1,23 @@
-import { useState } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
+  publishTabletopGame: () => void;
 }
 
-function CreateStep7({ stepNumber, setStepNumber }: Props) {
+function CreateStep7({
+  stepNumber,
+  setStepNumber,
+  publishTabletopGame,
+}: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
 
-  const [rules, setRules] = useState<string>("");
-
   const inputHandlerNext = () => {
-    setStepNumber(stepNumber + 1);
-    nextStep();
+    publishTabletopGame();
   };
 
-  const inputHandlerSkip = () => {
-    setStepNumber(stepNumber + 1);
-    nextStep();
-  };
+  const inputHandlerSkip = () => {};
 
   const inputHandlerPrevious = () => {
     setStepNumber(stepNumber - 1);
@@ -36,7 +34,9 @@ function CreateStep7({ stepNumber, setStepNumber }: Props) {
         </p>
         <div className="mb-5">
           <div className=" font-bold flex justify-center">
-            <p>Some finish thingys</p>
+            <p className="text-[25px]">
+              Are You Sure want to finish creation of board game?
+            </p>
           </div>
         </div>
       </div>
@@ -48,7 +48,6 @@ function CreateStep7({ stepNumber, setStepNumber }: Props) {
           Previous
         </button>
         <button
-          disabled={rules.length <= 100}
           className="btn m-2 min-w-[100px]"
           onClick={() => inputHandlerNext()}
         >

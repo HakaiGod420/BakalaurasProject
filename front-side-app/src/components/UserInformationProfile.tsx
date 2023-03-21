@@ -6,9 +6,7 @@ function UserProfileInformation() {
   return (
     <div className="bg-white">
       <div className="max-w-[1240px] flext items-center justify-center mx-auto p-10 ">
-        <div>
-          <Image />
-        </div>
+        <div></div>
       </div>
     </div>
   );
