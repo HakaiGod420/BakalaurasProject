@@ -48,6 +48,52 @@ namespace BoardTableInformationBackEnd.Controllers
             }
             catch (Exception ex)
             {
+                return BadRequest();
+            }
+
+            return new OkObjectResult(true);
+        }
+
+        [HttpPost("filePost")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UploadFile([FromForm] CreateFileDto files)
+        {
+            var location = Directory.GetCurrentDirectory() + "\\Files\\AditionalFiles\\" + files.TabletopTitle;
+            try
+            {
+                bool exists = System.IO.Directory.Exists(location);
+
+                if (!exists)
+                {
+                    System.IO.Directory.CreateDirectory(location);
+                    var count = 0;
+                    foreach (var file in files.Files)
+                    {
+                        var locationWithName = location + "/" + files.FileNames[count];
+                        using (Stream stream = new FileStream(locationWithName, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+                        count++;
+                    }
+                }
+                else
+                {
+                    var count = 0;
+                    foreach (var file in files.Files)
+                    {
+                        var locationWithName = location + "/" + files.FileNames[count];
+                        using (Stream stream = new FileStream(locationWithName, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+                        count++;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex.Message);
                 return BadRequest();
             }

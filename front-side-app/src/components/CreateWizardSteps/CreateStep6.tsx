@@ -63,6 +63,7 @@ function CreateStep6({ stepNumber, setStepNumber, files, setFiles }: Props) {
                 onUpload={(e) => setImages(e.files)}
                 name="demo[]"
                 multiple
+                auto
                 accept="image/*png"
                 maxFileSize={100000000}
                 customUpload={true}

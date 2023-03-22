@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Wizard } from "react-use-wizard";
 import { SERVER_API } from "../services/constants/ClienConstants";
 import {
+  AditionalFile,
   BoardType,
   Category,
   Image,
@@ -31,6 +32,8 @@ function CreateTabletopGameModal() {
   const [types, setTypes] = useState([]);
 
   const [files, setFiles] = useState<File[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const [thumbnail, setThumbnail] = useState<File>();
 
   let TableTopGame: TabletopGameCreation = {
     Title: "",
@@ -118,14 +121,97 @@ function CreateTabletopGameModal() {
         console.log(error);
       });
   };
+
+  const postFiles = async (formData: FormData) => {
+    await axios
+      .post(SERVER_API + "/api/upload/filePost", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const postAdditionalFiles = async () => {
+    const additionalFiles: AditionalFile[] = [];
+    const formDataAditionalFiles = new FormData();
+    let counter = 1;
+    files.forEach((file) => {
+      const newFileName =
+        counter.toString() +
+        "_" +
+        title.replace(/[^A-Z0-9]+/gi, "_") +
+        "." +
+        file.type.split("/")[1];
+      const location = "AditionalFiles/" + title.replace(/[^A-Z0-9]+/gi, "_");
+      formDataAditionalFiles.append("fileNames", newFileName);
+      formDataAditionalFiles.append("files", file);
+      additionalFiles.push({ Name: newFileName, Location: location });
+      counter++;
+    });
+    formDataAditionalFiles.append(
+      "tabletopTitle",
+      title.replace(/[^A-Z0-9]+/gi, "_")
+    );
+
+    console.log(files);
+    await postFiles(formDataAditionalFiles);
+    return additionalFiles;
+  };
+
+  const uploadImages = async () => {
+    const selectedImages: Image[] = [];
+    const formData = new FormData();
+    let counter = 1;
+    images.forEach((image) => {
+      const newFileName =
+        counter.toString() +
+        "_" +
+        title.replace(/[^A-Z0-9]+/gi, "_") +
+        "." +
+        image.type.split("/")[1];
+      const location = "Images/" + title.replace(/[^A-Z0-9]+/gi, "_");
+      formData.append("fileNames", newFileName);
+      formData.append("images", image);
+      selectedImages.push({ Alias: newFileName, Location: location });
+      counter++;
+    });
+    formData.append("tabletopTitle", title.replace(/[^A-Z0-9]+/gi, "_"));
+
+    await postImages(formData);
+
+    return selectedImages;
+  };
+
+  const uploadThumbnail = async () => {
+    let thumnailName: string = "";
+    const formData = new FormData();
+    files.forEach((file) => {
+      const newFileName =
+        "Thumbnail" +
+        "_" +
+        title.replace(/[^A-Z0-9]+/gi, "_") +
+        "." +
+        file.type.split("/")[1];
+      formData.append("fileNames", newFileName);
+      formData.append("images", file);
+      thumnailName = newFileName;
+    });
+    formData.append("tabletopTitle", title.replace(/[^A-Z0-9]+/gi, "_"));
+
+    await postImages(formData);
+
+    return thumnailName;
+  };
+
   const publishTableTopGame = async () => {
     console.log("Publishing game");
-    const formData = new FormData();
 
     const categoriesMapped: Category[] = [];
     const typesMapped: BoardType[] = [];
-
-    const images: Image[] = [];
 
     categories.forEach((category) => {
       categoriesMapped.push({ CategoryName: category });
@@ -135,23 +221,21 @@ function CreateTabletopGameModal() {
       typesMapped.push({ BoardTypeName: type });
     });
 
-    let counter = 1;
-    files.forEach((file) => {
-      const newFileName =
-        counter.toString() +
-        "_" +
-        title.replace(/[^A-Z0-9]+/gi, "_") +
-        "." +
-        file.type.split("/")[1];
-      const location = "Images/" + title.replace(/[^A-Z0-9]+/gi, "_");
-      formData.append("fileNames", newFileName);
-      formData.append("images", file);
-      images.push({ Alias: newFileName, Location: location });
-      counter++;
-    });
-    formData.append("tabletopTitle", title.replace(/[^A-Z0-9]+/gi, "_"));
+    let uploadedAdditionalFiles: AditionalFile[] = [];
+    if (files.length !== 0) {
+      uploadedAdditionalFiles = await postAdditionalFiles();
+    }
 
-    await postImages(formData);
+    let uploadedImages: Image[] = [];
+
+    if (images.length !== 0) {
+      uploadedImages = await uploadImages();
+    }
+
+    let uploadedThumbnailName: string = "";
+    if (thumbnail !== undefined) {
+      uploadedThumbnailName = await uploadThumbnail();
+    }
 
     const CreatedTableTopGame: TabletopGameCreation = {
       Title: title,
@@ -159,12 +243,12 @@ function CreateTabletopGameModal() {
       PLayingAge: playerAge,
       PlayingTime: averageTime,
       Description: description,
-      ThumbnailName: "test",
-      Images: images,
+      Images: uploadedImages,
       Categories: categoriesMapped,
       BoardTypes: typesMapped,
-      AditionalFiles: [],
+      AditionalFiles: uploadedAdditionalFiles,
       SaveAsDraft: false,
+      ThumbnailName: uploadedThumbnailName,
     };
     console.log(CreatedTableTopGame);
     await postTableTopGame(CreatedTableTopGame);
@@ -230,6 +314,10 @@ function CreateTabletopGameModal() {
               <CreateStep5
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
+                images={images}
+                setImages={setImages}
+                thumbnail={thumbnail}
+                setThumbnail={setThumbnail}
               />
               <CreateStep8
                 setStepNumber={setStetpNumber}

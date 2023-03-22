@@ -1,12 +1,24 @@
+import { FileUpload, FileUploadHandlerEvent } from "primereact/fileupload";
 import { useState } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
+  images: File[];
+  setImages: React.Dispatch<React.SetStateAction<File[]>>;
+  thumbnail: File | undefined;
+  setThumbnail: React.Dispatch<React.SetStateAction<File | undefined>>;
 }
 
-function CreateStep5({ stepNumber, setStepNumber }: Props) {
+function CreateStep5({
+  stepNumber,
+  setStepNumber,
+  images,
+  setImages,
+  thumbnail,
+  setThumbnail,
+}: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
@@ -26,6 +38,22 @@ function CreateStep5({ stepNumber, setStepNumber }: Props) {
     previousStep();
   };
 
+  const Upload = (event: FileUploadHandlerEvent) => {
+    const preFiles: File[] = [];
+    event.files.forEach((file) => {
+      preFiles.push(file);
+    });
+    setImages(preFiles);
+  };
+
+  const UploadThumbail = (event: FileUploadHandlerEvent) => {
+    const preFiles: File[] = [];
+    event.files.forEach((file) => {
+      preFiles.push(file);
+    });
+    setThumbnail(preFiles[0]);
+  };
+
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
@@ -38,12 +66,20 @@ function CreateStep5({ stepNumber, setStepNumber }: Props) {
           <div className=" font-bold flex justify-center">
             <p>Upload Thumbnail</p>
           </div>
-          <div className="flex justify-center mt-5">
-            <input
+          <div className="card">
+            <FileUpload
+              name="demo[]"
               multiple={false}
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-              className="file-input file-input-bordered file-input-md w-full max-w-xs"
+              auto
+              accept="image/*png"
+              maxFileSize={100000000}
+              customUpload={true}
+              uploadHandler={UploadThumbail}
+              emptyTemplate={
+                <p className="m-0">
+                  Drag and drop files to here to upload thumbnail.
+                </p>
+              }
             />
           </div>
         </div>
@@ -51,12 +87,20 @@ function CreateStep5({ stepNumber, setStepNumber }: Props) {
           <div className=" font-bold flex justify-center">
             <p>Upload Images</p>
           </div>
-          <div className="flex justify-center mt-5">
-            <input
+          <div className="card">
+            <FileUpload
+              name="demo[]"
               multiple={true}
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-              className="file-input file-input-bordered file-input-md w-full max-w-xs"
+              auto
+              accept="image/*png"
+              maxFileSize={100000000}
+              customUpload={true}
+              uploadHandler={Upload}
+              emptyTemplate={
+                <p className="m-0">
+                  Drag and drop files to here to upload images.
+                </p>
+              }
             />
           </div>
         </div>

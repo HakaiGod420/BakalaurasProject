@@ -100,6 +100,12 @@ export default function Navbar() {
                       </Link>
                     </li>
                     <li>
+                      <Link to={"/myeventes"} className="justify-between">
+                        My events
+                        <span className="badge">1</span>
+                      </Link>
+                    </li>
+                    <li>
                       <Link to={"#"}>Settings</Link>
                     </li>
                     {isAdmin && (
@@ -140,6 +146,9 @@ export default function Navbar() {
                 <p className="uppercase text-green-600">User Menu</p>
                 <li className="p-4 border-b border-gray-600">
                   <Link to="#">My Profile</Link>
+                </li>
+                <li className="p-4 border-b border-gray-600">
+                  <Link to="/myevents">My Events</Link>
                 </li>
                 <li className="p-4 border-b border-gray-600">
                   <Link to="#">Settings</Link>

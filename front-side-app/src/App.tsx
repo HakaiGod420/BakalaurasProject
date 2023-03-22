@@ -26,6 +26,7 @@ import "primereact/resources/themes/viva-dark/theme.css";
 import "primereact/resources/primereact.min.css";
 
 import "primeicons/primeicons.css";
+import MyEvents from "./pages/myEvents";
 import UserProfile from "./pages/userProfile";
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
           <Route path="/tableboardgames/" element={<TableBoadGames />} />
           <Route path="/register/*" element={<Register />} />
           <Route path="/userprofile/:id" element={<UserProfile />} />
+          <Route path="/myeventes/" element={<MyEvents />} />
         </Routes>
       </Content>
       <Footer />
