@@ -83,5 +83,21 @@ namespace BoardTableInformationBackEnd.Controllers
            
             return new CreatedResult(String.Empty, result);
         }
+
+        [HttpPatch("updateNotifications")]
+        [Authorize]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateUserNotifications(
+            [FromBody]NotificationsListDto notification)
+        {
+            var result = await _userService.UpdateNotifications(notification);
+
+            if (result == false)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, result);
+            }
+
+            return new OkObjectResult(result);
+        }
     }
 }

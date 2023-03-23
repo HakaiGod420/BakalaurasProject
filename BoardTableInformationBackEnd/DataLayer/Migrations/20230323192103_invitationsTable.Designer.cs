@@ -4,6 +4,7 @@ using DataLayer.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230323192103_invitationsTable")]
+    partial class invitationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -380,37 +382,6 @@ namespace DataLayer.Migrations
                     b.ToTable("TableBoardStates");
                 });
 
-            modelBuilder.Entity("DataLayer.Models.UserAddressEntity", b =>
-                {
-                    b.Property<int>("UserAddressId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserAddressId"), 1L, 1);
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("Map_X_Coords")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("Map_Y_Coords")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Province")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserAddressId");
-
-                    b.ToTable("UserAddressEntity");
-                });
-
             modelBuilder.Entity("DataLayer.Models.UserEntity", b =>
                 {
                     b.Property<int>("UserId")
@@ -419,15 +390,9 @@ namespace DataLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EnableInvitationNotifications")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("LastTimeConnection")
                         .HasColumnType("datetime2");
@@ -458,8 +423,6 @@ namespace DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("UserId");
-
-                    b.HasIndex("AddressId");
 
                     b.HasIndex("RoleId");
 
@@ -623,10 +586,6 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Models.UserEntity", b =>
                 {
-                    b.HasOne("DataLayer.Models.UserAddressEntity", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
                     b.HasOne("DataLayer.Models.RoleEntity", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
@@ -638,8 +597,6 @@ namespace DataLayer.Migrations
                         .HasForeignKey("UserStateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Address");
 
                     b.Navigation("Role");
 

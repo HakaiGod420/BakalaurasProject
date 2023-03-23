@@ -15,3 +15,15 @@ export interface Invitation {
   Address: Address;
   InvitationDate: string;
 }
+
+export interface UserInvitation {
+  ActiveGameId: number;
+  BoardGameTitle: string;
+  BoardGameId: number;
+  EventDate: string;
+  EventFullLocation: string;
+  MaxPlayerCount: number;
+  AcceptedCount: number;
+  Map_X_Cords: number;
+  Map_Y_Cords: number;
+}

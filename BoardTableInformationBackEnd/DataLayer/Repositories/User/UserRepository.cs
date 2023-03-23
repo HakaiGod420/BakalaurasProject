@@ -47,5 +47,23 @@ namespace DataLayer.Repositories.User
         {
             return await _dbContext.Users.AnyAsync(x => x.UserName.Equals(username));
         }
+
+        public async Task<bool> UpdateInvitationNotification(int userId, bool state)
+        {
+            var user = await _dbContext.Users.Where(x=>x.UserId == userId).FirstOrDefaultAsync();
+
+            if(user != null)
+            {
+                user.EnableInvitationNotifications = state;
+                _dbContext.Users.Update(user);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
     }
 }

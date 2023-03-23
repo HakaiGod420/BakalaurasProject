@@ -106,7 +106,7 @@ export default function Navbar() {
                       </Link>
                     </li>
                     <li>
-                      <Link to={"#"}>Settings</Link>
+                      <Link to={"/settings"}>Settings</Link>
                     </li>
                     {isAdmin && (
                       <li>
@@ -151,7 +151,7 @@ export default function Navbar() {
                   <Link to="/myevents">My Events</Link>
                 </li>
                 <li className="p-4 border-b border-gray-600">
-                  <Link to="#">Settings</Link>
+                  <Link to="/settings">Settings</Link>
                 </li>
                 {validToken && isAdmin && (
                   <Link to={"/admin"}>

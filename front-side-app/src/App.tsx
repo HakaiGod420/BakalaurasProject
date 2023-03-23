@@ -20,13 +20,15 @@ import {
 } from "./services/midlewear/AuthVerify";
 
 //theme
-import "primereact/resources/themes/viva-dark/theme.css";
+import "primereact/resources/themes/viva-light/theme.css";
 
 //core
 import "primereact/resources/primereact.min.css";
 
 import "primeicons/primeicons.css";
+
 import MyEvents from "./pages/myEvents";
+import Settings from "./pages/settings";
 import UserProfile from "./pages/userProfile";
 
 function App() {
@@ -56,6 +58,7 @@ function App() {
           <Route path="/register/*" element={<Register />} />
           <Route path="/userprofile/:id" element={<UserProfile />} />
           <Route path="/myeventes/" element={<MyEvents />} />
+          <Route path="/settings/*" element={<Settings />} />
         </Routes>
       </Content>
       <Footer />

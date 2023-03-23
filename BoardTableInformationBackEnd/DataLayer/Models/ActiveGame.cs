@@ -8,6 +8,7 @@ namespace DataLayer.Models
         public ActiveGameEntity()
         {
             Users = new HashSet<UserEntity>();
+            SentInvitations = new HashSet<SentInvitationEntity>();
         }
 
         [Key]
@@ -28,5 +29,6 @@ namespace DataLayer.Models
 
         public int BoardGameId { get; set; }
         public virtual BoardGameEntity BoardGame { get; set; }
+        public virtual ICollection<SentInvitationEntity> SentInvitations { get; set; }
     }
 }

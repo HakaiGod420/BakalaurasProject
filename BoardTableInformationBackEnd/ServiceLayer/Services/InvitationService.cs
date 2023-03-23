@@ -56,9 +56,24 @@ namespace ServiceLayer.Services
                 InvitationStateId = ModelLayer.Enum.ActiveGameState.Open,
             };
 
-            await _invitationRepository.AddInvitation(invititionEntity);
+            invititionEntity = await _invitationRepository.AddInvitation(invititionEntity);
+
+            SendInvitatiosToOthers(invititionEntity);
 
             return data;
+        }
+
+        private void SendInvitatiosToOthers(ActiveGameEntity activeGameEntity)
+        {
+            Task.Run(() =>
+            {
+                // code to execute asynchronously on a background thread
+
+                //Get a list of users who are located near the invitation location and have enabled notifications to be received
+
+                //Send invitations to all users who were found to be located near the event location.
+            });
+
         }
     }
 }

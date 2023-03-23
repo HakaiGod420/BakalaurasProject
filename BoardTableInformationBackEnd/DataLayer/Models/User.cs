@@ -14,6 +14,7 @@ namespace DataLayer.Models
         {
             ActiveGamesParcipators = new HashSet<ActiveGameEntity>();
             ActiveGamesCreators = new HashSet<ActiveGameEntity>();
+            ReceivedInvitations = new HashSet<SentInvitationEntity>();
         }
 
         [Key]
@@ -47,7 +48,12 @@ namespace DataLayer.Models
         [Required]
         public string Email { get; set; }
 
+        public bool EnableInvitationNotifications { get; set; } = false;
+
+        public int? AddressId { get; set; } = null;
+        public virtual UserAddressEntity Address { get; set; } = null;
         public virtual ICollection<ActiveGameEntity> ActiveGamesParcipators { get; set; }
         public virtual ICollection<ActiveGameEntity> ActiveGamesCreators { get; set; }
+        public virtual ICollection<SentInvitationEntity> ReceivedInvitations { get; set;}
     }
 }

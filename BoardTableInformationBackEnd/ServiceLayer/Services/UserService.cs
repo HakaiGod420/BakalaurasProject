@@ -144,5 +144,18 @@ namespace ServiceLayer.Services
 
             return jwt;
         }
+
+        public async Task<bool> UpdateNotifications(NotificationsListDto notificationsListDto)
+        {
+           foreach(var notification in notificationsListDto.Notifications)
+            {
+               if(notification.Title == "Invitation")
+                {
+                    return await _repository.UpdateInvitationNotification(notification.UserId, notification.IsActive);
+                }
+            }
+
+            return false;
+        }
     }
 }

@@ -23,6 +23,8 @@ namespace DataLayer.DBContext
         public virtual DbSet<ActiveGameEntity> ActiveGames { get; set; }
         public virtual DbSet<AddressEntity> Addresses { get; set; }
         public virtual DbSet<ActiveGameStateEntity> ActiveGameStates { get; set; }
+        public virtual DbSet<SentInvitationEntity> SentInvitations { get; set; }
+        public virtual DbSet<InvitationStateEntity> InvitationStates { get; set; }
 
         public DataBaseContext()
         {
@@ -72,6 +74,13 @@ namespace DataLayer.DBContext
             builder.Entity<ActiveGameEntity>().HasOne(x => x.Creator).WithMany(j => j.ActiveGamesCreators);
 
             builder.Entity<ActiveGameEntity>().HasOne(x=>x.BoardGame).WithMany(j=>j.ActiveGames).OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<SentInvitationEntity>().HasOne(x => x.SelectedActiveGame).WithMany(x=>x.SentInvitations).HasForeignKey(x=>x.SelectedActiveGameId);
+
+            builder.Entity<SentInvitationEntity>().HasOne(x => x.User).WithMany(x => x.ReceivedInvitations).HasForeignKey(x => x.UserId);
+
+            builder.Entity<SentInvitationEntity>().HasOne(x => x.InvitationState).WithMany(x => x.Invitations).HasForeignKey(x => x.InvitationStateId);
+
 
             /*
              * 

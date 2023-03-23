@@ -18,6 +18,8 @@ import CreateStep6 from "./CreateWizardSteps/CreateStep6";
 import CreateStep7 from "./CreateWizardSteps/CreateStep7";
 import CreateStep8 from "./CreateWizardSteps/CreateStep8";
 
+
+
 function CreateTabletopGameModal() {
   const [stepNumber, setStetpNumber] = useState<number>(1);
 
