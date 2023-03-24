@@ -65,5 +65,47 @@ namespace DataLayer.Repositories.User
             }
 
         }
+
+        public async Task<UserSettings> GetUserSettings(int userId)
+        {
+            var result = await _dbContext.Users
+                .Where(x => x.UserId == userId)
+                .Select(x => new UserSettings
+                {
+                    Address = x.Address != null ? new UserAddressDto
+                    {
+                        City = x.Address.City,
+                        Country = x.Address.Country,
+                        Province = x.Address.Province,
+                        StreetName = x.Address.StreetName,
+                        Map_X_Coords = x.Address.Map_X_Coords,
+                        Map_Y_Coords = x.Address.Map_Y_Coords,
+                    } : null,
+                    EnabledInvitationSettings = x.EnableInvitationNotifications
+                })
+                .SingleAsync();
+
+            return result;
+        }
+
+        public async Task UpdateUserAddress(int addressId,int userId)
+        {
+            _dbContext.Users.Single(x => x.UserId == userId).AddressId = addressId;
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<int>> GetCloseUserIds(int creatorId, AddressEntity address)
+        {
+            var result = await _dbContext.Users.Where(x =>
+            x.EnableInvitationNotifications == true
+            && x.UserId != creatorId
+            && x.Address != null
+            && x.Address.Country == address.Country
+            && x.Address.City == address.City
+            && x.Address.StreetName == address.StreetName)
+            .Select(x => x.UserId).ToListAsync();
+
+            return result;
+        }
     }
 }

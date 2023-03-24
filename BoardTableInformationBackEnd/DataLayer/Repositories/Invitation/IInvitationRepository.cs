@@ -10,5 +10,6 @@ namespace DataLayer.Repositories.Invitation
     public interface IInvitationRepository
     {
         public Task<ActiveGameEntity> AddInvitation(ActiveGameEntity invitation);
+        public Task<bool> SentInvitation(SentInvitationEntity invitation);
     }
 }

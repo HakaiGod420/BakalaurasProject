@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ModelLayer.DTO
 {
-    public class NotificationSettingsDto
+    public class UserSettings
     {
-        public string Title { get; set; }
-        public bool IsActive { get; set; }
+        public UserAddressDto? Address { get; set; }
+        public bool EnabledInvitationSettings { get; set; }
     }
 }

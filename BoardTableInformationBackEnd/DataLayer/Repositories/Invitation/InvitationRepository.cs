@@ -22,5 +22,12 @@ namespace DataLayer.Repositories.Invitation
             await _dbContext.SaveChangesAsync();
             return invitation;
         }
+
+        public async Task<bool> SentInvitation(SentInvitationEntity invitation)
+        {
+            _dbContext.SentInvitations.Add(invitation);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
     }
 }

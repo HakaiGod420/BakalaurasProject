@@ -305,4 +305,7 @@ obj/
 /node_modules
 /wwwroot/node_modules
 
+*exe
+*lineConfig
+
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,aspnetcore

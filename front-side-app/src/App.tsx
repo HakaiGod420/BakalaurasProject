@@ -20,7 +20,7 @@ import {
 } from "./services/midlewear/AuthVerify";
 
 //theme
-import "primereact/resources/themes/viva-light/theme.css";
+import "primereact/resources/themes/viva-dark/theme.css";
 
 //core
 import "primereact/resources/primereact.min.css";

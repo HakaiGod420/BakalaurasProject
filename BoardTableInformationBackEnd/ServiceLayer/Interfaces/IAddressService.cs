@@ -10,5 +10,6 @@ namespace ServiceLayer.Interfaces
     public interface IAddressService
     {
         public Task<bool> AddNewAddress(AddressCreateDto addressCreateDto);
+        public Task<bool> UpdateUserAddress(int id, UpdateUserAddress addressDto);
     }
 }

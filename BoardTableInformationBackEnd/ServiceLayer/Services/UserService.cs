@@ -145,17 +145,24 @@ namespace ServiceLayer.Services
             return jwt;
         }
 
-        public async Task<bool> UpdateNotifications(NotificationsListDto notificationsListDto)
+        public async Task<bool> UpdateNotifications(int id,NotificationsListDto notificationsListDto)
         {
            foreach(var notification in notificationsListDto.Notifications)
             {
                if(notification.Title == "Invitation")
                 {
-                    return await _repository.UpdateInvitationNotification(notification.UserId, notification.IsActive);
+                    return await _repository.UpdateInvitationNotification(id,    notification.IsActive);
                 }
             }
 
             return false;
         }
+
+        public async Task<UserSettings> GetUserSettings(int id)
+        {
+            return await _repository.GetUserSettings(id);
+        }
+
+
     }
 }

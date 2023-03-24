@@ -1,18 +1,44 @@
 import React, { useState } from "react";
+import { updateNotifications } from "../../services/api/UserServics";
+import { NotificationSettings } from "../../services/types/User";
 
 interface NotificationSettingsProps {
   isOpen: boolean;
+  isEnabledInviteNotifications: boolean | undefined;
   onClose: () => void;
 }
 
-const NotificationSettings: React.FC<NotificationSettingsProps> = ({
+let notifications: NotificationSettings = {
+  Notifications: [],
+};
+
+const Notifications: React.FC<NotificationSettingsProps> = ({
   isOpen,
   onClose,
+  isEnabledInviteNotifications,
 }) => {
-  const [isGameInvitationEnabled, setIsGameInvitationEnabled] = useState(true);
+  const [isGameInvitationEnabled, setIsGameInvitationEnabled] = useState(
+    isEnabledInviteNotifications
+  );
 
   const handleToggleGameInvitation = () => {
     setIsGameInvitationEnabled(!isGameInvitationEnabled);
+    const invitationIndex = notifications.Notifications.findIndex(
+      (notification) => notification.Title === "Invitation"
+    );
+    if (invitationIndex !== -1) {
+      notifications.Notifications[invitationIndex].IsActive =
+        !isGameInvitationEnabled;
+    } else {
+      notifications.Notifications.push({
+        Title: "Invitation",
+        IsActive: !isGameInvitationEnabled,
+      });
+    }
+  };
+
+  const saveNotificationsSettings = async () => {
+    await updateNotifications(notifications);
   };
 
   return (
@@ -24,7 +50,7 @@ const NotificationSettings: React.FC<NotificationSettingsProps> = ({
               className="fixed inset-0 transition-opacity"
               aria-hidden="true"
             >
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+              <div className="absolute inset-0 bg-black bg-opacity-70"></div>
             </div>
 
             <div
@@ -83,15 +109,16 @@ const NotificationSettings: React.FC<NotificationSettingsProps> = ({
 
               <div className="flex justify-end">
                 <button
-                  onClick={onClose}
-                  className="bg-white text-green-500 px-4 py-2 rounded-lg shadow-md font-medium mr-4 transition-all duration-200 hover:bg-green-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  disabled={notifications.Notifications.length === 0}
+                  onClick={saveNotificationsSettings}
+                  className="bg-white text-green-500 px-4 py-2 rounded-lg shadow-md font-medium mr-4 transition-all duration-200 hover:bg-green-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-slate-300 disabled:text-white"
                 >
                   Save
                 </button>
                 <button
                   onClick={onClose}
                   className="bg
-                  gray-200 text-gray-800 px-4 py-2 rounded-lg shadow-md font-medium transition-all duration-200 hover:bg-red-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                  gray-200 text-gray-800 px-4 py-2 rounded-lg shadow-md font-medium transition-all duration-200 hover:bg-red-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 "
                 >
                   Close
                 </button>
@@ -104,4 +131,4 @@ const NotificationSettings: React.FC<NotificationSettingsProps> = ({
   );
 };
 
-export default NotificationSettings;
+export default Notifications;

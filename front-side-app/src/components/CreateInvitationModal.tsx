@@ -19,6 +19,7 @@ const defaultCords: MapCoordinates = {
 };
 
 const DefaultAddress: Address = {
+  Country: "",
   PostalCode: "",
   City: "",
   StreetName: "",

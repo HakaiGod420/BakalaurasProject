@@ -4,6 +4,7 @@ using DataLayer.Repositories.Invitation;
 using DataLayer.Repositories.User;
 using Microsoft.Extensions.Configuration;
 using ModelLayer.DTO;
+using ModelLayer.Enum;
 using ServiceLayer.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace ServiceLayer.Services
     {
         private readonly IAddressRepository _addressRepository;
         private readonly IInvitationRepository _invitationRepository;
+        private readonly IUserRepository _userRepository;
 
-        public InvitationService(IAddressRepository addressRepository, IInvitationRepository invitationRepository)
+        public InvitationService(IAddressRepository addressRepository, IInvitationRepository invitationRepository, IUserRepository userRepository)
         {
             _addressRepository = addressRepository;
             _invitationRepository = invitationRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<PostInvatationDto> PostInvatation(PostInvatationDto data, int id)
@@ -30,10 +33,11 @@ namespace ServiceLayer.Services
 
             var addressEntity = await _addressRepository.CheckIfExistAddress(fullAddress);
 
-            if(addressEntity == null)
+            if (addressEntity == null)
             {
                 addressEntity = new AddressEntity
                 {
+                    Country = data.Address.Country,
                     StreetName = data.Address.StreetName,
                     Province = data.Address.Province,
                     City = data.Address.City,
@@ -58,20 +62,28 @@ namespace ServiceLayer.Services
 
             invititionEntity = await _invitationRepository.AddInvitation(invititionEntity);
 
-            SendInvitatiosToOthers(invititionEntity);
+
+            _ = SendInvitatiosToOthers(invititionEntity);
 
             return data;
         }
 
-        private void SendInvitatiosToOthers(ActiveGameEntity activeGameEntity)
+        private async Task SendInvitatiosToOthers(ActiveGameEntity activeGameEntity)
         {
-            Task.Run(() =>
+            var userIdListWhichToSend = await _userRepository.GetCloseUserIds(activeGameEntity.CreatorId,activeGameEntity.Address);
+            _ = Task.Run( () =>
             {
-                // code to execute asynchronously on a background thread
+                foreach (var userId in userIdListWhichToSend)
+                {
+                    var invitationToSent = new SentInvitationEntity
+                    {
+                        SelectedActiveGameId = activeGameEntity.BoardGameId,
+                        UserId = userId,
+                        InvitationStateId = Convert.ToInt32(InvitationState.Onhold)
+                    };
 
-                //Get a list of users who are located near the invitation location and have enabled notifications to be received
-
-                //Send invitations to all users who were found to be located near the event location.
+                     _invitationRepository.SentInvitation(invitationToSent);
+                };
             });
 
         }

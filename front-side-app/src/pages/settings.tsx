@@ -1,9 +1,9 @@
-import UserSettings from "../components/UserSettings";
+import UserSettingsMenu from "../components/UserSettings";
 
 function Settings() {
   return (
     <div className="bg-white">
-      <UserSettings />
+      <UserSettingsMenu />
     </div>
   );
 }

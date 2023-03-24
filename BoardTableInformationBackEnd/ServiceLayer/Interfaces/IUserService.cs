@@ -12,7 +12,8 @@ namespace ServiceLayer.Interfaces
         public Task<UserViewModel?> GetUser(int id);
         public Task<UserViewModel?> RegisterUser(UserRegisterModel user);
         public Task<string?> Login(LoginUserModel loginUser);
-        public Task<bool> UpdateNotifications(NotificationsListDto notificationsListDto);
+        public Task<bool> UpdateNotifications(int id, NotificationsListDto notificationsListDto);
+        public Task<UserSettings> GetUserSettings(int id);
 
     }
 }

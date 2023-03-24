@@ -25,6 +25,7 @@ namespace DataLayer.DBContext
         public virtual DbSet<ActiveGameStateEntity> ActiveGameStates { get; set; }
         public virtual DbSet<SentInvitationEntity> SentInvitations { get; set; }
         public virtual DbSet<InvitationStateEntity> InvitationStates { get; set; }
+        public virtual DbSet<UserAddressEntity> UserAddress { get; set; } 
 
         public DataBaseContext()
         {

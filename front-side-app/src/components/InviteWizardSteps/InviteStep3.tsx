@@ -95,6 +95,17 @@ function InviteStep3({
           >
             <Space wrap className="flex justify-left">
               <div className=" font-bold flex justify-center w-[200px] md:w-[400px] lg:w-[400px] xl:w-[200px] ">
+                <p className="text-[#bad0ef] font-bold text-[15px]">Country</p>
+              </div>
+              <div className="p-2 flex justify-center">
+                <input
+                  onChange={(e) => handleChange("Country", e.target.value)}
+                  value={address.Country}
+                  type="text"
+                  className="input input-bordered input-success w-full max-w-xs text-[#bad0ef]"
+                />
+              </div>
+              <div className=" font-bold flex justify-center w-[200px] md:w-[400px] lg:w-[400px] xl:w-[200px] ">
                 <p className="text-[#bad0ef] font-bold text-[15px]">City</p>
               </div>
               <div className="p-2 flex justify-center">

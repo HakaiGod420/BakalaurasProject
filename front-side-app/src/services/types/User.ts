@@ -9,3 +9,31 @@ export interface RegisterData {
   password: string;
   rePassword: string;
 }
+
+export interface UserAddress {
+  Country: string;
+  City: string;
+  StreetName: string;
+  Province: string;
+  Map_X_Cords: number | undefined;
+  Map_Y_Cords: number | undefined;
+}
+
+export interface UserSettings {
+  Address: UserAddress;
+  EnabledInvitationSettings: boolean;
+}
+
+export interface AddressEdit {
+  Address: UserAddress | undefined;
+  EnabledInvitationSettings: boolean | undefined;
+}
+
+export interface Notification {
+  IsActive: boolean | undefined;
+  Title: string;
+}
+
+export interface NotificationSettings {
+  Notifications: Notification[];
+}

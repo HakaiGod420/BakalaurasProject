@@ -1,11 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getUserSetting } from "../services/api/UserServics";
+import { UserAddress, UserSettings } from "../services/types/User";
 import SectionDivider from "./core/SectionDivider";
 import AddressPopup from "./Settings/AddressPopup";
-import NotificationSettings from "./Settings/NottificationSettings";
+import Notifications from "./Settings/NottificationSettings";
+const defaultEmptyAddress: UserAddress = {
+  Country: "",
+  Province: "",
+  City: "",
+  StreetName: "",
+  Map_X_Cords: undefined,
+  Map_Y_Cords: undefined,
+};
 
-function UserSettings() {
+function UserSettingsMenu() {
   const [showAddressPopup, setShowAddressPopup] = useState(false);
   const [showNotificationPopup, setShowNotificationPopup] = useState(false);
+
+  const [userSettings, setUserSettings] = useState<UserSettings>();
+
+  useEffect(() => {
+    const fetchUserSettings = async () => {
+      const response = await getUserSetting();
+      setUserSettings(response);
+    };
+    fetchUserSettings();
+  }, []);
 
   return (
     <div className="mx-auto bg-white border-2 max-w-[1280px]">
@@ -39,10 +59,15 @@ function UserSettings() {
         </div>
       </div>
       {showAddressPopup && (
-        <AddressPopup onClose={() => setShowAddressPopup(false)} />
+        <AddressPopup
+          invtitationsEnbaled={userSettings?.EnabledInvitationSettings}
+          onClose={() => setShowAddressPopup(false)}
+          address={userSettings?.Address ?? defaultEmptyAddress}
+        />
       )}
       {showNotificationPopup && (
-        <NotificationSettings
+        <Notifications
+          isEnabledInviteNotifications={userSettings?.EnabledInvitationSettings}
           isOpen={showNotificationPopup}
           onClose={() => setShowNotificationPopup(false)}
         />
@@ -51,4 +76,4 @@ function UserSettings() {
   );
 }
 
-export default UserSettings;
+export default UserSettingsMenu;

@@ -11,5 +11,8 @@ namespace DataLayer.Repositories.Address
     {
         public Task<AddressEntity> AddAddress(AddressEntity address);
         public Task<AddressEntity?> CheckIfExistAddress(string fullAddress);
+        public Task<int?> CheckIfUserHasAddress(int userId);
+        public Task<UserAddressEntity> AddAddressToUser(UserAddressEntity address);
+        public Task<UserAddressEntity> UpdateUserAddress(UserAddressEntity address);
     }
 }

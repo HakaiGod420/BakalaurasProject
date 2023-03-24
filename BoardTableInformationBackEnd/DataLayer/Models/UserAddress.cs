@@ -11,6 +11,7 @@ namespace DataLayer.Models
     {
         [Key]
         public int UserAddressId { get; set; }
+        public string Country { get; set; }
         public string City { get; set; }
         public string StreetName { get; set; }
         public string Province { get; set; }

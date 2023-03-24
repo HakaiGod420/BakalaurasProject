@@ -1,5 +1,6 @@
 ﻿using DataLayer.Models;
 using DataLayer.Repositories.Address;
+using DataLayer.Repositories.User;
 using ModelLayer.DTO;
 using ServiceLayer.Interfaces;
 using System;
@@ -13,14 +14,17 @@ namespace ServiceLayer.Services
     public class AddressService : IAddressService
     {
         private readonly IAddressRepository _addressRepository;
+        private readonly IUserRepository _userRepository;
 
-        public AddressService(IAddressRepository addressRepository) {
+        public AddressService(IAddressRepository addressRepository, IUserRepository userRepository) {
             _addressRepository = addressRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<bool> AddNewAddress(AddressCreateDto addressCreateDto)
         {
             var addressEntity = new AddressEntity{
+                Country = addressCreateDto.Country,
                 StreetName = addressCreateDto.StreetName,
                 Province =  addressCreateDto.Province,
                 City = addressCreateDto.City,
@@ -37,6 +41,49 @@ namespace ServiceLayer.Services
                 Console.WriteLine(ex.ToString());
                 return false;
             }
+        }
+
+        public async Task<bool> UpdateUserAddress(int id, UpdateUserAddress addressDto)
+        {
+            var addressId = await _addressRepository.CheckIfUserHasAddress(id);
+
+            if(!addressId.HasValue)
+            {
+                var newAddress = new UserAddressEntity
+                {
+                    City = addressDto.Address.City,
+                    Country = addressDto.Address.Country,
+                    StreetName = addressDto.Address.StreetName,
+                    Province = addressDto.Address.Province,
+                    Map_X_Coords = addressDto.Address.Map_X_Coords,
+                    Map_Y_Coords = addressDto.Address.Map_Y_Coords,
+
+                };
+
+                var result = await _addressRepository.AddAddressToUser(newAddress);
+                await _userRepository.UpdateUserAddress(result.UserAddressId, id);
+            }
+            else
+            {
+                var newAddress = new UserAddressEntity
+                {
+                    UserAddressId = (int)addressId,
+                    City = addressDto.Address.City,
+                    Country = addressDto.Address.Country,
+                    StreetName = addressDto.Address.StreetName,
+                    Province = addressDto.Address.Province,
+                    Map_X_Coords = addressDto.Address.Map_X_Coords,
+                    Map_Y_Coords = addressDto.Address.Map_Y_Coords,
+
+                };
+
+                await _addressRepository.UpdateUserAddress(newAddress);
+
+            }
+
+            await _userRepository.UpdateInvitationNotification(id,addressDto.EnabledInvitationSettings);
+
+            return true;
         }
     }
 }
