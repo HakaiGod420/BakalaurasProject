@@ -29,5 +29,52 @@ namespace BoardTableInformationBackEnd.Controllers
 
             return new CreatedResult(String.Empty, invitation);
         }
+
+        [HttpGet("invitations")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<UserInvitationDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetInvitations()
+        {
+            var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+
+            var invitations = await _invitationService.GetInvitations(id);
+
+            return Ok(invitations);
+        }
+
+        [HttpGet("activeInvitations")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<UserInvitationDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetActiveInvitations()
+        {
+            var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+
+            var invitations = await _invitationService.GetActiveInvitations(id);
+
+            return Ok(invitations);
+        }
+
+        [HttpGet("createdInvitations")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<UserInvitationDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCreatedInvitations()
+        {
+            var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+
+            var invitations = await _invitationService.GetCreatedInvitations(id);
+
+            return Ok(invitations);
+        }
+
+        [HttpPatch("updateInvitationState")]
+        [Authorize]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateInvitationState([FromBody] InvitationStateChangeDto data)
+        {
+            var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+            data.UserId = id;
+            await _invitationService.ChangeInvitationState(data);
+            return Ok();
+        }
     }
 }

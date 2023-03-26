@@ -10,5 +10,9 @@ namespace ServiceLayer.Interfaces
     public interface IInvitationService
     {
         public Task<PostInvatationDto> PostInvatation(PostInvatationDto data, int id);
+        public Task<List<UserInvitationDto>> GetInvitations(int id);
+        public Task ChangeInvitationState(InvitationStateChangeDto data);
+        public Task<List<UserInvitationDto>> GetActiveInvitations(int id);
+        public Task<List<UserInvitationDto>> GetCreatedInvitations(int id);
     }
 }

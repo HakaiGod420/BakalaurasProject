@@ -1,10 +1,14 @@
-import EventsComponent from "../components/EventsComponent";
+import AcceptedInvitationsList from "../components/AcceptedInvititationsList";
+import CreatedInvitationList from "../components/CreatedInvitationsList";
+import EventsInvitationComponent from "../components/EventsInvitationsComponent";
 
 function MyEvents() {
   return (
     <div className="bg-white">
       <div>
-        <EventsComponent />
+        <EventsInvitationComponent />
+        <AcceptedInvitationsList />
+        <CreatedInvitationList />
       </div>
     </div>
   );

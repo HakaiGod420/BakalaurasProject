@@ -27,6 +27,34 @@ namespace ServiceLayer.Services
             _userRepository = userRepository;
         }
 
+        public async Task ChangeInvitationState(InvitationStateChangeDto data)
+        {
+            if(data.State == "accept")
+            {
+                await _invitationRepository.UpdateStateInvitation(Convert.ToInt32(InvitationState.Accepted), data.InvitationId, data.UserId);
+                await _invitationRepository.UpdatePlayerCount(data.InvitationId);
+            }
+            else if(data.State == "decline")
+            {
+                await _invitationRepository.UpdateStateInvitation(Convert.ToInt32(InvitationState.Declined), data.InvitationId, data.UserId);
+            }
+        }
+
+        public async Task<List<UserInvitationDto>> GetActiveInvitations(int id)
+        {
+            return await _invitationRepository.GetAllActiveInvitations(id);
+        }
+
+        public async Task<List<UserInvitationDto>> GetInvitations(int id)
+        {
+            return await _invitationRepository.GetAllInvitations(id);
+        }
+
+        public async Task<List<UserInvitationDto>> GetCreatedInvitations(int id)
+        {
+            return await _invitationRepository.GetAllCreatedInvitations(id);
+        }
+
         public async Task<PostInvatationDto> PostInvatation(PostInvatationDto data, int id)
         {
             var fullAddress = data.Address.City + " " + data.Address.Province + " " + data.Address.StreetName + " " + data.Address.HouseNumber.ToString();
@@ -57,13 +85,15 @@ namespace ServiceLayer.Services
                 Map_Y_Cords = data.Map_Y_Cords,
                 CreatorId = id,
                 AddressId = addressEntity.AddressId,
+                MeetDate = Convert.ToDateTime(data.InvitationDate),
                 InvitationStateId = ModelLayer.Enum.ActiveGameState.Open,
             };
 
             invititionEntity = await _invitationRepository.AddInvitation(invititionEntity);
 
-
-            _ = SendInvitatiosToOthers(invititionEntity);
+            await Task.Run(() =>
+            SendInvitatiosToOthers(invititionEntity));
+            
 
             return data;
         }
@@ -71,20 +101,20 @@ namespace ServiceLayer.Services
         private async Task SendInvitatiosToOthers(ActiveGameEntity activeGameEntity)
         {
             var userIdListWhichToSend = await _userRepository.GetCloseUserIds(activeGameEntity.CreatorId,activeGameEntity.Address);
-            _ = Task.Run( () =>
+
             {
                 foreach (var userId in userIdListWhichToSend)
                 {
                     var invitationToSent = new SentInvitationEntity
                     {
-                        SelectedActiveGameId = activeGameEntity.BoardGameId,
+                        SelectedActiveGameId = activeGameEntity.ActiveGameId,
                         UserId = userId,
                         InvitationStateId = Convert.ToInt32(InvitationState.Onhold)
                     };
 
-                     _invitationRepository.SentInvitation(invitationToSent);
+                     await _invitationRepository.SentInvitation(invitationToSent);
                 };
-            });
+            }
 
         }
     }

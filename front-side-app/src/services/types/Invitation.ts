@@ -18,6 +18,7 @@ export interface Invitation {
 }
 
 export interface UserInvitation {
+  InvitationId: number;
   ActiveGameId: number;
   BoardGameTitle: string;
   BoardGameId: number;
@@ -27,4 +28,9 @@ export interface UserInvitation {
   AcceptedCount: number;
   Map_X_Cords: number;
   Map_Y_Cords: number;
+}
+
+export interface InvitationStateChange {
+  InvitationId: number;
+  State: string;
 }

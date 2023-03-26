@@ -26,7 +26,7 @@ namespace DataLayer.Models
 
         public int AddressId { get; set; }
         public virtual AddressEntity Address { get; set; }
-
+        public DateTime MeetDate { get; set; }
         public int BoardGameId { get; set; }
         public virtual BoardGameEntity BoardGame { get; set; }
         public virtual ICollection<SentInvitationEntity> SentInvitations { get; set; }

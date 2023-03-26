@@ -8,14 +8,16 @@ import { UserInvitation } from "../../services/types/Invitation";
 
 interface EventInvitationProps {
   invitation: UserInvitation;
-  onAccept: () => void;
-  onReject: () => void;
+  onAccept: (invitationId: number) => void;
+  onReject: (invitationId: number) => void;
+  itsInvitation: boolean;
 }
 
 const EventCard: React.FC<EventInvitationProps> = ({
   invitation,
   onAccept,
   onReject,
+  itsInvitation,
 }) => {
   const [showMap, setShowMap] = useState(false);
 
@@ -60,20 +62,22 @@ const EventCard: React.FC<EventInvitationProps> = ({
               Accepted: {invitation.AcceptedCount}/{invitation.MaxPlayerCount}
             </p>
           </div>
-          <div>
-            <button
-              onClick={onAccept}
-              className="px-4 py-2 text-base font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 mr-4"
-            >
-              Accept Invitation
-            </button>
-            <button
-              onClick={onReject}
-              className="px-4 py-2 text-base font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
-            >
-              Reject Invitation
-            </button>
-          </div>
+          {itsInvitation && (
+            <div>
+              <button
+                onClick={() => onAccept(invitation.InvitationId)}
+                className="px-4 py-2 text-base font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 mr-4"
+              >
+                Accept Invitation
+              </button>
+              <button
+                onClick={() => onReject(invitation.InvitationId)}
+                className="px-4 py-2 text-base font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+              >
+                Reject Invitation
+              </button>
+            </div>
+          )}
         </div>
       </div>
       {showMap && (
