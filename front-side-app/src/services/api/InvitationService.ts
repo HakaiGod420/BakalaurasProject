@@ -82,3 +82,21 @@ export async function updateInvitationState(
     return [];
   }
 }
+
+export async function getActiveInvitationCount() {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.get["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .get<number>(SERVER_API + "/api/gameboardinvitation/activeInvitationCount")
+    .catch((error) => {
+      console.log(error);
+    });
+
+  if (response?.data) {
+    return response.data;
+  } else {
+    return 0;
+  }
+}

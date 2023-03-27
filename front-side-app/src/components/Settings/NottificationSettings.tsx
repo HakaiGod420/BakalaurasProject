@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { updateNotifications } from "../../services/api/UserServics";
 import { NotificationSettings } from "../../services/types/User";
 
@@ -38,7 +39,11 @@ const Notifications: React.FC<NotificationSettingsProps> = ({
   };
 
   const saveNotificationsSettings = async () => {
+    const loading = toast.loading("Updating notifications...");
     await updateNotifications(notifications);
+    toast.success("Successfully updated", {
+      id: loading,
+    });
   };
 
   return (

@@ -35,8 +35,9 @@ function CreateStep4({ stepNumber, setStepNumber }: Props) {
           Tabletop game rules
         </h1>
         <p className="p-4 text-center">
-          Write the rules of the tabletop game you are creating now. You can
-          skip this step, but others may not know how to play your game.
+          Please provide the rules for your tabletop game. While this step is
+          optional, it can be helpful for others who may not be familiar with
+          how to play your game."
         </p>
         <div className="mb-5">
           <div className=" p-2 font-bold flex justify-center">

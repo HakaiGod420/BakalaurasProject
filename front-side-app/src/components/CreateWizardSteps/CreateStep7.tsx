@@ -27,15 +27,21 @@ function CreateStep7({
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
-        <h1 className="text-center uppercase font-bold text-[20px]">Finsih</h1>
+        <h1 className="text-center uppercase font-bold text-[20px]">Finish</h1>
         <p className="text-center p-2">
-          Write the rules of the tabletop game you are creating now. You can
-          skip this step, but others may not know how to play your game.
+          Congratulations, you have completed all the required fields in the
+          form! Please take a moment to review your submission and make any
+          necessary corrections. Once you are certain that all information is
+          accurate and complete, you may submit the form. Our team will review
+          your submission and, if everything is correct, your tabletop game will
+          be approved and showcased on our main website. Please note that the
+          approval process may take some time, and we appreciate your patience
+          while we review your submission
         </p>
         <div className="mb-5">
           <div className=" font-bold flex justify-center">
             <p className="text-[25px]">
-              Are You Sure want to finish creation of board game?
+              Are you sure you want to finish creating the board game?
             </p>
           </div>
         </div>

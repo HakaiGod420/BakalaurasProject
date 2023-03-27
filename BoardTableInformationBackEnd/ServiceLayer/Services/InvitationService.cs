@@ -117,5 +117,10 @@ namespace ServiceLayer.Services
             }
 
         }
+
+        public async Task<int> ActiveInvitationCount(int id)
+        {
+            return await _invitationRepository.ActiveInvitationCount(id);
+        }
     }
 }

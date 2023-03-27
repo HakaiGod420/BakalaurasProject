@@ -17,5 +17,6 @@ namespace DataLayer.Repositories.Invitation
         public Task<List<UserInvitationDto>> GetAllCreatedInvitations(int userId);
         public Task UpdateStateInvitation(int newStateId, int invitationId, int userId);
         public Task<bool> UpdatePlayerCount(int invitationId);
+        public Task<int> ActiveInvitationCount(int userId);
     }
 }

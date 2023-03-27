@@ -76,7 +76,7 @@ function InviteStep3({
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
         <h1 className="text-center uppercase font-bold text-[20px]">
-          Add Address where everything will be happening
+          "Add the address where the event will take place.
         </h1>
         <p className="text-center p-2">
           To host your own table top event and invite other players to join you,

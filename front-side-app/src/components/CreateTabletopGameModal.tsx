@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { Wizard } from "react-use-wizard";
 import { SERVER_API } from "../services/constants/ClienConstants";
 import {
@@ -18,10 +20,10 @@ import CreateStep6 from "./CreateWizardSteps/CreateStep6";
 import CreateStep7 from "./CreateWizardSteps/CreateStep7";
 import CreateStep8 from "./CreateWizardSteps/CreateStep8";
 
-
-
 function CreateTabletopGameModal() {
   const [stepNumber, setStetpNumber] = useState<number>(1);
+
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState<string>("");
   const [playerAge, setPlayerAge] = useState<number>();
@@ -210,7 +212,7 @@ function CreateTabletopGameModal() {
   };
 
   const publishTableTopGame = async () => {
-    console.log("Publishing game");
+    const loading = toast.loading("Creating your game...");
 
     const categoriesMapped: Category[] = [];
     const typesMapped: BoardType[] = [];
@@ -254,13 +256,17 @@ function CreateTabletopGameModal() {
     };
     console.log(CreatedTableTopGame);
     await postTableTopGame(CreatedTableTopGame);
+    toast.success("Successfully created game", {
+      id: loading,
+    });
+    navigate("/");
   };
 
   return (
     <div className="">
       <label
         htmlFor="my-modal-5"
-        className="btn min-h-[70px] min-w-full btn-active btn-primary no-animation"
+        className="btn min-h-[70px] min-w-full btn-active btn-primary no-animation hover:bg-green-900"
       >
         Share your favorite table board game here
       </label>

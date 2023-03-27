@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Dayjs } from "dayjs";
-import { Steps } from "primereact/steps";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { Wizard } from "react-use-wizard";
 import { useRecoilState } from "recoil";
 import { SERVER_API } from "../services/constants/ClienConstants";
@@ -28,7 +29,8 @@ const DefaultAddress: Address = {
 };
 
 function CreateInvitationModal() {
-  const [stepNumber, setStetpNumber] = useState<number>(0);
+  const [stepNumber, setStetpNumber] = useState<number>(1);
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState<string>("");
   const [maxParcipants, setMaxParcipants] = useState<number>();
@@ -54,8 +56,21 @@ function CreateInvitationModal() {
   ];
 
   const Footer = () => (
-    <div className="card">
-      <Steps model={items} activeIndex={stepNumber} />
+    <div className="mt-5 flex justify-center">
+      <ul className="steps steps-vertical lg:steps-horizontal w-[500px]">
+        <li className={1 <= stepNumber ? "step step-primary" : "step"}>
+          Find game
+        </li>
+        <li className={2 <= stepNumber ? "step step-primary" : "step"}>
+          Parcipants
+        </li>
+        <li className={3 <= stepNumber ? "step step-primary" : "step"}>
+          Address
+        </li>
+        <li className={4 <= stepNumber ? "step step-primary" : "step"}>
+          Finish
+        </li>
+      </ul>
     </div>
   );
 
@@ -83,6 +98,7 @@ function CreateInvitationModal() {
   };
 
   const publishInvitation = async () => {
+    const loading = toast.loading("Creating invitation...");
     const Invitation: Invitation = {
       ActiveGameId: Number(selectedGame?.Id) ?? -1,
       Address: address,
@@ -93,7 +109,10 @@ function CreateInvitationModal() {
       MinimalAge: minimalAge ?? 0,
     };
     await handleOnSubmit(Invitation);
-    console.log(Invitation);
+    toast.success("Successfully created", {
+      id: loading,
+    });
+    navigate("/myeventes");
   };
   return (
     <div className="">

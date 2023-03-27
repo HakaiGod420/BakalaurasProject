@@ -76,5 +76,15 @@ namespace BoardTableInformationBackEnd.Controllers
             await _invitationService.ChangeInvitationState(data);
             return Ok();
         }
+
+        [HttpGet("activeInvitationCount")]
+        [Authorize]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetActiveInvitationCount()
+        {
+            var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+            var count = await _invitationService.ActiveInvitationCount(id);
+            return Ok(count);
+        }
     }
 }

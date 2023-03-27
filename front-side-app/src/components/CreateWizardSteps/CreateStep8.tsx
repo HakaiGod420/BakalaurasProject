@@ -53,8 +53,13 @@ function CreateStep8({
           Add categories and types
         </h1>
         <p className="text-center p-2">
-          Write the rules of the tabletop game you are creating now. You can
-          skip this step, but others may not know how to play your game.
+          Please specify the categories and types for your tabletop game. You
+          must select at least one category/type, but you can add more if
+          applicable. It's important to be accurate and thoughtful when choosing
+          your categories/types, as providing incorrect or inappropriate
+          information may result in your submission being rejected. Please
+          review the available options carefully and select the most appropriate
+          ones for your game.
         </p>
         <div className="mb-5">
           <div className=" font-bold flex justify-center">

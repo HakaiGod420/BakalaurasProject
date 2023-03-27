@@ -37,7 +37,7 @@ function CreateStep3({
         <p className="p-2 text-center">
           Write: A description for a tabletop game should be concise, clear and
           catchy. It should tell potential players what the game is about, how
-          it works and why they should play it.
+          it works and why they should play it. Minimal 100 characters.
         </p>
         <div className="mb-5 p-5">
           <div className=" font-bold flex justify-center">

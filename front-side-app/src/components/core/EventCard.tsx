@@ -28,7 +28,7 @@ const EventCard: React.FC<EventInvitationProps> = ({
   const icon = L.icon({ iconUrl: marker, iconSize: [40, 40] });
 
   return (
-    <div className="max-w-md mx-auto bg-white border-2 border-green-500 shadow-lg rounded-lg overflow-hidden">
+    <div className="lg:w-[400px] md:w-[300px] w-[400px] mx-auto bg-white border-2 border-green-500 shadow-lg rounded-lg overflow-hidden">
       <div className="sm:flex sm:items-center px-6 py-4">
         <div className="text-center sm:text-left sm:flex-grow">
           <div className="mb-4">

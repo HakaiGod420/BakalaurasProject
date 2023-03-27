@@ -50,8 +50,9 @@ function CreateStep6({ stepNumber, setStepNumber, files, setFiles }: Props) {
           Aditional Files
         </h1>
         <p className="text-center p-2">
-          Write the rules of the tabletop game you are creating now. You can
-          skip this step, but others may not know how to play your game.
+          You can also attach additional files containing interesting facts
+          about tabletop games, strategies, additional rules, and more. This
+          step is optional, so you may choose to skip it.
         </p>
         <div className="mb-5">
           <div className=" font-bold flex justify-center">

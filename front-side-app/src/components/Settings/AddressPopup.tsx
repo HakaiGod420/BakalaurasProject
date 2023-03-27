@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { updateAddress } from "../../services/api/UserServics";
 import { AddressEdit, UserAddress } from "../../services/types/User";
 import SectionDivider from "../core/SectionDivider";
@@ -30,12 +31,16 @@ const AddressPopup: React.FC<AddressPopupProps> = ({
   };
 
   const postAddress = async (e: React.FormEvent<HTMLFormElement>) => {
+    const loading = toast.loading("Updating address...");
     e.preventDefault();
     const newAddress: AddressEdit = {
       Address: editAddress,
       EnabledInvitationSettings: notificationEnabled,
     };
     await updateAddress(newAddress);
+    toast.success("Updated successfully", {
+      id: loading,
+    });
   };
 
   return (

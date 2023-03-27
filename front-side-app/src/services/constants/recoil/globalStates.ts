@@ -10,3 +10,7 @@ export const isAdminAtom = atom({
   default: false,
 });
 
+export const activeInvitations = atom({
+  key: "activeInvitations",
+  default: 0,
+});

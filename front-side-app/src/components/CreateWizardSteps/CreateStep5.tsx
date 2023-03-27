@@ -59,8 +59,13 @@ function CreateStep5({
       <div>
         <h1 className="text-center uppercase font-bold text-[20px]">Images</h1>
         <p className=" text-center p-2">
-          Write the rules of the tabletop game you are creating now. You can
-          skip this step, but others may not know how to play your game.
+          Next, you'll need to add pictures to your submission. You can include
+          a thumbnail image for your tabletop game, as well as multiple
+          additional pictures to showcase gameplay, components, or other
+          relevant aspects of your game. While adding pictures is optional, we
+          highly recommend doing so to increase the chances of your submission
+          being approved. Without pictures, the approval process may take longer
+          or even result in rejection.
         </p>
         <div className="mb-5">
           <div className=" font-bold flex justify-center">

@@ -90,7 +90,8 @@ function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
           Table top game Title
         </h1>
         <p className="p-5 text-center text-[20px]">
-          Select the tabletop game for which you want to create an invitation
+          Please choose the tabletop game for which you would like to create an
+          invitation
         </p>
         <h1 className="p-5 uppercase font-bold text-[15px] text-center">
           Title

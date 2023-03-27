@@ -3,6 +3,7 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
+  activeInvitations,
   isAdminAtom,
   validTokenAtom,
 } from "../services/constants/recoil/globalStates";
@@ -11,6 +12,7 @@ export default function Navbar() {
   const [nav, setNav] = useState(true);
   const [isAdmin] = useRecoilState(isAdminAtom);
   const [validToken] = useRecoilState(validTokenAtom);
+  const [activeInvtationsNumber] = useRecoilState(activeInvitations);
 
   const handleNav = () => {
     setNav(!nav);
@@ -102,7 +104,11 @@ export default function Navbar() {
                     <li>
                       <Link to={"/myeventes"} className="justify-between">
                         My events
-                        <span className="badge">1</span>
+                        {activeInvtationsNumber > 0 && (
+                          <span className="badge">
+                            {activeInvtationsNumber}
+                          </span>
+                        )}
                       </Link>
                     </li>
                     <li>

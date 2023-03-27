@@ -11,6 +11,7 @@ import MainPage from "./pages/mainPage";
 import Register from "./pages/register";
 import TableBoadGames from "./pages/tableBoadGames";
 import {
+  activeInvitations,
   isAdminAtom,
   validTokenAtom,
 } from "./services/constants/recoil/globalStates";
@@ -30,10 +31,12 @@ import "primeicons/primeicons.css";
 import MyEvents from "./pages/myEvents";
 import Settings from "./pages/settings";
 import UserProfile from "./pages/userProfile";
+import { getActiveInvitationCount } from "./services/api/InvitationService";
 
 function App() {
   const [, setValidToken] = useRecoilState(validTokenAtom);
   const [, setIsAdmin] = useRecoilState(isAdminAtom);
+  const [, setActiveInvitations] = useRecoilState(activeInvitations);
 
   useEffect(() => {
     const validateToken = async () => {
@@ -43,8 +46,15 @@ function App() {
       setIsAdmin(adminCheck);
       setValidToken(check);
     };
+
+    const getActiveInvitations = async () => {
+      const response = await getActiveInvitationCount();
+      setActiveInvitations(response);
+    };
+
     validateToken();
-  }, [setValidToken, setIsAdmin]);
+    getActiveInvitations();
+  }, [setValidToken, setIsAdmin, setActiveInvitations]);
 
   return (
     <div>
@@ -56,7 +66,7 @@ function App() {
           <Route path="/login/*" element={<Login />} />
           <Route path="/tableboardgames/" element={<TableBoadGames />} />
           <Route path="/register/*" element={<Register />} />
-          <Route path="/userprofile/:id" element={<UserProfile />} />
+          <Route path="/profile/:id" element={<UserProfile />} />
           <Route path="/myeventes/" element={<MyEvents />} />
           <Route path="/settings/*" element={<Settings />} />
         </Routes>

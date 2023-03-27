@@ -31,7 +31,7 @@ function UserSettingsMenu() {
     <div className="mx-auto bg-white border-2 max-w-[1280px]">
       <div className=" rounded-lg shadow-md p-4">
         <SectionDivider label="User Settings" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 justify-center pb-[200px]">
           <button
             onClick={() => setShowAddressPopup(true)}
             className="bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg py-3 px-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200"

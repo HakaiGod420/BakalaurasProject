@@ -78,7 +78,7 @@ function InviteStep4({
           </div>
           <div className="p-2 flex justify-center ">
             <DatePicker
-              className="bg-[#7c8088] hover:border-green-500 min-h-[50px] min-w-[200px]"
+              className="bg-[#ffffff] hover:border-green-500 min-h-[50px] min-w-[200px]"
               style={{
                 color: "#FFFFFF",
                 fontWeight: "bold",

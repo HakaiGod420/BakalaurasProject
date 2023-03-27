@@ -78,26 +78,26 @@ namespace DataLayer.Repositories.Invitation
 
         public async Task<List<UserInvitationDto>> GetAllCreatedInvitations(int userId)
         {
-            var result = await _dbContext.SentInvitations
+            var result = await _dbContext.ActiveGames
                 .Where(x =>
-                    x.SelectedActiveGame.CreatorId == userId
-                    && x.SelectedActiveGame.MeetDate > DateTime.Now)
+                    x.CreatorId == userId
+                    && x.MeetDate > DateTime.Now)
                 .Select(j => new UserInvitationDto
                 {
-                    InvitationId = j.SentInvitationId,
-                    ActiveGameId = j.SelectedActiveGameId,
-                    BoardGameTitle = j.SelectedActiveGame.BoardGame.Title,
-                    BoardGameId = j.SelectedActiveGame.BoardGameId,
-                    EventDate = j.SelectedActiveGame.MeetDate,
-                    EventFullLocation = j.SelectedActiveGame.Address.FullAddress,
-                    MaxPlayerCount = j.SelectedActiveGame.PlayersNeed,
-                    AcceptedCount = j.SelectedActiveGame.RegistredPlayerCount,
-                    Map_X_Cords = j.SelectedActiveGame.Map_X_Cords,
-                    Map_Y_Cords = j.SelectedActiveGame.Map_Y_Cords
+                    InvitationId = j.ActiveGameId,
+                    ActiveGameId = j.ActiveGameId,
+                    BoardGameTitle = j.BoardGame.Title,
+                    BoardGameId = j.BoardGameId,
+                    EventDate = j.MeetDate,
+                    EventFullLocation = j.Address.FullAddress,
+                    MaxPlayerCount = j.PlayersNeed,
+                    AcceptedCount = j.RegistredPlayerCount,
+                    Map_X_Cords = j.Map_X_Cords,
+                    Map_Y_Cords = j.Map_Y_Cords
                 })
                 .ToListAsync();
 
-            return result;
+            return result.OrderByDescending(m=>m.EventDate).ToList();
         }
 
         public async Task<bool> SentInvitation(SentInvitationEntity invitation)
@@ -120,17 +120,19 @@ namespace DataLayer.Repositories.Invitation
 
         public async Task<bool> UpdatePlayerCount(int invitationId)
         {
-            var invitation = await _dbContext.SentInvitations.Where(x => x.SentInvitationId == invitationId).SingleAsync();
+            var activeGameId = await _dbContext.SentInvitations.Where(x => x.SentInvitationId == invitationId).Select(x=>x.SelectedActiveGameId).FirstOrDefaultAsync();
+
+            var invitation = await _dbContext.ActiveGames.Where(x => x.ActiveGameId == activeGameId).FirstOrDefaultAsync();
 
             if(invitation != null)
             {
-                invitation.SelectedActiveGame.RegistredPlayerCount++;
+                invitation.RegistredPlayerCount++;
 
-                if(invitation.SelectedActiveGame.RegistredPlayerCount == invitation.SelectedActiveGame.PlayersNeed)
+                if(invitation.RegistredPlayerCount == invitation.PlayersNeed)
                 {
-                    invitation.SelectedActiveGame.InvitationStateId = ActiveGameState.Closed;
+                    invitation.InvitationStateId = ActiveGameState.Closed;
                 }
-                else if(invitation.SelectedActiveGame.RegistredPlayerCount > invitation.SelectedActiveGame.PlayersNeed)
+                else if(invitation.RegistredPlayerCount > invitation.PlayersNeed)
                 {
                     return false;
                 }
@@ -138,6 +140,16 @@ namespace DataLayer.Repositories.Invitation
                 return true;
             }
             return false;
+        }
+
+        public async Task<int> ActiveInvitationCount(int userId)
+        {
+            return await _dbContext.SentInvitations
+                .Where(x =>
+                    x.UserId == userId
+                    && x.InvitationStateId == 1
+                    && x.SelectedActiveGame.MeetDate > DateTime.Now)
+                .CountAsync();
         }
     }
 }
