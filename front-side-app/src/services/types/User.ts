@@ -37,3 +37,14 @@ export interface Notification {
 export interface NotificationSettings {
   Notifications: Notification[];
 }
+
+export interface UserInformation {
+  UserId: number;
+  UserName: string;
+  Role: string;
+  InvititationsCreated: number;
+  TableTopGamesCreated: number;
+  State: string;
+  RegisteredOn: string;
+  LastLogin: string;
+}

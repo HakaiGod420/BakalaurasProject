@@ -14,3 +14,8 @@ export const activeInvitations = atom({
   key: "activeInvitations",
   default: 0,
 });
+
+export const userName = atom<string>({
+  key: "userName",
+  default: "",
+});

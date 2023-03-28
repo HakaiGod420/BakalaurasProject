@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import {
   activeInvitations,
   isAdminAtom,
+  userName,
   validTokenAtom,
 } from "../services/constants/recoil/globalStates";
 
@@ -13,6 +14,7 @@ export default function Navbar() {
   const [isAdmin] = useRecoilState(isAdminAtom);
   const [validToken] = useRecoilState(validTokenAtom);
   const [activeInvtationsNumber] = useRecoilState(activeInvitations);
+  const [username] = useRecoilState(userName);
 
   const handleNav = () => {
     setNav(!nav);
@@ -96,7 +98,10 @@ export default function Navbar() {
                     className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                   >
                     <li>
-                      <Link to={"#"} className="justify-between">
+                      <Link
+                        to={"/profile/" + username}
+                        className="justify-between"
+                      >
                         Profile
                         <span className="badge">New</span>
                       </Link>
@@ -151,7 +156,7 @@ export default function Navbar() {
               <ul className="uppercase p-4">
                 <p className="uppercase text-green-600">User Menu</p>
                 <li className="p-4 border-b border-gray-600">
-                  <Link to="#">My Profile</Link>
+                  <Link to={"/profile/" + username}>My Profile</Link>
                 </li>
                 <li className="p-4 border-b border-gray-600">
                   <Link to="/myevents">My Events</Link>

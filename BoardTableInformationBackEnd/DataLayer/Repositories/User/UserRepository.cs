@@ -1,7 +1,9 @@
 ﻿using DataLayer.DBContext;
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ModelLayer.DTO;
+using ModelLayer.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,6 +108,44 @@ namespace DataLayer.Repositories.User
             .Select(x => x.UserId).ToListAsync();
 
             return result;
+        }
+
+        public async Task<UserInformationDTO?> GetUserInformation(string userName)
+        {
+            var result = await  _dbContext.Users.Where(x => x.UserName == userName).Select(j=> new UserInformationDTO
+            {
+                UserId = j.UserId,
+                UserName = j.UserName,
+                Role = j.Role.Name,
+                InvititationsCreated = j.ActiveGamesCreators.Count,
+                TableTopGamesCreated = _dbContext.BoardGames.Where(k => k.UserId == j.UserId).ToList().Count,
+                State = j.UserState.Name,
+                RegisteredOn = j.RegistrationTime,
+                LastLogin = j.LastTimeConnection,
+
+            }).FirstOrDefaultAsync();
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            return result;
+        }
+
+        public async Task UpdateLastTimeConnection(int id)
+        {
+            var result = await _dbContext.Users.Where(x => x.UserId == id).FirstOrDefaultAsync();
+
+            if (result == null)
+            {
+                return;
+            }
+
+            result.LastTimeConnection = DateTime.Now;
+            await _dbContext.SaveChangesAsync();
+
+            return;
         }
     }
 }

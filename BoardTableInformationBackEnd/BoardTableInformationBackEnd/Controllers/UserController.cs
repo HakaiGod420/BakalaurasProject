@@ -135,5 +135,20 @@ namespace BoardTableInformationBackEnd.Controllers
             }
             return new OkObjectResult(result);
         }
+
+        [HttpGet("getUserInformation")]
+        [Authorize]
+        [ProducesResponseType(typeof(UserInformationDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Nullable), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetUserInformation(string userName)
+        {
+            var result = await _userService.GetUserInformation(userName);
+
+            if (result == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, result);
+            }
+            return new OkObjectResult(result);
+        }
     }
 }

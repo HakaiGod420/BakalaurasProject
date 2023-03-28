@@ -92,6 +92,7 @@ namespace ServiceLayer.Services
                 var validation = VerifyPasswodHash(loginUser.Password, user.Password, user.PasswordSalt);
                 if (validation)
                 {
+                    await _repository.UpdateLastTimeConnection(user.UserId);
                     return CreateToken(user);
                 }
 
@@ -163,6 +164,9 @@ namespace ServiceLayer.Services
             return await _repository.GetUserSettings(id);
         }
 
-
+        public async Task<UserInformationDTO?> GetUserInformation(string userName)
+        {
+            return await _repository.GetUserInformation(userName);
+        }
     }
 }

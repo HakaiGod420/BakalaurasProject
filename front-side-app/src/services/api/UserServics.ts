@@ -5,6 +5,7 @@ import {
   AddressEdit,
   LoginData,
   NotificationSettings,
+  UserInformation,
   UserSettings,
 } from "../types/User";
 
@@ -67,4 +68,20 @@ export async function updateNotifications(notifications: NotificationSettings) {
     });
 
   console.log(response);
+}
+
+export async function getUserInformation(username: string) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.get["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .get<UserInformation>(SERVER_API + "/api/user/getUserInformation", {
+      params: { userName: username },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  return response?.data;
 }

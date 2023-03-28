@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { SERVER_API } from "../services/constants/ClienConstants";
 import {
   isAdminAtom,
+  userName,
   validTokenAtom,
 } from "../services/constants/recoil/globalStates";
 import { CheckJWTIsAdmin } from "../services/midlewear/AuthVerify";
@@ -17,6 +18,7 @@ function LoginComponent() {
   const [password, setPassword] = useState("");
   const [errorName, setErrorName] = useState("");
   const [username, setUsername] = useState("");
+  const [, setUsernameRecoil] = useRecoilState(userName);
 
   const [showError, setShowError] = useState(false);
 
@@ -40,6 +42,7 @@ function LoginComponent() {
           id: loading,
         });
         localStorage.setItem("token", JSON.stringify({ token: res.data }));
+        setUsernameRecoil(username);
         setValidToken(true);
         navigate("/");
       })

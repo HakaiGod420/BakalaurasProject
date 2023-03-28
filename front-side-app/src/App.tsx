@@ -1,4 +1,5 @@
 import { Content } from "antd/es/layout/layout";
+import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
@@ -13,6 +14,7 @@ import TableBoadGames from "./pages/tableBoadGames";
 import {
   activeInvitations,
   isAdminAtom,
+  userName,
   validTokenAtom,
 } from "./services/constants/recoil/globalStates";
 import {
@@ -32,12 +34,24 @@ import MyEvents from "./pages/myEvents";
 import Settings from "./pages/settings";
 import UserProfile from "./pages/userProfile";
 import { getActiveInvitationCount } from "./services/api/InvitationService";
+import { JWTDeCode } from "./services/types/Miscellaneous";
 
 function App() {
+  const [, setUsername] = useRecoilState(userName);
   const [, setValidToken] = useRecoilState(validTokenAtom);
   const [, setIsAdmin] = useRecoilState(isAdminAtom);
   const [, setActiveInvitations] = useRecoilState(activeInvitations);
 
+  const setUsernameInRecoil = () => {
+    const token = JSON.parse(localStorage.getItem("token") || "false");
+
+    if (token === false) {
+      return false;
+    }
+
+    const decoded: JWTDeCode = jwt_decode(token.token);
+    setUsername(decoded.Username);
+  };
   useEffect(() => {
     const validateToken = async () => {
       const check = await CheckJWTAndSession();
@@ -51,7 +65,7 @@ function App() {
       const response = await getActiveInvitationCount();
       setActiveInvitations(response);
     };
-
+    setUsernameInRecoil();
     validateToken();
     getActiveInvitations();
   }, [setValidToken, setIsAdmin, setActiveInvitations]);
@@ -66,7 +80,7 @@ function App() {
           <Route path="/login/*" element={<Login />} />
           <Route path="/tableboardgames/" element={<TableBoadGames />} />
           <Route path="/register/*" element={<Register />} />
-          <Route path="/profile/:id" element={<UserProfile />} />
+          <Route path="/profile/:username" element={<UserProfile />} />
           <Route path="/myeventes/" element={<MyEvents />} />
           <Route path="/settings/*" element={<Settings />} />
         </Routes>

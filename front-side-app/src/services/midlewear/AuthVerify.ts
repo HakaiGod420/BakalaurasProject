@@ -1,14 +1,5 @@
 import jwt_decode from "jwt-decode";
-
-type JWTDeCode = {
-  UserId: string;
-  Username: string;
-  Email: string;
-  Role: string;
-  iat: number;
-  exp: number;
-  iss: string;
-};
+import { JWTDeCode } from "../types/Miscellaneous";
 
 export async function CheckJWTAndSession() {
   const token = JSON.parse(localStorage.getItem("token") || "false");
