@@ -7,6 +7,7 @@ import {
 import { acceptedInvitations } from "../services/constants/recoil/invitations";
 import { InvitationStateChange } from "../services/types/Invitation";
 import EventCard from "./core/EventCard";
+import LoadingComponent from "./core/LoadingComponent";
 import SectionDivider from "./core/SectionDivider";
 
 function AcceptedInvitationsList() {
@@ -21,6 +22,8 @@ function AcceptedInvitationsList() {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
+
+  const [loading, setLoading] = useState(true);
 
   const currentInvitations = invitations.slice(startIndex, endIndex);
 
@@ -59,6 +62,7 @@ function AcceptedInvitationsList() {
     const fetchAccaptedInvitations = async () => {
       const response = await getAcceptedInvitations();
       setInvitations(response);
+      setLoading(false);
     };
     fetchAccaptedInvitations();
   }, [setInvitations]);
@@ -98,9 +102,13 @@ function AcceptedInvitationsList() {
         </div>
         {invitations.length === 0 && (
           <div>
-            <p className="text-gray-700 text-[50px] font-bold flex justify-center opacity-25">
-              No accepted invitations
-            </p>
+            {!loading ? (
+              <p className="text-gray-700 text-[50px] font-bold flex justify-center opacity-25">
+                No accepted invitations
+              </p>
+            ) : (
+              <LoadingComponent />
+            )}
           </div>
         )}
       </div>

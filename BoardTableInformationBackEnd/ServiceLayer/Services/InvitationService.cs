@@ -122,5 +122,24 @@ namespace ServiceLayer.Services
         {
             return await _invitationRepository.ActiveInvitationCount(id);
         }
+
+        public async Task SentInvitationToUser(SingeUserSentInvitationDTO invitation)
+        {
+            var userId = await _userRepository.GetUserIdByUsername(invitation.UserName);
+
+            if(userId == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            var invitationToSent = new SentInvitationEntity
+            {
+                SelectedActiveGameId = invitation.ActiveInvitationId,
+                UserId = (int)userId,
+                InvitationStateId = Convert.ToInt32(InvitationState.Onhold)
+            };
+
+            await _invitationRepository.SentInvitation(invitationToSent);
+        }
     }
 }

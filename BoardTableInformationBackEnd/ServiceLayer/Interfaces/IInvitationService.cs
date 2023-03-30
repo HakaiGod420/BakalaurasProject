@@ -15,5 +15,6 @@ namespace ServiceLayer.Interfaces
         public Task<List<UserInvitationDto>> GetActiveInvitations(int id);
         public Task<List<UserInvitationDto>> GetCreatedInvitations(int id);
         public Task<int> ActiveInvitationCount(int id);
+        public Task SentInvitationToUser(SingeUserSentInvitationDTO invitation);
     }
 }

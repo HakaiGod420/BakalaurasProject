@@ -147,5 +147,10 @@ namespace DataLayer.Repositories.User
 
             return;
         }
+
+        public async Task<int?> GetUserIdByUsername(string username)
+        {
+           return await _dbContext.Users.Where(x => x.UserName == username).Select(x => x.UserId).FirstOrDefaultAsync();
+        }
     }
 }

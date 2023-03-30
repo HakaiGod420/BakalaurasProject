@@ -86,5 +86,15 @@ namespace BoardTableInformationBackEnd.Controllers
             var count = await _invitationService.ActiveInvitationCount(id);
             return Ok(count);
         }
+
+        [HttpPost("sentInvitationToUser")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<IActionResult> SentInvitationToUser([FromBody] SingeUserSentInvitationDTO invitation)
+        {
+            await _invitationService.SentInvitationToUser(invitation);
+
+            return new CreatedResult(String.Empty, invitation);
+        }
     }
 }

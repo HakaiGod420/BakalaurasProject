@@ -20,5 +20,6 @@ namespace DataLayer.Repositories.User
         public Task<List<int>> GetCloseUserIds(int creatorId, AddressEntity address);
         public Task<UserInformationDTO?> GetUserInformation(string userName);
         public Task UpdateLastTimeConnection(int id);
+        public Task<int?> GetUserIdByUsername(string username);
     }
 }

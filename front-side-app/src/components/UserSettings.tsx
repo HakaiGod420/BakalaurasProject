@@ -9,8 +9,8 @@ const defaultEmptyAddress: UserAddress = {
   Province: "",
   City: "",
   StreetName: "",
-  Map_X_Cords: undefined,
-  Map_Y_Cords: undefined,
+  Map_X_Coords: undefined,
+  Map_Y_Coords: undefined,
 };
 
 function UserSettingsMenu() {

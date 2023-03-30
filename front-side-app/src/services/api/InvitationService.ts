@@ -1,6 +1,10 @@
 import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
-import { InvitationStateChange, UserInvitation } from "../types/Invitation";
+import {
+  InvitationStateChange,
+  SentPersonalInvitation,
+  UserInvitation,
+} from "../types/Invitation";
 
 export async function getActiveIntitations() {
   const token = JSON.parse(localStorage.getItem("token") ?? "{}");
@@ -99,4 +103,21 @@ export async function getActiveInvitationCount() {
   } else {
     return 0;
   }
+}
+
+export async function sentPersonalInvitation(
+  invitation: SentPersonalInvitation
+) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
+
+  await axios
+    .post(
+      SERVER_API + "/api/gameboardinvitation/sentInvitationToUser",
+      invitation
+    )
+    .catch((error) => {
+      console.log(error);
+    });
 }

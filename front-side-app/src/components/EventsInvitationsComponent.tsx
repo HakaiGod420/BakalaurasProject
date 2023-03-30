@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import {
   getAcceptedInvitations,
@@ -11,6 +12,7 @@ import {
   UserInvitation,
 } from "../services/types/Invitation";
 import EventCard from "./core/EventCard";
+import LoadingComponent from "./core/LoadingComponent";
 import SectionDivider from "./core/SectionDivider";
 
 function EventsInvitationComponent() {
@@ -22,6 +24,7 @@ function EventsInvitationComponent() {
   };
 
   const [invitations, setInvitations] = useState<UserInvitation[]>([]);
+  const [loading, setLoading] = useState(true);
   const [accpetedInvitation, setAcceptedInvitations] =
     useRecoilState(acceptedInvitations);
 
@@ -33,7 +36,7 @@ function EventsInvitationComponent() {
   const totalPages = Math.ceil(invitations.length / itemsPerPage);
 
   const onAccept = async (invitationId: number) => {
-    console.log("sad");
+    const loading = toast.loading("Accepting invitation...");
     const newState: InvitationStateChange = {
       InvitationId: invitationId,
       State: "accept",
@@ -45,9 +48,14 @@ function EventsInvitationComponent() {
         (invitation) => invitation.InvitationId !== invitationId
       )
     );
+
+    toast.success("Invitation accepted", {
+      id: loading,
+    });
   };
 
   const onReject = async (invitationId: number) => {
+    const loading = toast.loading("Rejecting invitation...");
     const newState: InvitationStateChange = {
       InvitationId: invitationId,
       State: "decline",
@@ -62,12 +70,16 @@ function EventsInvitationComponent() {
 
     const responseAccepted = await getAcceptedInvitations();
     setAcceptedInvitations(responseAccepted);
+    toast.success("Invitation rejected", {
+      id: loading,
+    });
   };
 
   useEffect(() => {
     const fetchUserSettings = async () => {
       const response = await getActiveIntitations();
       setInvitations(response);
+      setLoading(false);
     };
     fetchUserSettings();
   }, []);
@@ -107,9 +119,13 @@ function EventsInvitationComponent() {
         </div>
         {invitations.length === 0 && (
           <div>
-            <p className="text-gray-700 text-[50px] font-bold flex justify-center opacity-25">
-              No invitations
-            </p>
+            {!loading ? (
+              <p className="text-gray-700 text-[50px] font-bold flex justify-center opacity-25">
+                No invitations
+              </p>
+            ) : (
+              <LoadingComponent />
+            )}
           </div>
         )}
       </div>

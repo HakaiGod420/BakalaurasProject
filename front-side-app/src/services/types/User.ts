@@ -15,8 +15,8 @@ export interface UserAddress {
   City: string;
   StreetName: string;
   Province: string;
-  Map_X_Cords: number | undefined;
-  Map_Y_Cords: number | undefined;
+  Map_X_Coords: number | undefined;
+  Map_Y_Coords: number | undefined;
 }
 
 export interface UserSettings {

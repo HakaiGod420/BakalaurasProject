@@ -8,6 +8,7 @@ import {
   UserInvitation,
 } from "../services/types/Invitation";
 import EventCard from "./core/EventCard";
+import LoadingComponent from "./core/LoadingComponent";
 import SectionDivider from "./core/SectionDivider";
 
 function CreatedInvitationList() {
@@ -19,6 +20,8 @@ function CreatedInvitationList() {
   };
 
   const [invitations, setInvitations] = useState<UserInvitation[]>([]);
+
+  const [loading, setLoading] = useState(true);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -60,6 +63,7 @@ function CreatedInvitationList() {
     const fetchCreatedInvitations = async () => {
       const response = await getCreatedInvitations();
       setInvitations(response);
+      setLoading(false);
     };
     console.log(invitations);
     fetchCreatedInvitations();
@@ -100,9 +104,13 @@ function CreatedInvitationList() {
         </div>
         {invitations.length === 0 && (
           <div>
-            <p className="text-gray-700 text-[50px] font-bold flex justify-center opacity-25">
-              No created invitations
-            </p>
+            {!loading ? (
+              <p className="text-gray-700 text-[50px] font-bold flex justify-center opacity-25">
+                No created invitations
+              </p>
+            ) : (
+              <LoadingComponent />
+            )}
           </div>
         )}
       </div>

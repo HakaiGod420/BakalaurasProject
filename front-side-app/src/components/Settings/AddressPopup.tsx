@@ -1,6 +1,11 @@
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import marker from "../../assets/images/market.png";
 import { updateAddress } from "../../services/api/UserServics";
+import { MapCoordinates } from "../../services/types/Miscellaneous";
 import { AddressEdit, UserAddress } from "../../services/types/User";
 import SectionDivider from "../core/SectionDivider";
 
@@ -9,6 +14,11 @@ interface AddressPopupProps {
   invtitationsEnbaled: boolean | undefined;
   onClose: () => void;
 }
+
+const defaultCords: MapCoordinates = {
+  Lat: 0,
+  Lng: 0,
+};
 
 const AddressPopup: React.FC<AddressPopupProps> = ({
   onClose,
@@ -22,21 +32,57 @@ const AddressPopup: React.FC<AddressPopupProps> = ({
     invtitationsEnbaled!
   );
 
-  const handleChange = (name: string, value: string | boolean | undefined) => {
-    setAdditableAddress({
-      ...editAddress,
-      [name]: value,
+  const icon = L.icon({ iconUrl: marker, iconSize: [40, 40] });
+
+  const [mapCoords, setMapCoords] = useState<MapCoordinates>(defaultCords);
+
+  const [markerShow, setMarkerShow] = useState<boolean>(false);
+
+  const LocationFinderDummy = () => {
+    const map = useMapEvents({
+      click(e) {
+        if (e.latlng.lat !== 0 || e.latlng.lng !== 0) {
+          const newCords: MapCoordinates = {
+            Lat: e.latlng.lat,
+            Lng: e.latlng.lng,
+          };
+          setMapCoords(newCords);
+          handleChange("Map_X_Coords", mapCoords.Lat);
+          handleChange("Map_Y_Coords", mapCoords.Lng);
+          setMarkerShow(true);
+        }
+      },
     });
-    console.log(editAddress);
+    return null;
+  };
+
+  const GetLatLng = (e: L.LatLng) => {
+    const lating: MapCoordinates = {
+      Lat: e.lat,
+      Lng: e.lng,
+    };
+    setMapCoords(lating);
+  };
+
+  const handleChange = (
+    name: keyof UserAddress,
+    value: string | boolean | number | undefined
+  ) => {
+    setAdditableAddress((prevAddress) => ({
+      ...prevAddress,
+      [name]: value,
+    }));
   };
 
   const postAddress = async (e: React.FormEvent<HTMLFormElement>) => {
     const loading = toast.loading("Updating address...");
     e.preventDefault();
+
     const newAddress: AddressEdit = {
       Address: editAddress,
       EnabledInvitationSettings: notificationEnabled,
     };
+    console.log(newAddress);
     await updateAddress(newAddress);
     toast.success("Updated successfully", {
       id: loading,
@@ -94,7 +140,37 @@ const AddressPopup: React.FC<AddressPopupProps> = ({
           </label>
           {showMap && (
             <div className="h-64 w-full mb-4 border rounded-md">
-              Map implementation
+              <MapContainer
+                center={
+                  editAddress.Map_X_Coords && editAddress.Map_Y_Coords
+                    ? [editAddress.Map_X_Coords, editAddress.Map_Y_Coords]
+                    : [54.90606490004955, 23.934473227312246]
+                }
+                zoom={13}
+                scrollWheelZoom={false}
+                style={{ height: "100%", minHeight: "100%" }}
+              >
+                <LocationFinderDummy />
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {(editAddress.Map_X_Coords !== 0 ||
+                  editAddress.Map_Y_Coords !== 0) && (
+                  <Marker
+                    draggable={true}
+                    icon={icon}
+                    position={
+                      editAddress.Map_X_Coords && editAddress.Map_Y_Coords
+                        ? [editAddress.Map_X_Coords, editAddress.Map_Y_Coords]
+                        : [0, 0]
+                    }
+                    eventHandlers={{
+                      mouseup: (e) => GetLatLng(e.latlng),
+                    }}
+                  ></Marker>
+                )}
+              </MapContainer>
             </div>
           )}
           <label className="flex items-center cursor-pointer mb-4 text-black">

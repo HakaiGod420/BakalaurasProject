@@ -34,3 +34,8 @@ export interface InvitationStateChange {
   InvitationId: number;
   State: string;
 }
+
+export interface SentPersonalInvitation {
+  UserName: string | undefined;
+  ActiveInvitationId: number;
+}
