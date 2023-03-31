@@ -30,6 +30,7 @@ import "primereact/resources/primereact.min.css";
 
 import "primeicons/primeicons.css";
 
+import BoardList from "./pages/boardList";
 import MyEvents from "./pages/myEvents";
 import Settings from "./pages/settings";
 import UserProfile from "./pages/userProfile";
@@ -83,6 +84,7 @@ function App() {
           <Route path="/profile/:username" element={<UserProfile />} />
           <Route path="/myeventes/" element={<MyEvents />} />
           <Route path="/settings/*" element={<Settings />} />
+          <Route path="/gameboards/" element={<BoardList />} />
         </Routes>
       </Content>
       <Footer />

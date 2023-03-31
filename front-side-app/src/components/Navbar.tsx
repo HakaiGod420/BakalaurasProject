@@ -52,15 +52,15 @@ export default function Navbar() {
                     to="/tableboardgames"
                     className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-green-700 md:p-0"
                   >
-                    Table Game Boards
+                    Add table board game
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="#"
+                    to={"/gameboards"}
                     className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-green-700 md:p-0"
                   >
-                    Pricing
+                    Table top game List
                   </Link>
                 </li>
                 <li>

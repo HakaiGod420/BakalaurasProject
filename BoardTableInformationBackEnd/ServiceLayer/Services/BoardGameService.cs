@@ -146,5 +146,10 @@ namespace ServiceLayer.Services
         {
             return await _gameBoardRepository.GetBoardsSimple(stringPart);
         }
+
+        public async Task<List<GameBoardCardItemDTO>> GetBoardCardItems(int startIndex, int backIndex)
+        {
+            return await _gameBoardRepository.GetGameBoardInfo(startIndex,backIndex);
+        }
     }
 }

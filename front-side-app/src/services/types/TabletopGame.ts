@@ -35,3 +35,10 @@ export interface SimpleTableTop {
   Id: string;
   Title: string;
 }
+
+export interface TableTopGameCard {
+  GameBoardId: string;
+  Title: string;
+  ReleaseDate: string;
+  Thumbnail: File;
+}

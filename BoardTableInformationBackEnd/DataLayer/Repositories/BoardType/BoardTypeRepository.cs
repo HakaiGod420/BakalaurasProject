@@ -1,6 +1,7 @@
 ﻿using DataLayer.DBContext;
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using ModelLayer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

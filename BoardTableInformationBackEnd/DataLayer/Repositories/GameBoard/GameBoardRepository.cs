@@ -31,7 +31,36 @@ namespace DataLayer.Repositories.GameBoard
                 .Where(x => x.Title.StartsWith(titlePart))
                 .Select(x => new BoardGameSimpleDto { Id = x.BoardGameId, Title = x.Title })
                 .ToListAsync();
-            return result; 
+            return result;
+        }
+
+        public async Task<List<GameBoardCardItemDTO>> GetGameBoardInfo(int startIndex, int endIndex)
+        {
+            var query = _dbContext.BoardGames
+                .Where(x => x.TableBoardStateId == ModelLayer.Enum.TableBoardState.Activated)
+                .OrderBy(x => x.Title)
+                .Select(x => new GameBoardCardItemDTO
+                {
+                    GameBoardId = x.BoardGameId,
+                    Title = x.Title,
+                    ReleaseDate = x.CreationTime,
+                    ThumbnailLocation = x.Thubnail_Location,
+
+                });
+
+            var count = await query.CountAsync();
+            if (count <= endIndex)
+            {
+                endIndex = count+1;
+            }
+
+            var result = await query
+                .Skip(startIndex)
+                .Take(endIndex - startIndex)
+                .ToListAsync();
+
+            return result;
+
         }
     }
 }
