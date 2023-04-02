@@ -1,9 +1,11 @@
 ﻿using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using ModelLayer.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,6 +83,7 @@ namespace DataLayer.DBContext
             builder.Entity<SentInvitationEntity>().HasOne(x => x.User).WithMany(x => x.ReceivedInvitations).HasForeignKey(x => x.UserId);
 
             builder.Entity<SentInvitationEntity>().HasOne(x => x.InvitationState).WithMany(x => x.Invitations).HasForeignKey(x => x.InvitationStateId);
+
 
 
             /*

@@ -11,6 +11,7 @@ namespace ServiceLayer.Interfaces
     {
         public Task<CreatedGameBoard> CreateGameBoard(CreateBoardGame board,int userId);
         public Task<List<BoardGameSimpleDto>> GetBoardGamesForSelect(string stringPart);
-        public Task<List<GameBoardCardItemDTO>> GetBoardCardItems(int startIndex, int backIndex);
+        public Task<GameCardListResponse> GetBoardCardItems(int startIndex, int backIndex);
+        public Task<SingleGameBoardView?> GetGameBoard(int boardId);
     }
 }

@@ -12,6 +12,7 @@ namespace DataLayer.Repositories.GameBoard
     {
         public Task<BoardGameEntity> AddGameBoard(BoardGameEntity tableBoard);
         public Task<List<BoardGameSimpleDto>> GetBoardsSimple(string titlePart);
-        public Task<List<GameBoardCardItemDTO>> GetGameBoardInfo(int startIndex, int endIndex);
+        public Task <GameCardListResponse> GetGameBoardInfo(int startIndex, int endIndex);
+        public Task<SingleGameBoardView?> GetGameBoard(int id);
     }
 }

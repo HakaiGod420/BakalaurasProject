@@ -87,7 +87,7 @@ function BoardList() {
   return (
     <div className="bg-white">
       <div className="p-2">
-        <GameCardList games={games} itemsPerLoad={3} />
+        <GameCardList />
       </div>
     </div>
   );

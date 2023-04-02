@@ -1,51 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { getBoardGameList } from "../services/api/GameBoardService";
 import { TableTopGameCard } from "../services/types/TabletopGame";
+import GameCard from "./core/GameCard";
 import LoadingComponent from "./core/LoadingComponent";
 
-interface GameCardProps {
-  title: string;
-  releaseDate: string;
-  imageUrl: string;
-}
-
-const GameCard: React.FC<GameCardProps> = ({
-  title,
-  releaseDate,
-  imageUrl,
-}) => {
-  const [isHovering, setIsHovering] = useState(false);
-
-  return (
-    <Link to={"#"}>
-      <div
-        className={`mb-5 relative flex flex-col justify-between rounded-lg overflow-hidden shadow-lg ${
-          isHovering
-            ? "scale-110 transform transition duration-500 ease-in-out"
-            : ""
-        }`}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-        <img src={imageUrl} alt={title} className="w-full h-64 object-cover" />
-        <div className="bg-gray-900 text-white p-4">
-          <h3 className="text-lg font-bold">{title}</h3>
-          <p className="text-sm">{releaseDate}</p>
-        </div>
-      </div>
-    </Link>
-  );
-};
-
-interface GameCardListProps {
-  games: GameCardProps[];
-  itemsPerLoad: number;
-}
-
-const GameCardList: React.FC<GameCardListProps> = ({ games, itemsPerLoad }) => {
-  const [loadedGames, setLoadedGames] = useState<GameCardProps[]>([]);
+const GameCardList: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const [totalCount, setTotalCount] = useState(0);
 
   const [gameBoards, setGameBoards] = useState<TableTopGameCard[] | undefined>(
     []
@@ -57,18 +19,18 @@ const GameCardList: React.FC<GameCardListProps> = ({ games, itemsPerLoad }) => {
     (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
       const target = entries[0];
 
-      if (target.isIntersecting) {
+      if (target.isIntersecting && totalCount > gameBoards?.length!) {
         setIsLoading(true);
-        setTimeout(() => {
-          const startIndex = loadedGames.length;
-          const endIndex = startIndex + itemsPerLoad;
-          const newGames = games.slice(startIndex, endIndex);
-          setLoadedGames([...loadedGames, ...newGames]);
+        setTimeout(async () => {
+          const startIndex = gameBoards ? gameBoards.length : 0;
+          const endIndex = startIndex + 5;
+          const newGames = await getBoardGameList(startIndex, endIndex);
+          setGameBoards([...gameBoards!, ...newGames?.BoardGames!]);
           setIsLoading(false);
         }, 1000);
       }
     },
-    [games, itemsPerLoad, loadedGames]
+    [gameBoards, totalCount]
   );
 
   useEffect(() => {
@@ -78,7 +40,7 @@ const GameCardList: React.FC<GameCardListProps> = ({ games, itemsPerLoad }) => {
       threshold: 1.0,
     });
 
-    if (observer.current && games.length > 0) {
+    if (observer.current && gameBoards ? gameBoards.length > 0 : false) {
       observer.current.observe(document.querySelector("#sentinel")!);
     }
 
@@ -87,24 +49,22 @@ const GameCardList: React.FC<GameCardListProps> = ({ games, itemsPerLoad }) => {
         observer.current.disconnect();
       }
     };
-  }, [games, loadMore]);
+  }, [gameBoards, loadMore]);
 
   useEffect(() => {
     const fetchGameBoards = async () => {
-      const response = await getBoardGameList(0, 1);
-      setGameBoards(response);
+      const response = await getBoardGameList(0, 5);
+      setGameBoards(response?.BoardGames);
+      setTotalCount(response?.TotalCount!);
     };
     fetchGameBoards();
   }, []);
 
   return (
     <div className="max-w-[1240px] mx-auto mt-10">
-      {gameBoards?.map((game) => (
-        <p>a</p>
-      ))}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {loadedGames.map((game) => (
-          <GameCard key={game.title} {...game} />
+        {gameBoards?.map((game) => (
+          <GameCard key={game.GameBoardId} {...game} />
         ))}
         <div
           id="sentinel"

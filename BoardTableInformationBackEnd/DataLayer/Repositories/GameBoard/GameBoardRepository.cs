@@ -34,7 +34,49 @@ namespace DataLayer.Repositories.GameBoard
             return result;
         }
 
-        public async Task<List<GameBoardCardItemDTO>> GetGameBoardInfo(int startIndex, int endIndex)
+        public async Task<SingleGameBoardView?> GetGameBoard(int id)
+        {
+            var result = await _dbContext.BoardGames
+                .Include(a => a.Categories)
+                .Include(a=> a.BoardTypes)
+                .Include(a=>a.User)
+                .Include(a=>a.Images)
+                .Include(a=>a.AditionalFiles)
+                .SingleOrDefaultAsync(x=> x.BoardGameId == id);
+
+            if (result != null)
+            {
+                var finalObject = new SingleGameBoardView
+                {
+                    BoardGameId = result.BoardGameId,
+                    Title = result.Title,
+                    PlayerCount = result.PlayerCount,
+                    PlayableAge = result.PlayableAge,
+                    Description = result.Description,
+                    CreationTime = result.CreationTime,
+                    UpdateDate = result.UpdateTime,
+                    Rules = result.Rules,
+                    Thumbnail_Location = result.Thubnail_Location,
+                    CreatorId = result.UserId,
+                    CreatorName = result.User.UserName,
+                    Categories = result.Categories.Select(x => x.CategoryName).ToList(),
+                    Types = result.BoardTypes.Select(x => x.BoardTypeName).ToList(),
+                    ImageUrls = result.Images.Select(x => x.Location + "/" + x.Alias).ToList(),
+                    FileUrls = result.AditionalFiles.Select(x => x.FileLocation + "/" + x.FileName).ToList(),
+                };
+
+                //finalObject.CreatorName = _dbContext
+
+                return finalObject;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        public async Task<GameCardListResponse> GetGameBoardInfo(int startIndex, int endIndex)
         {
             var query = _dbContext.BoardGames
                 .Where(x => x.TableBoardStateId == ModelLayer.Enum.TableBoardState.Activated)
@@ -44,11 +86,12 @@ namespace DataLayer.Repositories.GameBoard
                     GameBoardId = x.BoardGameId,
                     Title = x.Title,
                     ReleaseDate = x.CreationTime,
-                    ThumbnailLocation = x.Thubnail_Location,
+                    ThumbnailName = x.Thubnail_Location,
 
                 });
 
             var count = await query.CountAsync();
+
             if (count <= endIndex)
             {
                 endIndex = count+1;
@@ -59,7 +102,11 @@ namespace DataLayer.Repositories.GameBoard
                 .Take(endIndex - startIndex)
                 .ToListAsync();
 
-            return result;
+            return new GameCardListResponse
+            {
+                BoardGames = result,
+                TotalCount = count
+            };
 
         }
     }

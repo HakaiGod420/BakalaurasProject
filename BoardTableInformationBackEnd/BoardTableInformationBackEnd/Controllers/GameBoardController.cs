@@ -45,51 +45,40 @@ namespace BoardTableInformationBackEnd.Controllers
         }
 
         [HttpGet("getBoardCardItems")]
-        [ProducesResponseType(typeof(List<GameBoardCardItemDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GameCardListResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetBoardCardItems([FromQuery]int startIndex, [FromQuery] int backIndex)
         {
             var listOfBoards = await _gameBoardService.GetBoardCardItems(startIndex, backIndex);
 
-            foreach (var item in listOfBoards)
+            foreach (var item in listOfBoards.BoardGames)
             {
                 var folderName = Regex.Replace(item.Title, @"[^a-zA-Z0-9 ]+", "_");
                 folderName = Regex.Replace(folderName, @"\s+", "_");
 
-                var fileFullLocation = Directory.GetCurrentDirectory() + "\\Files\\Images\\" + folderName + "\\"+item.ThumbnailLocation;
+                var fileFullLocation = Directory.GetCurrentDirectory() + "\\Files\\Images\\" + folderName + "\\"+item.ThumbnailName;
+
                 if (System.IO.File.Exists(fileFullLocation))
                 {
-                    string fileName = Path.GetFileName(fileFullLocation);
-
-                    string fileExtension = Path.GetExtension(fileFullLocation).ToLower();
-                    string contentType = "";
-
-                    switch (fileExtension)
-                    {
-                        case ".jpg":
-                        case ".jpeg":
-                            contentType = "image/jpeg";
-                            break;
-                        case ".png":
-                            contentType = "image/png";
-                            break;
-                        default:
-                            contentType = "application/octet-stream";
-                            break;
-                    }
-
-                    FileStream fileStream = new FileStream(fileFullLocation, FileMode.Open);
-
-                    item.Thumbnail = new FormFile(fileStream, 0, fileStream.Length, fileName, fileName)
-                    {
-                        Headers = new HeaderDictionary(),
-                        ContentType = contentType
-                    };
-                    fileStream.Close();
+                    item.ThumbnailURL = "/Images/"+folderName+"/" + item.ThumbnailName;
                 }
 
             }
 
             return new OkObjectResult(listOfBoards);
+        }
+
+        [HttpGet("getSingleBoard")]
+        [ProducesResponseType(typeof(SingleGameBoardView), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetSingleBoard([FromQuery]int boardId)
+        {
+            var board = await _gameBoardService.GetGameBoard(boardId);
+            if (board == null)
+            {
+               return NotFound("Game board was not found");
+            }
+
+            return new OkObjectResult(board);
         }
 
     }

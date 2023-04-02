@@ -40,5 +40,12 @@ export interface TableTopGameCard {
   GameBoardId: string;
   Title: string;
   ReleaseDate: string;
-  Thumbnail: File;
+  ThumbnailURL: string | undefined;
+  ThumbnailName: string;
 }
+
+export interface TableTopGameCardsResponse {
+  BoardGames: TableTopGameCard[];
+  TotalCount: number;
+}
+

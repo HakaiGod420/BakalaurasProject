@@ -1,7 +1,9 @@
 using DataLayer.DBContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -80,6 +82,12 @@ namespace BoardTableInformationBackEnd
             app.UseCors("corspolicy");
 
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Environment.CurrentDirectory, "Files","Images")),
+                RequestPath = "/Images"
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
