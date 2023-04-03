@@ -36,6 +36,7 @@ import Settings from "./pages/settings";
 import UserProfile from "./pages/userProfile";
 import { getActiveInvitationCount } from "./services/api/InvitationService";
 import { JWTDeCode } from "./services/types/Miscellaneous";
+import Gameboard from "./pages/gameboard";
 
 function App() {
   const [, setUsername] = useRecoilState(userName);
@@ -85,6 +86,7 @@ function App() {
           <Route path="/myeventes/" element={<MyEvents />} />
           <Route path="/settings/*" element={<Settings />} />
           <Route path="/gameboards/" element={<BoardList />} />
+          <Route path="/gameboards/:id" element={<Gameboard />} />
         </Routes>
       </Content>
       <Footer />
