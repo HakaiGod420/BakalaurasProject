@@ -11,9 +11,11 @@ import {
   FaFileWord,
 } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
+import { SERVER_API } from "../../services/constants/ClienConstants";
+import { TabletopAditionalFile } from "../../services/types/TabletopGame";
 
 interface AditionalFilesProps {
-  files: { name: string; url: string }[];
+  files: TabletopAditionalFile[];
 }
 
 const getFileTypeIcon = (fileName: string) => {
@@ -66,11 +68,11 @@ const AditionalFiles: React.FC<AditionalFilesProps> = ({ files }) => {
             className="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-lg shadow-md"
           >
             <div className="flex items-center">
-              {getFileTypeIcon(file.name)}
-              <span className="text-gray-100 ml-2">{file.name}</span>
+              {getFileTypeIcon(file.FileName)}
+              <span className="text-gray-100 ml-2">{file.FileName}</span>
             </div>
             <a
-              href={file.url}
+              href={SERVER_API + "/" + file.Location}
               download
               className="text-gray-400 hover:text-gray-100"
             >

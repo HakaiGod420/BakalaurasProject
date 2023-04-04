@@ -89,6 +89,13 @@ namespace BoardTableInformationBackEnd
                 RequestPath = "/Images"
             });
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Environment.CurrentDirectory, "Files", "AditionalFiles")),
+                RequestPath = "/AditionalFiles"
+            });
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

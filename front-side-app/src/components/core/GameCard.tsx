@@ -6,6 +6,7 @@ import { SERVER_API } from "../../services/constants/ClienConstants";
 import { TableTopGameCard } from "../../services/types/TabletopGame";
 
 const GameCard: React.FC<TableTopGameCard> = ({
+  GameBoardId,
   Title,
   ReleaseDate,
   ThumbnailURL,
@@ -14,7 +15,7 @@ const GameCard: React.FC<TableTopGameCard> = ({
   const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <Link to={"#"}>
+    <Link to={"./" + GameBoardId}>
       <div
         className={`mb-5 relative flex flex-col justify-between rounded-lg overflow-hidden shadow-lg ${
           isHovering

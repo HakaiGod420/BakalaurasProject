@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { FaArrowLeft, FaArrowRight, FaTimes } from "react-icons/fa";
+import { SERVER_API } from "../../services/constants/ClienConstants";
+import { TabletopImage } from "../../services/types/TabletopGame";
 
 interface GameImagesProps {
-  images: string[];
+  images: TabletopImage[];
 }
 
-const GameImages: React.FC<GameImagesProps> = ({ images }) => {
+const GameImages = ({ images }: GameImagesProps) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
@@ -20,7 +22,6 @@ const GameImages: React.FC<GameImagesProps> = ({ images }) => {
   };
 
   const handleFullscreenNext = () => {
-    console.log("im yere");
     setSelectedImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
@@ -45,14 +46,14 @@ const GameImages: React.FC<GameImagesProps> = ({ images }) => {
       <div className="grid grid-cols-3 gap-4">
         {images.map((imageUrl, index) => (
           <motion.div
-            key={imageUrl}
+            key={SERVER_API + "/" + imageUrl.Location}
             className="relative cursor-pointer rounded-md overflow-hidden"
             onClick={() => handleImageClick(index)}
             initial={{ scale: 0.95 }}
             whileHover={{ scale: 1 }}
           >
             <img
-              src={imageUrl}
+              src={SERVER_API + "/" + imageUrl.Location}
               alt={`Game Image ${index}`}
               className="w-full h-40 object-cover"
             />
@@ -81,7 +82,7 @@ const GameImages: React.FC<GameImagesProps> = ({ images }) => {
             exit={{ opacity: 0, y: 50 }}
           >
             <img
-              src={images[selectedImageIndex]}
+              src={SERVER_API + "/" + images[selectedImageIndex].Location}
               alt={`Game Image ${selectedImageIndex}`}
               className="w-full h-full object-contain"
             />
@@ -93,7 +94,7 @@ const GameImages: React.FC<GameImagesProps> = ({ images }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <FaArrowLeft  size={24} />
+              <FaArrowLeft size={24} />
             </motion.button>
             <motion.button
               className=" absolute top-1/2 right-2 transform -translate-y-1/2 text-white"

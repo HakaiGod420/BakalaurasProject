@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import { useState } from "react";
+import { SingleTabletopGame } from "../../services/types/TabletopGame";
 import AditionalFiles from "./AditionalFiles";
 import GameDescription from "./GameDescription";
 import GameImages from "./GameImages";
@@ -7,7 +8,11 @@ import GameReviews from "./GameReviews";
 
 type Tab = "description" | "reviews" | "images" | "additional_files";
 
-const TableTopTabs: React.FC = () => {
+interface Props {
+  gameBoard: SingleTabletopGame;
+}
+
+const TableTopTabs = ({ gameBoard }: Props) => {
   const [activeTab, setActiveTab] = useState<Tab>("description");
 
   const handleTabClick = (tab: Tab) => {
@@ -100,12 +105,10 @@ const TableTopTabs: React.FC = () => {
               animate="visible"
             >
               <GameDescription
-                categories={["Strategy", "Family", "Life"]}
-                types={["Strategy", "Family", "Life"]}
-                description={
-                  "asdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasd"
-                }
-                rules="asdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasdasdasdasdasdadfadfasdfasd"
+                categories={gameBoard.Categories}
+                types={gameBoard.Types}
+                description={gameBoard.Description}
+                rules={gameBoard.Rules}
               />
             </motion.div>
           )}
@@ -124,7 +127,7 @@ const TableTopTabs: React.FC = () => {
               initial="hidden"
               animate="visible"
             >
-              <GameImages images={images} />
+              <GameImages images={gameBoard.Images} />
             </motion.div>
           )}
           {activeTab === "additional_files" && (
@@ -133,7 +136,7 @@ const TableTopTabs: React.FC = () => {
               initial="hidden"
               animate="visible"
             >
-              <AditionalFiles files={files} />
+              <AditionalFiles files={gameBoard.Files} />
             </motion.div>
           )}
         </div>

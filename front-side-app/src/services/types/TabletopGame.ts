@@ -49,3 +49,30 @@ export interface TableTopGameCardsResponse {
   TotalCount: number;
 }
 
+export interface SingleTabletopGame {
+  BoardGameId: number;
+  Title: string;
+  PlayerCount: number | undefined;
+  PlayableAge: number | undefined;
+  Description: string;
+  CreationTime: string;
+  UpdateDate: string | undefined;
+  Rules: string | undefined;
+  Thumbnail_Location: string;
+  CreatorName: string;
+  CreatorId: number;
+  Categories: string[];
+  Types: string[];
+  Images: TabletopImage[];
+  Files: TabletopAditionalFile[];
+}
+
+export interface TabletopImage {
+  FileName: string;
+  Location: string;
+}
+
+export interface TabletopAditionalFile {
+  FileName: string;
+  Location: string;
+}

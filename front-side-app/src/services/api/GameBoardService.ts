@@ -1,6 +1,9 @@
 import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
-import { TableTopGameCardsResponse } from "../types/TabletopGame";
+import {
+  SingleTabletopGame,
+  TableTopGameCardsResponse,
+} from "../types/TabletopGame";
 
 export async function getBoardGameList(startIndex: number, endIndex: number) {
   const response = await axios
@@ -15,5 +18,16 @@ export async function getBoardGameList(startIndex: number, endIndex: number) {
     });
 
   console.log(response?.data);
+  return response?.data;
+}
+
+export async function getGameBoard(boardId: number) {
+  const response = await axios
+    .get<SingleTabletopGame>(SERVER_API + "/api/gameboard/getSingleBoard", {
+      params: { boardId: boardId },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   return response?.data;
 }

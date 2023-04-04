@@ -21,7 +21,7 @@ namespace ModelLayer.DTO
         public int CreatorId { get; set; }
         public List<string> Categories { get; set; }
         public List<string> Types { get; set; }
-        public List<string> ImageUrls { get; set; }
-        public List<string> FileUrls { get; set; }
+        public List<GetImageDTO> Images { get; set; }
+        public List<GetAditionalFilesDTO> Files { get; set; }
     }
 }
