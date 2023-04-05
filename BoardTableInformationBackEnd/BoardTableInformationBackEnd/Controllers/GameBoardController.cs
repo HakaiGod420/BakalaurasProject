@@ -46,9 +46,9 @@ namespace BoardTableInformationBackEnd.Controllers
 
         [HttpGet("getBoardCardItems")]
         [ProducesResponseType(typeof(GameCardListResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetBoardCardItems([FromQuery]int startIndex, [FromQuery] int backIndex)
+        public async Task<IActionResult> GetBoardCardItems([FromQuery]int startIndex, [FromQuery] int backIndex, [FromQuery] string? searchTerm = null)
         {
-            var listOfBoards = await _gameBoardService.GetBoardCardItems(startIndex, backIndex);
+            var listOfBoards = await _gameBoardService.GetBoardCardItems(startIndex, backIndex,searchTerm);
 
             foreach (var item in listOfBoards.BoardGames)
             {

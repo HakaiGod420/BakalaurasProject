@@ -5,12 +5,20 @@ import {
   TableTopGameCardsResponse,
 } from "../types/TabletopGame";
 
-export async function getBoardGameList(startIndex: number, endIndex: number) {
+export async function getBoardGameList(
+  startIndex: number,
+  endIndex: number,
+  searchTerm: string | null
+) {
   const response = await axios
     .get<TableTopGameCardsResponse>(
       SERVER_API + "/api/gameboard/getBoardCardItems",
       {
-        params: { startIndex: startIndex, backIndex: endIndex },
+        params: {
+          startIndex: startIndex,
+          backIndex: endIndex,
+          searchTerm: searchTerm,
+        },
       }
     )
     .catch((error) => {

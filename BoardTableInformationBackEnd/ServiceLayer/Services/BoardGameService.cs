@@ -147,9 +147,9 @@ namespace ServiceLayer.Services
             return await _gameBoardRepository.GetBoardsSimple(stringPart);
         }
 
-        public async Task<GameCardListResponse> GetBoardCardItems(int startIndex, int backIndex)
+        public async Task<GameCardListResponse> GetBoardCardItems(int startIndex, int backIndex, string? searchTerm)
         {
-            return await _gameBoardRepository.GetGameBoardInfo(startIndex,backIndex);
+            return await _gameBoardRepository.GetGameBoardInfo(startIndex,backIndex, searchTerm);
         }
 
         public async Task<SingleGameBoardView?> GetGameBoard(int boardId)

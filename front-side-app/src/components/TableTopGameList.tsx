@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getBoardGameList } from "../services/api/GameBoardService";
 import { TableTopGameCard } from "../services/types/TabletopGame";
+import FilterComponent from "./core/FilterComponent";
 import GameCard from "./core/GameCard";
 import LoadingComponent from "./core/LoadingComponent";
 
@@ -13,6 +15,12 @@ const GameCardList: React.FC = () => {
     []
   );
 
+  const [searchTerm, setSearchTerm] = useSearchParams();
+
+  const searchTermText = searchTerm.get("searchTerm");
+
+  console.log(searchTermText);
+
   const observer = useRef<IntersectionObserver | null>(null);
 
   const loadMore = useCallback(
@@ -24,7 +32,11 @@ const GameCardList: React.FC = () => {
         setTimeout(async () => {
           const startIndex = gameBoards ? gameBoards.length : 0;
           const endIndex = startIndex + 5;
-          const newGames = await getBoardGameList(startIndex, endIndex);
+          const newGames = await getBoardGameList(
+            startIndex,
+            endIndex,
+            searchTermText
+          );
           setGameBoards([...gameBoards!, ...newGames?.BoardGames!]);
           setIsLoading(false);
         }, 1000);
@@ -53,7 +65,7 @@ const GameCardList: React.FC = () => {
 
   useEffect(() => {
     const fetchGameBoards = async () => {
-      const response = await getBoardGameList(0, 5);
+      const response = await getBoardGameList(0, 5, searchTermText);
       setGameBoards(response?.BoardGames);
       setTotalCount(response?.TotalCount!);
     };
@@ -62,7 +74,8 @@ const GameCardList: React.FC = () => {
 
   return (
     <div className="max-w-[1240px] mx-auto mt-10">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <FilterComponent />
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-5">
         {gameBoards?.map((game) => (
           <GameCard key={game.GameBoardId} {...game} />
         ))}

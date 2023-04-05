@@ -5,3 +5,4 @@ export const selectedGameBoard = atom<SimpleTableTop | undefined>({
   key: "selectedGameBoard",
   default: undefined,
 });
+

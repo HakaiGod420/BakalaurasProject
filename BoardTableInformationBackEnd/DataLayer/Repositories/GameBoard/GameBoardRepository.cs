@@ -75,7 +75,7 @@ namespace DataLayer.Repositories.GameBoard
 
         }
 
-        public async Task<GameCardListResponse> GetGameBoardInfo(int startIndex, int endIndex)
+        public async Task<GameCardListResponse> GetGameBoardInfo(int startIndex, int endIndex, string? searchTerm)
         {
             var query = _dbContext.BoardGames
                 .Where(x => x.TableBoardStateId == ModelLayer.Enum.TableBoardState.Activated)
@@ -88,6 +88,11 @@ namespace DataLayer.Repositories.GameBoard
                     ThumbnailName = x.Thubnail_Location,
 
                 });
+
+            if (searchTerm != null)
+            {
+                query = query.Where(x => x.Title.StartsWith(searchTerm));
+            }
 
             var count = await query.CountAsync();
 

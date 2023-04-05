@@ -8,6 +8,7 @@ import {
   userName,
   validTokenAtom,
 } from "../services/constants/recoil/globalStates";
+import SearchBar from "./core/SearchBar";
 
 export default function Navbar() {
   const [nav, setNav] = useState(true);
@@ -35,7 +36,7 @@ export default function Navbar() {
               TABLETOPGAMES.
             </h1>
           </Link>
-          <ul className="hidden md:flex">
+          <ul className="hidden md:flex items-center">
             <li className="p-4 m-auto">
               <ul className="flex-col md:flex-row flex md:space-x-8 mt-4 md:mt-0 md:text-sm md:font-medium">
                 <li>
@@ -63,15 +64,10 @@ export default function Navbar() {
                     Table top game List
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    to="#"
-                    className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-green-700 md:p-0"
-                  >
-                    Contact
-                  </Link>
-                </li>
               </ul>
+            </li>
+            <li className="flex items-center rounded-md bg-white h-10 min-w-0">
+              <SearchBar />
             </li>
             <li className="p-4">
               {!validToken ? (
