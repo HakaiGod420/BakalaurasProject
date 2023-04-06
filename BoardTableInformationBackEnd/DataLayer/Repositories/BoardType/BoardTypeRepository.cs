@@ -31,5 +31,15 @@ namespace DataLayer.Repositories.BoardType
         {
             return await _dbContext.BoardTypes.FirstOrDefaultAsync(x => x.BoardTypeName == typeBoardName);
         }
+
+        public async Task<List<TypeDTO>> GetTypes()
+        {
+            return await _dbContext.BoardTypes.Where(x => x.IsActive)
+                .Select(x => new TypeDTO
+                { 
+                    Value = x.BoardTypeId.ToString(),
+                    Label = x.BoardTypeName 
+                }).ToListAsync();
+        }
     }
 }

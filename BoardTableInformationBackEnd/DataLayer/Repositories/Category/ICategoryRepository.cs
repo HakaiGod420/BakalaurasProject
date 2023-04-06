@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models;
+using ModelLayer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace DataLayer.Repositories.Category
     {
         public Task<CategoryEntity?> GetCategory(string categoryName);
         public Task<CategoryEntity> CreateCategory(CategoryEntity category);
+        public Task<List<CategoryDTO>> GetCategories();
     }
 }

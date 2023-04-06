@@ -20,6 +20,7 @@ namespace DataLayer.Models
         [Required]
         [MaxLength(100)]
         public string BoardTypeName { get; set; }
+        public bool IsActive { get; set; } = false;
 
         public virtual ICollection<BoardGameEntity> Boards { get; set; }
     }

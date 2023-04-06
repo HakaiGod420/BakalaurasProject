@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
 import {
+  CategoriesAndTypes,
   SingleTabletopGame,
   TableTopGameCardsResponse,
 } from "../types/TabletopGame";
@@ -37,5 +38,15 @@ export async function getGameBoard(boardId: number) {
     .catch((error) => {
       console.log(error);
     });
+  return response?.data;
+}
+
+export async function getGameBoardTypesAndCategories() {
+  const response = await axios
+    .get<CategoriesAndTypes>(SERVER_API + "/api/selectList/typesAndCategories")
+    .catch((error) => {
+      console.log(error);
+    });
+
   return response?.data;
 }

@@ -12,5 +12,6 @@ namespace DataLayer.Repositories.BoardType
     {
         public Task<BoardTypeEntity?> GetType(string typeBoardName);
         public Task<BoardTypeEntity> CreateType(BoardTypeEntity boardType);
+        public Task<List<TypeDTO>> GetTypes();
     }
 }

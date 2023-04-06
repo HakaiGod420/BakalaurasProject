@@ -29,7 +29,7 @@ namespace BoardTableInformationBackEnd
             serviceCollection.AddScoped<IAddressService, AddressService>();
             serviceCollection.AddScoped<IAddressRepository, AddressRepository>();
             serviceCollection.AddScoped<IInvitationRepository, InvitationRepository>();
-
+            serviceCollection.AddScoped<ISelectListService, SelectListService>();
         }
     }
 }

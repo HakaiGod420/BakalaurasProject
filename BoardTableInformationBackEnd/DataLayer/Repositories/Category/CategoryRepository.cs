@@ -1,6 +1,7 @@
 ﻿using DataLayer.DBContext;
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using ModelLayer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,16 @@ namespace DataLayer.Repositories.Category
             _dbContext.Categories.Add(category);
             await _dbContext.SaveChangesAsync();
             return category;
+        }
+
+        public async Task<List<CategoryDTO>> GetCategories()
+        {
+            return await _dbContext.Categories.Where(x => x.IsActive).Select(x => new CategoryDTO
+            {
+                Value = x.CategoryId.ToString(),
+                Label = x.CategoryName
+            })
+            .ToListAsync();
         }
 
         public async Task<CategoryEntity?> GetCategory(string categoryName)

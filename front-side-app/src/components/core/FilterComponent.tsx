@@ -1,219 +1,284 @@
-import React, { useState } from "react";
-import { IoMdClose } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { FaSearch, FaTimes } from "react-icons/fa";
+import Select from "react-select";
+import { getGameBoardTypesAndCategories } from "../../services/api/GameBoardService";
+import {
+  CategoryOptions,
+  Filter,
+  TypeOptions,
+} from "../../services/types/TabletopGame";
 
-interface Category {
-  id: number;
-  name: string;
+interface FilterProps {
+  //onFilterChange: (filters: Filters) => void;
 }
 
-interface Type {
-  id: number;
-  name: string;
+interface Filters {
+  title: string;
+  rating: number | null;
+  creationDate: Date | null;
+  categories: string[];
+  types: string[];
 }
 
-const categories: Category[] = [
-  { id: 1, name: "Category 1" },
-  { id: 2, name: "Category 2" },
-  { id: 3, name: "Category 3" },
-];
+const FilterComponent: React.FC<FilterProps> = () => {
+  const [types, setTypes] = useState<TypeOptions[]>([]);
+  const [categories, setCategories] = useState<CategoryOptions[]>([]);
 
-const types: Type[] = [
-  { id: 1, name: "Type 1" },
-  { id: 2, name: "Type 2" },
-  { id: 3, name: "Type 3" },
-];
-
-const FilterComponent: React.FC = () => {
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-  const [selectedTypes, setSelectedTypes] = useState<Type[]>([]);
-  const [title, setTitle] = useState("");
-  const [creationDate, setCreationDate] = useState("");
-  const [rating, setRating] = useState("");
-
-  const handleCategorySelect = (category: Category) => {
-    setSelectedCategories((prevSelectedCategories) =>
-      prevSelectedCategories.includes(category)
-        ? prevSelectedCategories.filter((c) => c !== category)
-        : [...prevSelectedCategories, category]
-    );
+  const [filters, setFilters] = useState<Filter>({
+    title: "",
+    rating: "",
+    creationDate: null,
+    categories: [],
+    types: [],
+  });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handleInputChange called with value:", e.target.value);
+    setFilters({ ...filters, title: e.target.value });
   };
 
-  const handleTypeSelect = (type: Type) => {
-    setSelectedTypes((prevSelectedTypes) =>
-      prevSelectedTypes.includes(type)
-        ? prevSelectedTypes.filter((t) => t !== type)
-        : [...prevSelectedTypes, type]
-    );
+  const handleRatingChange = (value: any) => {
+    console.log("handleRatingChange called with value:", value);
+    const rating = value ? value.label : null;
+    setFilters({ ...filters, rating });
   };
 
-  const handleAddCategoryTag = (category: Category) => {
-    if (!selectedCategories.includes(category)) {
-      setSelectedCategories([...selectedCategories, category]);
-    }
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handleDateChange called with value:", e.target.value);
+    const date = e.target.value ? new Date(e.target.value) : null;
+    setFilters({ ...filters, creationDate: date });
   };
 
-  const handleAddTypeTag = (type: Type) => {
-    if (!selectedTypes.includes(type)) {
-      setSelectedTypes([...selectedTypes, type]);
-    }
+  const handleCategoryChange = (values: any) => {
+    console.log("handleCategoryChange called with values:", values);
+    const categories = values.map((value: any) => ({
+      value: value.value,
+      label: value.label,
+    }));
+    setFilters({ ...filters, categories });
   };
 
-  const handleRemoveCategoryTag = (category: Category) => {
-    setSelectedCategories((prevSelectedCategories) =>
-      prevSelectedCategories.filter((c) => c !== category)
-    );
+  const handleTypeChange = (values: any) => {
+    console.log("handleTypeChange called with values:", values);
+    const types = values.map((value: any) => ({
+      value: value.value,
+      label: value.label,
+    }));
+    setFilters({ ...filters, types });
   };
 
-  const handleRemoveTypeTag = (type: Type) => {
-    setSelectedTypes((prevSelectedTypes) =>
-      prevSelectedTypes.filter((t) => t !== type)
-    );
+  console.log(types);
+  const handleClearFilters = () => {
+    console.log("handleClearFilters called");
+    setFilters({
+      title: "",
+      rating: "",
+      creationDate: null,
+      categories: [],
+      types: [],
+    });
+
+    /*
+    onFilterChange({
+      title: "",
+      rating: [],
+      creationDate: null,
+      categories: [],
+      types: [],
+    });*/
   };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("handleSubmit called with filters:", filters);
+    //onFilterChange(filters);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getGameBoardTypesAndCategories();
+      if (response !== undefined) {
+        const typesGet = response.Types.map((element) => ({
+          value: element.Value,
+          label: element.Label,
+        }));
+        setTypes(typesGet);
+
+        const categoriesGet = response.Categories.map((element) => ({
+          value: element.Value,
+          label: element.Label,
+        }));
+        setCategories(categoriesGet);
+      }
+    };
+
+    fetchData();
+
+    console.log("useEffect called with types:", types);
+  }, [setTypes, setCategories]);
 
   return (
-    <div className="w-full bg-white dark:bg-gray-200 p-3 rounded-md">
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-        {/* Categories */}
-        <div>
-          <label
-            htmlFor="
-categories"
-            className="block text-gray-700 font-bold mb-2"
-          >
-            Categories
-          </label>
-          <div className="mt-2">
-            {selectedCategories.map((category) => (
-              <span
-                key={category.id}
-                className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mr-2 mb-2"
-              >
-                {category.name}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveCategoryTag(category)}
-                  className="flex-shrink-0 ml-1 focus:outline-none"
-                >
-                  <IoMdClose className="h-4 w-4" />
-                </button>
-              </span>
-            ))}
-          </div>
-          <div className="relative">
-            <select
-              id="categories"
-              multiple
-              className="block w-full rounded-md border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              onChange={(e) =>
-                handleCategorySelect(
-                  categories.find((c) => c.id === Number(e.target.value))!
-                )
-              }
-            >
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div>
-          <label htmlFor="types" className="block text-gray-700 font-bold mb-2">
-            Types
-          </label>
-          <div className="mt-2">
-            {selectedTypes.map((type) => (
-              <span
-                key={type.id}
-                className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mr-2 mb-2"
-              >
-                {type.name}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveTypeTag(type)}
-                  className="flex-shrink-0 ml-1 focus:outline-none"
-                >
-                  <IoMdClose className="h-4 w-4" />
-                </button>
-              </span>
-            ))}
-          </div>
-          <div className="relative">
-            <select
-              id="types"
-              multiple
-              className="block w-full rounded-md border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              onChange={(e) =>
-                handleTypeSelect(
-                  types.find((t) => t.id === Number(e.target.value))!
-                )
-              }
-            >
-              {types.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Title */}
-        <div>
-          <label htmlFor="title" className="block text-gray-700 font-bold mb-2">
-            Title
-          </label>
-          <input
-            id="title"
-            type="text"
-            className="block w-full rounded-md border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-
-        {/* Creation Date */}
-        <div>
-          <label
-            htmlFor="creationDate"
-            className="block text-gray-700 font-bold mb-2"
-          >
-            Creation Date
-          </label>
-          <input
-            id="creationDate"
-            type="date"
-            className="block w-full rounded-md border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            value={creationDate}
-            onChange={(e) => setCreationDate(e.target.value)}
-          />
-        </div>
-
-        {/* Rating */}
-        <div>
-          <label
-            htmlFor="rating"
-            className="block text-gray-700 font-bold mb-2"
-          >
-            Rating
-          </label>
-          <select
-            id="rating"
-            className="block w-full rounded-md border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
-          >
-            <option value="">Select rating</option>
-            <option value="0-1">0-1</option>
-            <option value="0-2">0-2</option>
-            <option value="0-3">0-3</option>
-            <option value="0-4">0-4</option>
-            <option value="0-5">0-5</option>
-          </select>
-        </div>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-gray-700 rounded-md p-4 md:flex md:flex-wrap md:items-center"
+    >
+      <div className="w-full md:w-1/3 p-2">
+        <label htmlFor="title" className="sr-only">
+          Title
+        </label>
+        <input
+          type="text"
+          id="title"
+          value={filters.title}
+          onChange={handleInputChange}
+          placeholder="Title"
+          className="block w-full bg-gray-800 border border-gray-600 rounded-lg py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
       </div>
-    </div>
+      <div className="w-full md:w-1/3 p-2">
+        <label htmlFor="creationDate" className="sr-only">
+          Creation Date
+        </label>
+        <input
+          type="date"
+          id="creationDate"
+          value={
+            filters.creationDate
+              ? filters.creationDate.toISOString().slice(0, 10)
+              : ""
+          }
+          onChange={handleDateChange}
+          placeholder="Creation Date"
+          className="block w-full placeholder:text-black bg-gray-800 border border-gray-600 rounded-lg py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+      <div className="w-full md:w-1/3 p-2">
+        <label htmlFor="rating" className="sr-only">
+          Rating
+        </label>
+        <Select
+          id="rating"
+          value={
+            filters.rating === ""
+              ? null
+              : { value: filters.rating, label: filters.rating }
+          }
+          options={[
+            { value: "1", label: "0-1" },
+            { value: "2", label: "1-2" },
+            { value: "3", label: "2-3" },
+            { value: "4", label: "3-4" },
+            { value: "5", label: "4-5" },
+          ]}
+          onChange={handleRatingChange}
+          placeholder="Rating"
+          className="w-full"
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              backgroundColor: "#1f2937",
+              borderRadius: "0.5rem",
+              border: "1px solid #4B5563",
+              color: "white",
+              minHeight: "3rem",
+            }),
+            option: (provided, state) =>
+              Object.assign({}, provided, {
+                color: "black",
+              }),
+
+            singleValue: (provided) => ({
+              ...provided,
+              color: "white",
+            }),
+          }}
+        />
+      </div>
+      <div className="w-full md:w-1/2 p-2">
+        <label htmlFor="categories" className="sr-only">
+          Categories
+        </label>
+        <Select
+          id="categories"
+          options={categories}
+          isMulti
+          isClearable
+          value={filters.categories}
+          onChange={handleCategoryChange}
+          placeholder="Categories"
+          className="w-full"
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              backgroundColor: "#1f2937",
+              borderRadius: "0.5rem",
+              border: "1px solid #4B5563",
+              color: "white",
+              minHeight: "3rem",
+            }),
+            option: (provided, state) =>
+              Object.assign({}, provided, {
+                backgroundColor: state.isSelected ? "#1D4ED8" : null,
+                color: "black",
+              }),
+            input: (provided) => ({
+              ...provided,
+              color: "white",
+            }),
+          }}
+        />
+      </div>
+      <div className="w-full md:w-1/2 p-2">
+        <label htmlFor="types" className="sr-only">
+          Types
+        </label>
+        <Select
+          id="types"
+          options={types}
+          isMulti
+          onChange={handleTypeChange}
+          placeholder="Types"
+          className="w-full"
+          value={filters.types.length === 0 ? null : filters.types}
+          isClearable
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              backgroundColor: "#1f2937",
+              borderRadius: "0.5rem",
+              border: "1px solid #4B5563",
+              color: "white",
+              minHeight: "3rem",
+            }),
+            option: (provided, state) =>
+              Object.assign({}, provided, {
+                backgroundColor: state.isSelected ? "#1D4ED8" : null,
+                color: "black",
+              }),
+            input: (provided) => ({
+              ...provided,
+              color: "white",
+            }),
+          }}
+        />
+      </div>
+      <div className="w-full flex flex-col md:flex-row justify-between p-0 mt-5">
+        <button
+          type="submit"
+          className="flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg md:ml-2 md:mt-0 md:w-full"
+        >
+          <FaSearch className="mr-2" />
+          <span>Filter</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleClearFilters}
+          className="flex items-center justify-center bg-gray-500 hover:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg md:ml-2 md:mt-0 md:w-full"
+        >
+          <FaTimes className="mr-2" />
+          <span>Clear Filters</span>
+        </button>
+      </div>
+    </form>
   );
 };
 

@@ -76,3 +76,36 @@ export interface TabletopAditionalFile {
   FileName: string;
   Location: string;
 }
+
+export interface Filter {
+  title: string;
+  creationDate: Date | null;
+  rating: string;
+  categories: CategoryOptions[];
+  types: TypeOptions[];
+}
+
+export interface CategoryType {
+  Value: string;
+  Label: string;
+}
+
+export interface TypeOptions {
+  value: string;
+  label: string;
+}
+
+export interface CategoryOptions {
+  value: string;
+  label: string;
+}
+
+export interface TypesType {
+  Value: string;
+  Label: string;
+}
+
+export interface CategoriesAndTypes {
+  Types: TypesType[];
+  Categories: CategoryType[];
+}
