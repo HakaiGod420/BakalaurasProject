@@ -2,6 +2,7 @@ import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
 import {
   CategoriesAndTypes,
+  Filter,
   SingleTabletopGame,
   TableTopGameCardsResponse,
 } from "../types/TabletopGame";
@@ -9,8 +10,11 @@ import {
 export async function getBoardGameList(
   startIndex: number,
   endIndex: number,
-  searchTerm: string | null
+  searchTerm: string | null,
+  filter: Filter
 ) {
+  console.log(filter.types.map((x) => parseInt(x.value)));
+
   const response = await axios
     .get<TableTopGameCardsResponse>(
       SERVER_API + "/api/gameboard/getBoardCardItems",
@@ -19,6 +23,14 @@ export async function getBoardGameList(
           startIndex: startIndex,
           backIndex: endIndex,
           searchTerm: searchTerm,
+          Title: filter.title,
+          Types: filter.types.map((x) => parseInt(x.value)),
+          Rating: filter.rating,
+          Categories: filter.categories.map((x) => parseInt(x.value)),
+          CreationDate: filter.creationDate,
+        },
+        paramsSerializer: {
+          indexes: null,
         },
       }
     )
@@ -26,7 +38,6 @@ export async function getBoardGameList(
       console.log(error);
     });
 
-  console.log(response?.data);
   return response?.data;
 }
 

@@ -9,47 +9,34 @@ import {
 } from "../../services/types/TabletopGame";
 
 interface FilterProps {
-  //onFilterChange: (filters: Filters) => void;
+  filters: Filter;
+  setFilters: (filters: Filter) => void;
+  submitFilter: (toClear: boolean) => Promise<void>;
 }
 
-interface Filters {
-  title: string;
-  rating: number | null;
-  creationDate: Date | null;
-  categories: string[];
-  types: string[];
-}
-
-const FilterComponent: React.FC<FilterProps> = () => {
+const FilterComponent = ({
+  filters,
+  setFilters,
+  submitFilter,
+}: FilterProps) => {
   const [types, setTypes] = useState<TypeOptions[]>([]);
   const [categories, setCategories] = useState<CategoryOptions[]>([]);
 
-  const [filters, setFilters] = useState<Filter>({
-    title: "",
-    rating: "",
-    creationDate: null,
-    categories: [],
-    types: [],
-  });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("handleInputChange called with value:", e.target.value);
     setFilters({ ...filters, title: e.target.value });
   };
 
   const handleRatingChange = (value: any) => {
-    console.log("handleRatingChange called with value:", value);
     const rating = value ? value.label : null;
     setFilters({ ...filters, rating });
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("handleDateChange called with value:", e.target.value);
     const date = e.target.value ? new Date(e.target.value) : null;
     setFilters({ ...filters, creationDate: date });
   };
 
   const handleCategoryChange = (values: any) => {
-    console.log("handleCategoryChange called with values:", values);
     const categories = values.map((value: any) => ({
       value: value.value,
       label: value.label,
@@ -58,7 +45,6 @@ const FilterComponent: React.FC<FilterProps> = () => {
   };
 
   const handleTypeChange = (values: any) => {
-    console.log("handleTypeChange called with values:", values);
     const types = values.map((value: any) => ({
       value: value.value,
       label: value.label,
@@ -66,31 +52,13 @@ const FilterComponent: React.FC<FilterProps> = () => {
     setFilters({ ...filters, types });
   };
 
-  console.log(types);
-  const handleClearFilters = () => {
-    console.log("handleClearFilters called");
-    setFilters({
-      title: "",
-      rating: "",
-      creationDate: null,
-      categories: [],
-      types: [],
-    });
-
-    /*
-    onFilterChange({
-      title: "",
-      rating: [],
-      creationDate: null,
-      categories: [],
-      types: [],
-    });*/
+  const handleClearFilters = async () => {
+    await submitFilter(true);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("handleSubmit called with filters:", filters);
-    //onFilterChange(filters);
+    await submitFilter(false);
   };
 
   useEffect(() => {

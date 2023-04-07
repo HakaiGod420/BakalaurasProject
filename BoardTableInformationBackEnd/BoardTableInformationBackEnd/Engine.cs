@@ -6,6 +6,7 @@ using DataLayer.Repositories.Category;
 using DataLayer.Repositories.GameBoard;
 using DataLayer.Repositories.Image;
 using DataLayer.Repositories.Invitation;
+using DataLayer.Repositories.Reviews;
 using DataLayer.Repositories.User;
 using ServiceLayer.Interfaces;
 using ServiceLayer.Services;
@@ -16,7 +17,6 @@ namespace BoardTableInformationBackEnd
     {
         public static void SetupDependencies(this IServiceCollection serviceCollection)
         {
-
             serviceCollection.AddScoped<IUserService, UserService>();
             serviceCollection.AddScoped<IBoardGameService, BoardGameService>();
             serviceCollection.AddScoped<IInvitationService, InvitationService>();
@@ -30,6 +30,8 @@ namespace BoardTableInformationBackEnd
             serviceCollection.AddScoped<IAddressRepository, AddressRepository>();
             serviceCollection.AddScoped<IInvitationRepository, InvitationRepository>();
             serviceCollection.AddScoped<ISelectListService, SelectListService>();
+            serviceCollection.AddScoped<IReviewService, ReviewService>();
+            serviceCollection.AddScoped<IReviewRepository, ReviewRepository>();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace DataLayer.Models
             ActiveGamesParcipators = new HashSet<ActiveGameEntity>();
             ActiveGamesCreators = new HashSet<ActiveGameEntity>();
             ReceivedInvitations = new HashSet<SentInvitationEntity>();
+            Reviews = new HashSet<ReviewEntity>();
         }
 
         [Key]
@@ -55,5 +56,6 @@ namespace DataLayer.Models
         public virtual ICollection<ActiveGameEntity> ActiveGamesParcipators { get; set; }
         public virtual ICollection<ActiveGameEntity> ActiveGamesCreators { get; set; }
         public virtual ICollection<SentInvitationEntity> ReceivedInvitations { get; set;}
+        public virtual ICollection<ReviewEntity> Reviews { get; set; }
     }
 }

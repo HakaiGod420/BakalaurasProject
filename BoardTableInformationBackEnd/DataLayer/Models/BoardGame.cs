@@ -17,6 +17,7 @@ namespace DataLayer.Models
             BoardTypes = new HashSet<BoardTypeEntity>();
             AditionalFiles = new HashSet<AditionalFileEntity>();
             ActiveGames = new HashSet<ActiveGameEntity>();
+            Reviews = new HashSet<ReviewEntity>();
         }
         [Key]
         public int BoardGameId { get; set; }
@@ -53,12 +54,11 @@ namespace DataLayer.Models
 
         [MaxLength(5)]
         public virtual ICollection<AditionalFileEntity> AditionalFiles { get; set; }
-
         public int UserId { get; set; }
         public virtual UserEntity User { get; set; }
-
         public TableBoardState TableBoardStateId { get; set; }
         public virtual TableBoardStateEntity TableBoardState { get; set; }
         public virtual ICollection<ActiveGameEntity> ActiveGames { get; set; }
+        public virtual ICollection<ReviewEntity> Reviews { get; set; }
     }
 }

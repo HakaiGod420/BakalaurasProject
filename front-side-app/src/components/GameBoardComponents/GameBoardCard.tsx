@@ -6,12 +6,18 @@ import NoImageFile from "../../assets/images/noImage.png";
 import { getGameBoard } from "../../services/api/GameBoardService";
 import { SERVER_API } from "../../services/constants/ClienConstants";
 import { SingleTabletopGame } from "../../services/types/TabletopGame";
+import RatingModal from "../RatingModal";
 import LoadingComponent from "../core/LoadingComponent";
 import TableTopTabs from "./TableTopTabs";
 
 const GameBoardCard: React.FC = () => {
   let { id } = useParams();
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onClose = () => {
+    setIsOpen(false);
+  };
   const [gameBoard, setGameBoard] = useState<SingleTabletopGame | undefined>(
     undefined
   );
@@ -28,6 +34,7 @@ const GameBoardCard: React.FC = () => {
 
   return (
     <div>
+      {isOpen && <RatingModal onClose={onClose} />}
       {gameBoard ? (
         <div>
           <div className="max-w-screen-xl mx-auto p-4 flex flex-col md:flex-row items-center md:items-start">
@@ -101,7 +108,10 @@ const GameBoardCard: React.FC = () => {
                 <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded mr-2">
                   Create Invitation
                 </button>
-                <button className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-2 px-4 rounded">
+                <button
+                  onClick={() => setIsOpen(true)}
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-2 px-4 rounded"
+                >
                   Rate
                 </button>
               </div>

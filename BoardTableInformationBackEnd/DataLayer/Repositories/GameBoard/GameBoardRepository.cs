@@ -75,11 +75,15 @@ namespace DataLayer.Repositories.GameBoard
 
         }
 
-        public async Task<GameCardListResponse> GetGameBoardInfo(int startIndex, int endIndex, string? searchTerm)
+        public async Task<GameCardListResponse> GetGameBoardInfo(int startIndex, int endIndex, string? searchTerm, FilterDTO filter)
         {
             var query = _dbContext.BoardGames
                 .Where(x => x.TableBoardStateId == ModelLayer.Enum.TableBoardState.Activated)
                 .OrderBy(x => x.Title)
+                .Include(x => x.Categories)
+                .Include(x => x.BoardTypes)
+                .Where(x => filter.Types == null || !filter.Types.Any() || x.BoardTypes.Any(bt => filter.Types.Contains(bt.BoardTypeId)))
+                .Where(x => filter.Categories == null || !filter.Categories.Any() || x.Categories.Any(bt => filter.Categories.Contains(bt.CategoryId)))
                 .Select(x => new GameBoardCardItemDTO
                 {
                     GameBoardId = x.BoardGameId,
@@ -93,6 +97,22 @@ namespace DataLayer.Repositories.GameBoard
             {
                 query = query.Where(x => x.Title.StartsWith(searchTerm));
             }
+
+            if(filter.Title != null)
+            {
+                query = query.Where(x => x.Title.StartsWith(filter.Title));
+            }
+
+            if(filter.CreationDate != null)
+            {
+                query = query.Where(x => x.ReleaseDate > filter.CreationDate);
+            }
+
+            if(filter.Rating != null)
+            {
+                
+            }
+
 
             var count = await query.CountAsync();
 

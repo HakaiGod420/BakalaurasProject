@@ -1,11 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getBoardGameList } from "../services/api/GameBoardService";
-import { TableTopGameCard } from "../services/types/TabletopGame";
+import { Filter, TableTopGameCard } from "../services/types/TabletopGame";
 import FilterComponent from "./core/FilterComponent";
 import GameCard from "./core/GameCard";
 import LoadingComponent from "./core/LoadingComponent";
 
+const emptyFilter: Filter = {
+  title: "",
+  rating: "",
+  creationDate: null,
+  categories: [],
+  types: [],
+};
 const GameCardList: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -15,11 +22,34 @@ const GameCardList: React.FC = () => {
     []
   );
 
+  const [filters, setFilters] = useState<Filter>(emptyFilter);
+
   const [searchTerm, setSearchTerm] = useSearchParams();
 
-  const searchTermText = searchTerm.get("searchTerm");
+  const filterData = async (toClear: boolean) => {
+    console.log(toClear);
+    setIsLoading(true);
+    setGameBoards([]);
+    if (toClear) {
+      setFilters(emptyFilter);
+      const response = await getBoardGameList(
+        0,
+        5,
+        searchTermText,
+        emptyFilter
+      );
+      setGameBoards(response?.BoardGames);
+      setTotalCount(response?.TotalCount!);
+      setIsLoading(false);
+      return;
+    }
+    const response = await getBoardGameList(0, 5, searchTermText, filters);
+    setGameBoards(response?.BoardGames);
+    setTotalCount(response?.TotalCount!);
+    setIsLoading(false);
+  };
 
-  console.log(searchTermText);
+  const searchTermText = searchTerm.get("searchTerm");
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -35,7 +65,8 @@ const GameCardList: React.FC = () => {
           const newGames = await getBoardGameList(
             startIndex,
             endIndex,
-            searchTermText
+            searchTermText,
+            filters
           );
           setGameBoards([...gameBoards!, ...newGames?.BoardGames!]);
           setIsLoading(false);
@@ -65,7 +96,7 @@ const GameCardList: React.FC = () => {
 
   useEffect(() => {
     const fetchGameBoards = async () => {
-      const response = await getBoardGameList(0, 5, searchTermText);
+      const response = await getBoardGameList(0, 5, searchTermText, filters);
       setGameBoards(response?.BoardGames);
       setTotalCount(response?.TotalCount!);
     };
@@ -74,7 +105,11 @@ const GameCardList: React.FC = () => {
 
   return (
     <div className="max-w-[1240px] mx-auto mt-10">
-      <FilterComponent />
+      <FilterComponent
+        filters={filters}
+        setFilters={setFilters}
+        submitFilter={filterData}
+      />
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-5">
         {gameBoards?.map((game) => (
           <GameCard key={game.GameBoardId} {...game} />

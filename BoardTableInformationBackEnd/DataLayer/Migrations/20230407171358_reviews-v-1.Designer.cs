@@ -4,6 +4,7 @@ using DataLayer.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230407171358_reviews-v-1")]
+    partial class reviewsv1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,9 +354,6 @@ namespace DataLayer.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int>("SelectedBoardGameId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("WriteDate")
                         .HasColumnType("datetime2");
 
@@ -362,8 +361,6 @@ namespace DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ReviewId");
-
-                    b.HasIndex("SelectedBoardGameId");
 
                     b.HasIndex("WriterId");
 
@@ -648,19 +645,11 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Models.ReviewEntity", b =>
                 {
-                    b.HasOne("DataLayer.Models.BoardGameEntity", "SelectedBoardGame")
-                        .WithMany("Reviews")
-                        .HasForeignKey("SelectedBoardGameId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("DataLayer.Models.UserEntity", "Writer")
                         .WithMany("Reviews")
                         .HasForeignKey("WriterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("SelectedBoardGame");
 
                     b.Navigation("Writer");
                 });
@@ -734,8 +723,6 @@ namespace DataLayer.Migrations
                     b.Navigation("AditionalFiles");
 
                     b.Navigation("Images");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("DataLayer.Models.InvitationStateEntity", b =>
