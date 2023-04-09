@@ -33,5 +33,10 @@ namespace ServiceLayer.Services
 
            await _reviewRepository.CreateReview(newReview);
         }
+
+        public async Task<List<ReviewView>> GetReviews(int boardGameId)
+        {
+            return await _reviewRepository.GetAllReviews(boardGameId);
+        }
     }
 }

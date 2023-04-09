@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -14,7 +15,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <RecoilRoot>
-        <App />
+        <GoogleOAuthProvider clientId="62937807337-17oq46jbnes9i3btmku972j0vuaudsb3.apps.googleusercontent.com">
+          <App />
+        </GoogleOAuthProvider>
       </RecoilRoot>
     </BrowserRouter>
   </React.StrictMode>

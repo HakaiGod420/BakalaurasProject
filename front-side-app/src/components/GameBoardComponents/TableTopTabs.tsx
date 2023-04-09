@@ -32,22 +32,7 @@ const TableTopTabs = ({ gameBoard }: Props) => {
       },
     },
   };
-
-  const images = [
-    "https://picsum.photos/800/700",
-    "https://picsum.photos/1280/720",
-    "https://picsum.photos/640/640",
-    "https://picsum.photos/1280/1280",
-    "https://picsum.photos/700/720",
-    "https://picsum.photos/640/800",
-  ];
-
-  const files = [
-    { name: "Document 1.pdf", url: "https://example.com/document2.pdf" },
-    { name: "Image 1", url: "https://example.com/image1.jpg" },
-    { name: "Image 2", url: "https://example.com/image2.jpg" },
-  ];
-
+  
   return (
     <div className="bg-white p-5">
       <div className="bg-white mx-auto max-w-[1280px] rounded-lg ">

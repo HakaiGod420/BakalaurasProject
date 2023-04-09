@@ -82,6 +82,7 @@ namespace DataLayer.Repositories.GameBoard
                 .OrderBy(x => x.Title)
                 .Include(x => x.Categories)
                 .Include(x => x.BoardTypes)
+                .Include(x => x.Reviews)
                 .Where(x => filter.Types == null || !filter.Types.Any() || x.BoardTypes.Any(bt => filter.Types.Contains(bt.BoardTypeId)))
                 .Where(x => filter.Categories == null || !filter.Categories.Any() || x.Categories.Any(bt => filter.Categories.Contains(bt.CategoryId)))
                 .Select(x => new GameBoardCardItemDTO
@@ -90,6 +91,7 @@ namespace DataLayer.Repositories.GameBoard
                     Title = x.Title,
                     ReleaseDate = x.CreationTime,
                     ThumbnailName = x.Thubnail_Location,
+                    Rating = x.Reviews.Average(r => r.Rating) != null ? x.Reviews.Average(r => r.Rating) : 0.0
 
                 });
 
@@ -110,7 +112,9 @@ namespace DataLayer.Repositories.GameBoard
 
             if(filter.Rating != null)
             {
-                
+                string[] ratings = filter.Rating.Split('-');
+
+                query = query.Where(x => x.Rating >= double.Parse(ratings[0]) && x.Rating <= double.Parse(ratings[1]));
             }
 
 

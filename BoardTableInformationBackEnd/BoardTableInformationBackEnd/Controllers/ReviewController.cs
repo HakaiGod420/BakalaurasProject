@@ -33,5 +33,14 @@ namespace BoardTableInformationBackEnd.Controllers
             await _reviewService.CreateReview(createReviewDto, id);
             return Ok();
         }
+
+        [HttpGet("reviews")]
+        [ProducesResponseType(typeof(List<ReviewView>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetReviews([FromQuery] int boardGameId)
+        {
+            var reviews = await _reviewService.GetReviews(boardGameId);
+
+            return new OkObjectResult(reviews);
+        }
     }
 }

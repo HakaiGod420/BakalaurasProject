@@ -1,6 +1,6 @@
 import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
-import { Rating } from "../types/Rating";
+import { Rating, ReviewView } from "../types/Rating";
 
 export async function postRating(rating: Rating) {
   const token = JSON.parse(localStorage.getItem("token") ?? "{}");
@@ -14,4 +14,16 @@ export async function postRating(rating: Rating) {
     });
 
   return response;
+}
+
+export async function getReviews(boardGameId: number) {
+  const response = await axios
+    .get<ReviewView[]>(SERVER_API + "/api/review/reviews", {
+      params: { boardGameId: boardGameId },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  return response?.data;
 }

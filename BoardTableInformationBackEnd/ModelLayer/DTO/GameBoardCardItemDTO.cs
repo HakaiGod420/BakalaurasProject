@@ -14,5 +14,6 @@ namespace ModelLayer.DTO
         public DateTime ReleaseDate { get; set; }
         public string ThumbnailURL { get; set; }
         public string ThumbnailName { get; set; }
+        public double? Rating { get; set; } = 0;
     }
 }

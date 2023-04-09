@@ -11,6 +11,7 @@ import {
   InvitationStateChange,
   UserInvitation,
 } from "../services/types/Invitation";
+import EventAcceptedModal from "./EventAcceptedModal";
 import EventCard from "./core/EventCard";
 import LoadingComponent from "./core/LoadingComponent";
 import SectionDivider from "./core/SectionDivider";
@@ -27,6 +28,20 @@ function EventsInvitationComponent() {
   const [loading, setLoading] = useState(true);
   const [accpetedInvitation, setAcceptedInvitations] =
     useRecoilState(acceptedInvitations);
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedGameInvitation, setSelectedGameInvitation] = useState<
+    number | undefined
+  >();
+
+  const onClose = () => {
+    setShowModal(false);
+  };
+
+  const openModel = (invitationId: number) => {
+    setShowModal(true);
+    setSelectedGameInvitation(invitationId);
+  };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -93,7 +108,7 @@ function EventsInvitationComponent() {
             <EventCard
               key={invitation.ActiveGameId}
               invitation={invitation}
-              onAccept={onAccept}
+              onAccept={openModel}
               onReject={onReject}
               itsInvitation={true}
             />
@@ -129,6 +144,12 @@ function EventsInvitationComponent() {
           </div>
         )}
       </div>
+      {showModal && (
+        <EventAcceptedModal
+          onClose={onClose}
+          invitationId={selectedGameInvitation}
+        />
+      )}
     </div>
   );
 }
