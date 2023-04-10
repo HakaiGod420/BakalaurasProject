@@ -43,6 +43,7 @@ namespace DataLayer.Repositories.GameBoard
                 .Include(a=>a.User)
                 .Include(a=>a.Images)
                 .Include(a=>a.AditionalFiles)
+                .Include(a=>a.Reviews)
                 .SingleOrDefaultAsync(x=> x.BoardGameId == id);
 
             if (result != null)
@@ -64,6 +65,7 @@ namespace DataLayer.Repositories.GameBoard
                     Types = result.BoardTypes.Select(x => x.BoardTypeName).ToList(),
                     Images = result.Images.Select(x => new GetImageDTO { Location = x.Location + "/" + x.Alias, FileName = x.Alias }).ToList(),
                     Files = result.AditionalFiles.Select(x => new GetAditionalFilesDTO { Location = x.FileLocation + "/" + x.FileName, FileName = x.FileName }).ToList(),
+                    Rating = result.Reviews.Average(r => r.Rating) != null ? result.Reviews.Average(r => r.Rating) : 0.0
                 };
 
                 return finalObject;
@@ -92,7 +94,6 @@ namespace DataLayer.Repositories.GameBoard
                     ReleaseDate = x.CreationTime,
                     ThumbnailName = x.Thubnail_Location,
                     Rating = x.Reviews.Average(r => r.Rating) != null ? x.Reviews.Average(r => r.Rating) : 0.0
-
                 });
 
             if (searchTerm != null)

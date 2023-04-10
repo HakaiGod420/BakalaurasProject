@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { FaCalendarAlt, FaUser } from "react-icons/fa";
+import { FaCalendarAlt, FaStar, FaUser } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import NoImageFile from "../../assets/images/noImage.png";
 import { getGameBoard } from "../../services/api/GameBoardService";
@@ -101,6 +101,12 @@ const GameBoardCard: React.FC = () => {
                   <FaUser className="h-5 w-5 text-gray-400" />
                   <p className="ml-2 text-sm font-medium text-gray-500">
                     Creator: {gameBoard.CreatorName}
+                  </p>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center">
+                  <FaStar className="h-5 w-5 text-gray-400" />
+                  <p className="ml-2 text-sm font-medium text-gray-500">
+                    Rating: {gameBoard.Rating?.toFixed(2)}/5
                   </p>
                 </div>
               </div>

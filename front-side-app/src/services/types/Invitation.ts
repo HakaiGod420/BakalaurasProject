@@ -39,3 +39,26 @@ export interface SentPersonalInvitation {
   UserName: string | undefined;
   ActiveInvitationId: number;
 }
+
+export interface MeetDate {
+  dateTime: string;
+  timeZone: string;
+}
+
+export interface GoogleEvent {
+  summary: string;
+  location: string;
+  start: MeetDate;
+  end: MeetDate;
+  reminder: Reminder;
+}
+
+export interface Reminder {
+  useDefault: boolean;
+  overrides: Overide[];
+}
+
+export interface Overide {
+  method: string;
+  minutes: number;
+}

@@ -54,6 +54,7 @@ export interface SingleTabletopGame {
   Title: string;
   PlayerCount: number | undefined;
   PlayableAge: number | undefined;
+  Rating: number | undefined;
   Description: string;
   CreationTime: string;
   UpdateDate: string | undefined;

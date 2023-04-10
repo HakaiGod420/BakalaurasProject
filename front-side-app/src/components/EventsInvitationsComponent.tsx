@@ -31,16 +31,17 @@ function EventsInvitationComponent() {
 
   const [showModal, setShowModal] = useState(false);
   const [selectedGameInvitation, setSelectedGameInvitation] = useState<
-    number | undefined
+    UserInvitation | undefined
   >();
 
   const onClose = () => {
     setShowModal(false);
   };
 
-  const openModel = (invitationId: number) => {
+  const openModel = (invitation: UserInvitation) => {
+    console.log(invitation);
     setShowModal(true);
-    setSelectedGameInvitation(invitationId);
+    setSelectedGameInvitation(invitation);
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -108,7 +109,7 @@ function EventsInvitationComponent() {
             <EventCard
               key={invitation.ActiveGameId}
               invitation={invitation}
-              onAccept={openModel}
+              onAccept={() => openModel(invitation)}
               onReject={onReject}
               itsInvitation={true}
             />
@@ -147,7 +148,8 @@ function EventsInvitationComponent() {
       {showModal && (
         <EventAcceptedModal
           onClose={onClose}
-          invitationId={selectedGameInvitation}
+          userInvitation={selectedGameInvitation}
+          onAccept={onAccept}
         />
       )}
     </div>

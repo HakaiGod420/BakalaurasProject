@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GoogleEvent } from "../types/Invitation";
 
 const testBody = {
   start: {
@@ -14,11 +15,14 @@ const testBody = {
 const GOOGLE_CALENDER_API =
   "https://www.googleapis.com/calendar/v3/calendars/primary/events";
 
-export async function postEventInGoogleCalendar(accessToken: string) {
+export async function postEventInGoogleCalendar(
+  accessToken: string,
+  event: GoogleEvent
+) {
   axios.defaults.headers.post["Authorization"] = `Bearer ${accessToken}`;
 
   const response = await axios
-    .post(GOOGLE_CALENDER_API, testBody)
+    .post(GOOGLE_CALENDER_API, event)
     .catch((error) => {
       console.log(error);
     });
