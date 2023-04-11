@@ -52,9 +52,9 @@ namespace DataLayer.Repositories.User
 
         public async Task<bool> UpdateInvitationNotification(int userId, bool state)
         {
-            var user = await _dbContext.Users.Where(x=>x.UserId == userId).FirstOrDefaultAsync();
+            var user = await _dbContext.Users.Where(x => x.UserId == userId).FirstOrDefaultAsync();
 
-            if(user != null)
+            if (user != null)
             {
                 user.EnableInvitationNotifications = state;
                 _dbContext.Users.Update(user);
@@ -90,7 +90,7 @@ namespace DataLayer.Repositories.User
             return result;
         }
 
-        public async Task UpdateUserAddress(int addressId,int userId)
+        public async Task UpdateUserAddress(int addressId, int userId)
         {
             _dbContext.Users.Single(x => x.UserId == userId).AddressId = addressId;
             await _dbContext.SaveChangesAsync();
@@ -112,7 +112,7 @@ namespace DataLayer.Repositories.User
 
         public async Task<UserInformationDTO?> GetUserInformation(string userName)
         {
-            var result = await  _dbContext.Users.Where(x => x.UserName == userName).Select(j=> new UserInformationDTO
+            var result = await _dbContext.Users.Where(x => x.UserName == userName).Select(j => new UserInformationDTO
             {
                 UserId = j.UserId,
                 UserName = j.UserName,
@@ -150,7 +150,25 @@ namespace DataLayer.Repositories.User
 
         public async Task<int?> GetUserIdByUsername(string username)
         {
-           return await _dbContext.Users.Where(x => x.UserName == username).Select(x => x.UserId).FirstOrDefaultAsync();
+            return await _dbContext.Users.Where(x => x.UserName == username).Select(x => x.UserId).FirstOrDefaultAsync();
+        }
+
+        public async Task<UserEntity?> GetPasswordsById(int userId)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserId.Equals(userId));
+
+            if (user != null)
+            {
+                return user;
+            }
+
+            return null;
+        }
+
+        public async Task ChangeUserData(UserEntity user)
+        {
+                _dbContext.Users.Update(user);
+                await _dbContext.SaveChangesAsync();
         }
     }
 }

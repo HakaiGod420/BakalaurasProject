@@ -3,6 +3,7 @@ import { SERVER_API } from "../constants/ClienConstants";
 import { ErrorBasic } from "../types/Error";
 import {
   AddressEdit,
+  ChangedUserInformation,
   LoginData,
   NotificationSettings,
   UserInformation,
@@ -66,8 +67,6 @@ export async function updateNotifications(notifications: NotificationSettings) {
     .catch((error) => {
       console.log(error);
     });
-
-  console.log(response);
 }
 
 export async function getUserInformation(username: string) {
@@ -84,4 +83,21 @@ export async function getUserInformation(username: string) {
     });
 
   return response?.data;
+}
+
+export async function changeUserInformation(
+  userInfoChanges: ChangedUserInformation
+) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.put["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .put(SERVER_API + "/api/user/changeUserInformation", userInfoChanges)
+    .catch((error) => {
+      console.log(error);
+      return error;
+    });
+
+  return response;
 }

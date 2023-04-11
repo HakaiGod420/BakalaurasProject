@@ -15,6 +15,7 @@ namespace ServiceLayer.Interfaces
         public Task<bool> UpdateNotifications(int id, NotificationsListDto notificationsListDto);
         public Task<UserSettings> GetUserSettings(int id);
         public Task<UserInformationDTO?> GetUserInformation(string userName);
+        public Task ChangeUserInformation(ChangeUserInformationDTO userInformationDTO);
 
     }
 }

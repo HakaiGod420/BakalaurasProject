@@ -101,6 +101,37 @@ namespace ServiceLayer.Services
             return null;
         }
 
+        public async Task ChangeUserInformation(ChangeUserInformationDTO userInformationDTO)
+        {
+            var user = await _repository.GetPasswordsById((int)userInformationDTO.UserId);
+
+            if (user != null)
+            {
+                if (userInformationDTO.PasswordChanged && userInformationDTO.NewPassword != null)
+                {
+                    var validation = VerifyPasswodHash(userInformationDTO.OldPassword, user.Password, user.PasswordSalt);
+
+                    if (!validation)
+                    {
+                        throw new Exception("Old Password Wrong");
+                    }
+
+                    CreatePasswordHash(userInformationDTO.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+                    user.Password = passwordHash;
+                    user.PasswordSalt = passwordSalt;
+                }
+            }
+            else
+            {
+                throw new Exception("User dont exist");
+            }
+
+            user.Email = userInformationDTO.Email;
+
+            await _repository.ChangeUserData(user);
+        }
+
         private void CreatePasswordHash(string password,out byte[] passwordHash, out byte[] passwordSalt )
         {
             using (var hmac = new HMACSHA512())
@@ -118,6 +149,8 @@ namespace ServiceLayer.Services
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
+
+
 
         private string CreateToken(UserEntity user)
         {

@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import L from "leaflet";
 import React, { useState } from "react";
 import { BsArrowRightCircle } from "react-icons/bs";
@@ -44,7 +45,7 @@ const EventCard: React.FC<EventInvitationProps> = ({
               </Link>
             </h2>
             <p className="text-sm text-gray-600">
-              Date: {invitation.EventDate}
+              Date: {dayjs(invitation.EventDate).format("YYYY-MM-DD HH:mm")}
             </p>
             <p className="text-sm text-gray-600">
               Location: {invitation.EventFullLocation}{" "}

@@ -52,8 +52,7 @@ namespace BoardTableInformationBackEnd.Controllers
 
             foreach (var item in listOfBoards.BoardGames)
             {
-                var folderName = Regex.Replace(item.Title, @"[^a-zA-Z0-9 ]+", "_");
-                folderName = Regex.Replace(folderName, @"\s+", "_");
+                var folderName = Regex.Replace(item.Title, @"[^\w\s]+", "").Replace(" ", "_");
 
                 var fileFullLocation = Directory.GetCurrentDirectory() + "\\Files\\Images\\" + folderName + "\\"+item.ThumbnailName;
 

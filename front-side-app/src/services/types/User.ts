@@ -48,3 +48,10 @@ export interface UserInformation {
   RegisteredOn: string;
   LastLogin: string;
 }
+
+export interface ChangedUserInformation {
+  Email: string;
+  PasswordChanged: boolean;
+  OldPassword: string;
+  NewPassword: string;
+}

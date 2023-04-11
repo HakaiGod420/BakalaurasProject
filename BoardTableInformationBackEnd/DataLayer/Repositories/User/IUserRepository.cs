@@ -13,6 +13,7 @@ namespace DataLayer.Repositories.User
         public Task<UserEntity?> GetUser(int id);
         public Task<UserEntity?> RegisterUser(UserEntity user);
         public Task<UserEntity?> GetPasswords(string username);
+        public Task<UserEntity?> GetPasswordsById(int userId);
         public Task<bool> UsernameExist(string username);
         public Task<bool> UpdateInvitationNotification(int userId,bool state);
         public Task<UserSettings> GetUserSettings(int userId);
@@ -21,5 +22,6 @@ namespace DataLayer.Repositories.User
         public Task<UserInformationDTO?> GetUserInformation(string userName);
         public Task UpdateLastTimeConnection(int id);
         public Task<int?> GetUserIdByUsername(string username);
+        public Task ChangeUserData(UserEntity user);
     }
 }

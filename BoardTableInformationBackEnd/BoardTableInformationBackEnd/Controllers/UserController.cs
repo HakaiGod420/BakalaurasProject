@@ -150,5 +150,18 @@ namespace BoardTableInformationBackEnd.Controllers
             }
             return new OkObjectResult(result);
         }
+
+        [HttpPut("changeUserInformation")]
+        [Authorize]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Nullable), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ChangeUserInformation([FromBody] ChangeUserInformationDTO userInformationDTO)
+        {
+            userInformationDTO.UserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+
+            await _userService.ChangeUserInformation(userInformationDTO);
+
+            return new OkObjectResult(true);
+        }
     }
 }

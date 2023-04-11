@@ -193,17 +193,17 @@ function CreateTabletopGameModal() {
   const uploadThumbnail = async () => {
     let thumnailName: string = "";
     const formData = new FormData();
-    files.forEach((file) => {
-      const newFileName =
-        "Thumbnail" +
-        "_" +
-        title.replace(/[^A-Z0-9]+/gi, "_") +
-        "." +
-        file.type.split("/")[1];
-      formData.append("fileNames", newFileName);
-      formData.append("images", file);
-      thumnailName = newFileName;
-    });
+
+    const newFileName =
+      "Thumbnail" +
+      "_" +
+      title.replace(/[^A-Z0-9]+/gi, "_") +
+      "." +
+      thumbnail?.type.split("/")[1];
+    formData.append("fileNames", newFileName);
+    formData.append("images", thumbnail!);
+    thumnailName = newFileName;
+
     formData.append("tabletopTitle", title.replace(/[^A-Z0-9]+/gi, "_"));
 
     await postImages(formData);
@@ -259,7 +259,7 @@ function CreateTabletopGameModal() {
     toast.success("Successfully created game", {
       id: loading,
     });
-    navigate("/");
+    //navigate("/");
   };
 
   return (

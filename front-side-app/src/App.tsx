@@ -31,12 +31,12 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
 import BoardList from "./pages/boardList";
+import Gameboard from "./pages/gameboard";
 import MyEvents from "./pages/myEvents";
 import Settings from "./pages/settings";
 import UserProfile from "./pages/userProfile";
 import { getActiveInvitationCount } from "./services/api/InvitationService";
 import { JWTDeCode } from "./services/types/Miscellaneous";
-import Gameboard from "./pages/gameboard";
 
 function App() {
   const [, setUsername] = useRecoilState(userName);

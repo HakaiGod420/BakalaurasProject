@@ -58,15 +58,15 @@ namespace DataLayer.Repositories.GameBoard
                     CreationTime = result.CreationTime,
                     UpdateDate = result.UpdateTime,
                     Rules = result.Rules,
-                    Thumbnail_Location = "Images/" + Regex.Replace(result.Title, @"[^a-zA-Z0-9\s]+|\s+", "_") + "/" + result.Thubnail_Location,
+                    Thumbnail_Location = "Images/" + Regex.Replace(result.Title, @"[^\w\s]+", "").Replace(" ", "_") + "/" + result.Thubnail_Location,
                     CreatorId = result.UserId,
                     CreatorName = result.User.UserName,
                     Categories = result.Categories.Select(x => x.CategoryName).ToList(),
                     Types = result.BoardTypes.Select(x => x.BoardTypeName).ToList(),
                     Images = result.Images.Select(x => new GetImageDTO { Location = x.Location + "/" + x.Alias, FileName = x.Alias }).ToList(),
                     Files = result.AditionalFiles.Select(x => new GetAditionalFilesDTO { Location = x.FileLocation + "/" + x.FileName, FileName = x.FileName }).ToList(),
-                    Rating = result.Reviews.Average(r => r.Rating) != null ? result.Reviews.Average(r => r.Rating) : 0.0
-                };
+                    Rating = result.Reviews.Any() ? result.Reviews.Average(r => r.Rating) : 0.0
+            };
 
                 return finalObject;
             }

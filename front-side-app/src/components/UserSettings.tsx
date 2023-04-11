@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { getUserSetting } from "../services/api/UserServics";
 import { UserAddress, UserSettings } from "../services/types/User";
-import SectionDivider from "./core/SectionDivider";
 import AddressPopup from "./Settings/AddressPopup";
+import ChangeUserInformation from "./Settings/ChangeUserInformation";
 import Notifications from "./Settings/NottificationSettings";
+import SectionDivider from "./core/SectionDivider";
 const defaultEmptyAddress: UserAddress = {
   Country: "",
   Province: "",
@@ -16,6 +17,8 @@ const defaultEmptyAddress: UserAddress = {
 function UserSettingsMenu() {
   const [showAddressPopup, setShowAddressPopup] = useState(false);
   const [showNotificationPopup, setShowNotificationPopup] = useState(false);
+  const [showUserInformationPopup, setShowUserInformationPopup] =
+    useState(false);
 
   const [userSettings, setUserSettings] = useState<UserSettings>();
 
@@ -38,8 +41,11 @@ function UserSettingsMenu() {
           >
             Set up Address
           </button>
-          <button className="bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg py-3 px-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200">
-            Privacy Settings
+          <button
+            onClick={() => setShowUserInformationPopup(true)}
+            className="bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg py-3 px-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200"
+          >
+            Change profile information
           </button>
           <button
             onClick={() => setShowNotificationPopup(true)}
@@ -70,6 +76,11 @@ function UserSettingsMenu() {
           isEnabledInviteNotifications={userSettings?.EnabledInvitationSettings}
           isOpen={showNotificationPopup}
           onClose={() => setShowNotificationPopup(false)}
+        />
+      )}
+      {showUserInformationPopup && (
+        <ChangeUserInformation
+          onClose={() => setShowUserInformationPopup(false)}
         />
       )}
     </div>
