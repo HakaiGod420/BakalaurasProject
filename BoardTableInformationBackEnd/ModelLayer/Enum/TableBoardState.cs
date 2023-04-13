@@ -8,7 +8,7 @@ namespace ModelLayer.Enum
 {
     public enum TableBoardState
     {
-        Reviewing= 1,
+        Reviewing = 1,
         Activated = 2,
         Draft = 3,
         Rejected = 4

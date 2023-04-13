@@ -110,3 +110,16 @@ export interface CategoriesAndTypes {
   Types: TypesType[];
   Categories: CategoryType[];
 }
+
+export interface TableTopGameItemForReview {
+  GameBoardId: number;
+  GameBoardName: string;
+  GameBoardCreateDate: string;
+  CreatorId: number;
+  CreatorName: string;
+}
+
+export interface TableTopGamesForReviewResponse {
+  GameBoardsForReview: TableTopGameItemForReview[];
+  TotalCount: number;
+}

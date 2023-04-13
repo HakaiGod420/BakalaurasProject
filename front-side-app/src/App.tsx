@@ -30,6 +30,8 @@ import "primereact/resources/primereact.min.css";
 
 import "primeicons/primeicons.css";
 
+import AdminMenu from "./pages/AdminPages/adminMenu";
+import BoardGamesForReview from "./pages/AdminPages/boardGamesForReview";
 import BoardList from "./pages/boardList";
 import Gameboard from "./pages/gameboard";
 import MyEvents from "./pages/myEvents";
@@ -87,6 +89,11 @@ function App() {
           <Route path="/settings/*" element={<Settings />} />
           <Route path="/gameboards/" element={<BoardList />} />
           <Route path="/gameboards/:id" element={<Gameboard />} />
+          <Route path="/adminmenu" element={<AdminMenu />} />
+          <Route
+            path="/adminmenu/review-gameboard"
+            element={<BoardGamesForReview />}
+          />
         </Routes>
       </Content>
       <Footer />

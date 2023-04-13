@@ -14,5 +14,7 @@ namespace DataLayer.Repositories.GameBoard
         public Task<List<BoardGameSimpleDto>> GetBoardsSimple(string titlePart);
         public Task <GameCardListResponse> GetGameBoardInfo(int startIndex, int endIndex,string? searchTerm, FilterDTO filter);
         public Task<SingleGameBoardView?> GetGameBoard(int id);
+        public Task<GameBoardReviewResponse> GetGameBoardsForReview(GetGameBoardsForReviewRequestDTO request);
+
     }
 }

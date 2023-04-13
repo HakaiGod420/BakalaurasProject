@@ -138,5 +138,33 @@ namespace DataLayer.Repositories.GameBoard
             };
 
         }
+
+        public async Task<GameBoardReviewResponse> GetGameBoardsForReview(GetGameBoardsForReviewRequestDTO request)
+        {
+            var query = _dbContext.BoardGames
+                .Include(x => x.User)
+                .Where(x => x.TableBoardStateId == ModelLayer.Enum.TableBoardState.Reviewing)
+                .Select(x => new GameBoardReviewItem
+                {
+                    GameBoardId = x.BoardGameId,
+                    GameBoardName = x.Title,
+                    GameBoardCreateDate = x.CreationTime,
+                    CreatorId = x.UserId,
+                    CreatorName = x.User.UserName
+                });
+
+            var totalCount = await query.CountAsync();
+
+            var result = await query
+                .Skip(request.StartIndex)
+                .Take(request.EndIndex - request.StartIndex)
+                .ToListAsync();
+
+            return new GameBoardReviewResponse
+            {
+                GameBoardsForReview = result,
+                TotalCount = totalCount,
+            };
+        }
     }
 }

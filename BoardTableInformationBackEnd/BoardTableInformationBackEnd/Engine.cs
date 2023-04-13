@@ -32,6 +32,7 @@ namespace BoardTableInformationBackEnd
             serviceCollection.AddScoped<ISelectListService, SelectListService>();
             serviceCollection.AddScoped<IReviewService, ReviewService>();
             serviceCollection.AddScoped<IReviewRepository, ReviewRepository>();
+            serviceCollection.AddScoped<IAdminService, AdminService>();
         }
     }
 }

@@ -117,7 +117,7 @@ export default function Navbar() {
                     </li>
                     {isAdmin && (
                       <li>
-                        <Link to={"#"}>Admin CP</Link>
+                        <Link to={"/adminmenu"}>Admin CP</Link>
                       </li>
                     )}
                     <li>
@@ -161,7 +161,7 @@ export default function Navbar() {
                   <Link to="/settings">Settings</Link>
                 </li>
                 {validToken && isAdmin && (
-                  <Link to={"/admin"}>
+                  <Link to={"/adminmenu"}>
                     <li className="p-4 border-b border-gray-600">Admin CP</li>
                   </Link>
                 )}
