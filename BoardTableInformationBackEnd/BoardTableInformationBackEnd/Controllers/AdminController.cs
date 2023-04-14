@@ -25,5 +25,15 @@ namespace BoardTableInformationBackEnd.Controllers
             return Ok(response);
         }
 
+        [HttpPatch("changeGameBoardState")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ChangeGameBoardState([FromBody]GameBoardAprove aproval)
+        {
+            var response = await _adminService.ChangeGameBoardState(aproval);
+
+            return Ok(response);
+        }
+
     }
 }

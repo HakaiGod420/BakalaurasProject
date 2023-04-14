@@ -18,6 +18,11 @@ namespace ServiceLayer.Services
             _gameBoardRepository = gameBoardRepository;
         }
 
+        public async Task<bool> ChangeGameBoardState(GameBoardAprove aproval)
+        {
+            return await _gameBoardRepository.SetGameBoardState(aproval);
+        }
+
         public async Task<GameBoardReviewResponse> GetBoardForReview(GetGameBoardsForReviewRequestDTO request)
         {
             return await _gameBoardRepository.GetGameBoardsForReview(request);

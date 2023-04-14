@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ModelLayer.DTO
 {
-    public class GetGameBoardsForReviewRequestDTO
+    public class GameBoardAprove
     {
-        public int PageIndex { get; set; }
-        public int PageSize { get; set; }
+        public int GameBoardId { get; set; }
+        public bool IsAproved { get; set; }
     }
 }

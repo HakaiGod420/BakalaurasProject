@@ -24,9 +24,20 @@ namespace BoardTableInformationBackEnd.Controllers
         [Authorize]
         [HttpPost("create")]
         [ProducesResponseType(typeof(CreatedGameBoard), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create([FromForm]CreateBoardGame boardGameModel)
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateGameBoard([FromForm]CreateBoardGame boardGameModel)
         {
             var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+
+            if(boardGameModel == null)
+            {
+                return BadRequest("Wrong gameBoardModal");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Model is not correct");
+            }
 
             var createdGameBoard = await _gameBoardService.CreateGameBoard(boardGameModel,id);
 
@@ -38,7 +49,6 @@ namespace BoardTableInformationBackEnd.Controllers
         public async Task<IActionResult> GetBoards(string searchTerm)
         {
           
-
             var listOfBoards = await _gameBoardService.GetBoardGamesForSelect(searchTerm);
 
             return new OkObjectResult(listOfBoards);
@@ -46,8 +56,20 @@ namespace BoardTableInformationBackEnd.Controllers
 
         [HttpGet("getBoardCardItems")]
         [ProducesResponseType(typeof(GameCardListResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> GetBoardCardItems([FromQuery]int startIndex, [FromQuery] int backIndex, [FromQuery] FilterDTO filter, [FromQuery] string? searchTerm = null)
         {
+
+            if(startIndex < 0 )
+            {
+                return UnprocessableEntity(nameof(startIndex));
+            }
+
+            if (backIndex < 0)
+            {
+                return UnprocessableEntity(nameof(backIndex));
+            }
+
             var listOfBoards = await _gameBoardService.GetBoardCardItems(startIndex, backIndex,searchTerm, filter);
 
             foreach (var item in listOfBoards.BoardGames)

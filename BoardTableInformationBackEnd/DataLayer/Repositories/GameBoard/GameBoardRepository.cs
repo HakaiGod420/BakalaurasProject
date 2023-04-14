@@ -2,6 +2,7 @@
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.DTO;
+using ModelLayer.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -156,8 +157,8 @@ namespace DataLayer.Repositories.GameBoard
             var totalCount = await query.CountAsync();
 
             var result = await query
-                .Skip(request.StartIndex)
-                .Take(request.EndIndex - request.StartIndex)
+                .Skip(request.PageIndex*request.PageSize)
+                .Take(request.PageSize)
                 .ToListAsync();
 
             return new GameBoardReviewResponse
@@ -165,6 +166,28 @@ namespace DataLayer.Repositories.GameBoard
                 GameBoardsForReview = result,
                 TotalCount = totalCount,
             };
+        }
+
+        public async Task<bool> SetGameBoardState(GameBoardAprove approval)
+        {
+            var game = await _dbContext.BoardGames.FindAsync(approval.GameBoardId);
+
+            if (game == null)
+            {
+                return false;
+            }
+
+            if (approval.IsAproved)
+            {
+                game.TableBoardStateId = TableBoardState.Activated;
+            }
+            else
+            {
+                game.TableBoardStateId = TableBoardState.Rejected;
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

@@ -123,3 +123,8 @@ export interface TableTopGamesForReviewResponse {
   GameBoardsForReview: TableTopGameItemForReview[];
   TotalCount: number;
 }
+
+export interface TabletopGameAproval {
+  GameBoardId: number;
+  IsApproved: boolean;
+}
