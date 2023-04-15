@@ -9,8 +9,8 @@ namespace ModelLayer.DTO
 {
     public class CreateImageDto
     {
-        public string TabletopTitle { get; set; }
-        public List<string> FileNames { get; set; }
-        public List<IFormFile> Images { get; set; }
+        public string? TabletopTitle { get; set; }
+        public List<string> FileNames { get; set; } = new List<string>();
+        public List<IFormFile> Images { get; set; } = new List<IFormFile>();
     }
 }

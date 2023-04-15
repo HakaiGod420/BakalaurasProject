@@ -32,10 +32,8 @@
 
   <ItemGroup>
     <Folder Include="ControllersTests\AdminControllerTests\" />
-    <Folder Include="ControllersTests\FilesContollerTests\" />
     <Folder Include="ControllersTests\InvitationsControllerTests\" />
     <Folder Include="ControllersTests\UserControllerTests\" />
-    <Folder Include="ControllersTests\ReviewControllerTests\" />
   </ItemGroup>
 
 </Project>

@@ -32,6 +32,7 @@ import "primeicons/primeicons.css";
 
 import AdminMenu from "./pages/AdminPages/adminMenu";
 import BoardGamesForReview from "./pages/AdminPages/boardGamesForReview";
+import BoardGameViewAdmin from "./pages/AdminPages/boardGamesView";
 import BoardList from "./pages/boardList";
 import Gameboard from "./pages/gameboard";
 import MyEvents from "./pages/myEvents";
@@ -93,6 +94,10 @@ function App() {
           <Route
             path="/adminmenu/review-gameboard"
             element={<BoardGamesForReview />}
+          />
+          <Route
+            path="/adminmenu/gameboards"
+            element={<BoardGameViewAdmin />}
           />
         </Routes>
       </Content>

@@ -16,7 +16,7 @@ const menuItems: MenuItem[] = [
   {
     label: "View Tabletop Game Boards",
     icon: BiGame,
-    to: "/admin/view-game-boards",
+    to: "gameboards",
     description: "View all tabletop game boards that have been created.",
   },
   {
