@@ -16,6 +16,7 @@ namespace DataLayer.Repositories.GameBoard
         public Task<SingleGameBoardView?> GetGameBoard(int id);
         public Task<GameBoardReviewResponse> GetGameBoardsForReview(GetGameBoardsForReviewRequestDTO request);
         public Task<bool> SetGameBoardState(GameBoardAprove aproval);
+        public Task<GameBoardListForAdmin> GetGameBoardListForAdmin(int pageSize, int pageIndex);
 
     }
 }

@@ -11,5 +11,7 @@ namespace ServiceLayer.Interfaces
     {
         public Task<GameBoardReviewResponse> GetBoardForReview(GetGameBoardsForReviewRequestDTO request);
         public Task<bool> ChangeGameBoardState(GameBoardAprove aproval);
+        public Task<GameBoardListForAdmin> GetGameBoardsForAdmin(int pageSize,int pageIndex);
+        public Task<bool> UpdateIsActive(int gameBoardId, bool isActive);
     }
 }

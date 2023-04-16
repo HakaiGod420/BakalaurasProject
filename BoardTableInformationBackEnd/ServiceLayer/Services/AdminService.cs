@@ -27,5 +27,15 @@ namespace ServiceLayer.Services
         {
             return await _gameBoardRepository.GetGameBoardsForReview(request);
         }
+
+        public async Task<GameBoardListForAdmin> GetGameBoardsForAdmin(int pageSize, int pageIndex)
+        {
+            return await _gameBoardRepository.GetGameBoardListForAdmin(pageSize, pageIndex);
+        }
+
+        public Task<bool> UpdateIsActive(int gameBoardId, bool isActive)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

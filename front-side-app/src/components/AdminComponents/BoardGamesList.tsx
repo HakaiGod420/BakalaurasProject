@@ -1,11 +1,7 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { FaCheck, FaTimes } from "react-icons/fa";
-import {
-  TableTopGameItemForReview,
-  TabletopGameAproval,
-} from "../../services/types/TabletopGame";
+import { getBoardGamesListForAdmin } from "../../services/api/AdminService";
+import { TableTopGameForAdmin } from "../../services/types/TabletopGame";
 import LoadingComponent from "../core/LoadingComponent";
 import SectionDivider from "../core/SectionDivider";
 
@@ -15,19 +11,18 @@ const BoardGameListAdmin: React.FC = () => {
 
   const [totalCount, setTotalCount] = useState<number | undefined>(0);
 
-  const [gameBoardsForReview, setGameBoardsForReview] =
-    useState<TableTopGameItemForReview[]>();
+  const [gameBoards, setGameBoards] = useState<TableTopGameForAdmin[]>();
 
   // Example game board data
 
   const fetchGameBoardsForReview = async (pageNumber: number) => {
-    /*
-    const response = await getBoardGameListForReview(
+    const response = await getBoardGamesListForAdmin(
       pageNumber - 1,
       gameBoardsPerPage
-    );*/
-    setGameBoardsForReview([]);
-    setTotalCount(10);
+    );
+    console.log(response);
+    setGameBoards(response?.Boards);
+    setTotalCount(response?.TotalCount);
   };
 
   // Change page
@@ -36,26 +31,17 @@ const BoardGameListAdmin: React.FC = () => {
     await fetchGameBoardsForReview(pageNumber);
   };
 
-  const changeState = async (gameBoardId: number, state: boolean) => {
-    const loading = toast.loading("Changed gameboard state");
-    const newGameBoardState: TabletopGameAproval = {
-      GameBoardId: gameBoardId,
-      IsApproved: state,
-    };
-    setGameBoardsForReview([]);
-    /*
-    const response = await updateGameBoardState(newGameBoardState);
+  const handleStateChange = (gameBoardId: number, isBlocked: boolean) => {
+    // find the object with the given id
+    let obj = gameBoards?.find((o) => o.GameBoardId === gameBoardId);
 
-    if (response) {
-      toast.success("State Changed Successfully", {
-        id: loading,
-      });
-      fetchGameBoardsForReview(currentPage);
-    } else {
-      toast.error("Failed to update state", {
-        id: loading,
-      });
-    }*/
+    // if object with the given id is found
+    if (obj) {
+      // reverse the state boolean
+      obj.IsBlocked = !obj.IsBlocked;
+    }
+
+    setGameBoards([...gameBoards!]);
   };
 
   useEffect(() => {
@@ -64,7 +50,7 @@ const BoardGameListAdmin: React.FC = () => {
 
   return (
     <div className="max-w-[1280px] mx-auto">
-      {gameBoardsForReview ? (
+      {gameBoards ? (
         <div>
           {totalCount && totalCount > 0 ? (
             <div>
@@ -80,45 +66,56 @@ const BoardGameListAdmin: React.FC = () => {
                       <th className="p-3 font-medium">Game board title</th>
                       <th className="p-3 font-medium">Created date</th>
                       <th className="p-3 font-medium">Creator name</th>
+                      <th className="p-3 font-medium">State</th>
                       <th className="p-3 font-medium">Actions</th>
+                      <th className="p-3 font-medium">Blocked</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {gameBoardsForReview?.map((gameBoard) => (
+                    {gameBoards?.map((gameBoard) => (
                       <tr
                         key={gameBoard.GameBoardId}
                         className="bg-gray-700 text-gray-200 hover:bg-gray-600"
                       >
                         <td className="p-3">{gameBoard.GameBoardId}</td>
-                        <td className="p-3">{gameBoard.GameBoardName}</td>
+                        <td className="p-3">{gameBoard.Title}</td>
                         <td className="p-3">
                           {dayjs(gameBoard.GameBoardCreateDate).format(
                             "YYYY-MM-DD HH:mm"
                           )}
                         </td>
                         <td className="p-3">{gameBoard.CreatorName}</td>
+                        <td className="p-3">{gameBoard.State}</td>
                         <td className="p-3 flex justify-between items-center">
                           <button className="p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px]">
                             <a href={`/gameboards/${gameBoard.GameBoardId}`}>
                               View
                             </a>
                           </button>
+                        </td>
+                        <td>
                           <div className="flex items-center">
                             <button
                               onClick={() =>
-                                changeState(gameBoard.GameBoardId, true)
+                                handleStateChange(
+                                  gameBoard.GameBoardId,
+                                  gameBoard.IsBlocked
+                                )
                               }
-                              className="p-2 text-green-500"
+                              type="button"
+                              className={`${
+                                gameBoard.IsBlocked
+                                  ? "bg-green-500"
+                                  : "bg-gray-200"
+                              } relative inline-flex items-center justify-center h-6 rounded-full w-11 transition-colors duration-200 focus:outline-none`}
                             >
-                              <FaCheck />
-                            </button>
-                            <button
-                              onClick={() =>
-                                changeState(gameBoard.GameBoardId, false)
-                              }
-                              className="p-2 text-red-500"
-                            >
-                              <FaTimes />
+                              <span
+                                className={`${
+                                  gameBoard.IsBlocked
+                                    ? "translate-x-3"
+                                    : "translate-x-[-10px]"
+                                } inline-block w-4 h-4 transform bg-white rounded-full transition-transform duration-200 ease-in-out`}
+                              />
                             </button>
                           </div>
                         </td>

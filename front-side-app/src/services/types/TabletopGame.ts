@@ -128,3 +128,18 @@ export interface TabletopGameAproval {
   GameBoardId: number;
   IsApproved: boolean;
 }
+
+export interface TableTopGameForAdmin {
+  GameBoardId: number;
+  Title: string;
+  GameBoardCreateDate: string;
+  State: string;
+  CreatorName: string;
+  CreatorId: number;
+  IsBlocked: boolean;
+}
+
+export interface TableTopGameListForAdminResponse {
+  Boards: TableTopGameForAdmin[];
+  TotalCount: number;
+}

@@ -140,6 +140,35 @@ namespace DataLayer.Repositories.GameBoard
 
         }
 
+        public async Task<GameBoardListForAdmin> GetGameBoardListForAdmin(int pageSize, int pageIndex)
+        {
+            var query = _dbContext.BoardGames
+                .Include(x => x.User)
+                .Include(x => x.TableBoardState)
+                .Select(x => new GameBoardForAdmin
+            {
+                GameBoardId = x.BoardGameId,
+                Title = x.Title,
+                GameBoardCreateDate = x.CreationTime,
+                CreatorName = x.User.UserName,
+                CreatorId = x.UserId,
+                State = x.TableBoardState.Name,
+                IsBlocked = x.IsBlocked
+            });
+
+            var count = await query.CountAsync();
+            var result = await query
+                .Skip(pageIndex * pageSize)
+                .Take(pageIndex)
+                .ToListAsync();
+
+            return new GameBoardListForAdmin
+            {
+                Boards = result,
+                TotalCount = count
+            };
+        }
+
         public async Task<GameBoardReviewResponse> GetGameBoardsForReview(GetGameBoardsForReviewRequestDTO request)
         {
             var query = _dbContext.BoardGames

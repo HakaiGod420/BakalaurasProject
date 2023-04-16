@@ -50,6 +50,7 @@ function CreateStep5({
     const preFiles: File[] = [];
     event.files.forEach((file) => {
       preFiles.push(file);
+      console.log(file);
     });
     setThumbnail(preFiles[0]);
   };

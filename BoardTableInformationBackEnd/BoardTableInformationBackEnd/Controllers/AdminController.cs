@@ -35,5 +35,15 @@ namespace BoardTableInformationBackEnd.Controllers
             return Ok(response);
         }
 
+        [HttpGet("getGameBoardsForAdmin")]
+        [ProducesResponseType(typeof(GameBoardListForAdmin), StatusCodes.Status200OK)]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetGameBoardsForAdmin([FromQuery]int pageSize, [FromQuery]int pageIndex)
+        {
+            var response = await _adminService.GetGameBoardsForAdmin(pageIndex, pageSize);
+                
+            return Ok(response);
+        }
+
     }
 }

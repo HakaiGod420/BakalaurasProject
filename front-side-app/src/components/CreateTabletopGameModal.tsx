@@ -114,6 +114,7 @@ function CreateTabletopGameModal() {
   };
 
   const postImages = async (formData: FormData) => {
+    console.log(postImages);
     await axios
       .post(SERVER_API + "/api/upload/imagePost", formData, {
         headers: { "Content-Type": "multipart/form-data" },

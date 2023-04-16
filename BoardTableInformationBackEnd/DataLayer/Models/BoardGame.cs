@@ -46,6 +46,7 @@ namespace DataLayer.Models
         public string? Rules { get; set; }
 
         public string Thubnail_Location { get; set; }
+        public bool IsBlocked { get; set; } = false;
 
         [MaxLength(10)]
         public virtual ICollection<ImageEntity> Images { get; set; }
