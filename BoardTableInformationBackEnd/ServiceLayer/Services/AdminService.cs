@@ -18,7 +18,7 @@ namespace ServiceLayer.Services
             _gameBoardRepository = gameBoardRepository;
         }
 
-        public async Task<bool> ChangeGameBoardState(GameBoardAprove aproval)
+        public async Task<bool> ChangeGameBoardState(GameBoardApprove aproval)
         {
             return await _gameBoardRepository.SetGameBoardState(aproval);
         }
@@ -33,9 +33,9 @@ namespace ServiceLayer.Services
             return await _gameBoardRepository.GetGameBoardListForAdmin(pageSize, pageIndex);
         }
 
-        public Task<bool> UpdateIsActive(int gameBoardId, bool isActive)
+        public Task<bool> UpdateIsBlocked(int gameBoardId, bool isBlocked)
         {
-            throw new NotImplementedException();
+            return _gameBoardRepository.ChangeGameBoardState(gameBoardId, isBlocked);
         }
     }
 }

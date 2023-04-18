@@ -21,7 +21,7 @@ namespace BoardTableInformationBackEnd.Controllers
         [Authorize]
         [ProducesResponseType(typeof(void), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> CreateReviewRe([FromBody] CreateReviewDto createReviewDto)
+        public async Task<IActionResult> CreateReview([FromBody] CreateReviewDto createReviewDto)
         {
             var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
 

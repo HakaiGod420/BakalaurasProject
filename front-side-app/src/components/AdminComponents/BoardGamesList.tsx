@@ -1,7 +1,13 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { getBoardGamesListForAdmin } from "../../services/api/AdminService";
-import { TableTopGameForAdmin } from "../../services/types/TabletopGame";
+import {
+  getBoardGamesListForAdmin,
+  updateGameBoardIsBlocked,
+} from "../../services/api/AdminService";
+import {
+  TableTopGameForAdmin,
+  TableTopGameIsBlocked,
+} from "../../services/types/TabletopGame";
 import LoadingComponent from "../core/LoadingComponent";
 import SectionDivider from "../core/SectionDivider";
 
@@ -31,13 +37,15 @@ const BoardGameListAdmin: React.FC = () => {
     await fetchGameBoardsForReview(pageNumber);
   };
 
-  const handleStateChange = (gameBoardId: number, isBlocked: boolean) => {
-    // find the object with the given id
+  const handleStateChange = async (gameBoardId: number, isBlocked: boolean) => {
+    const gameBoardNewState: TableTopGameIsBlocked = {
+      isBlocked: !isBlocked,
+      gameBoardId: gameBoardId,
+    };
+    const response = await updateGameBoardIsBlocked(gameBoardNewState);
+    console.log(response);
     let obj = gameBoards?.find((o) => o.GameBoardId === gameBoardId);
-
-    // if object with the given id is found
     if (obj) {
-      // reverse the state boolean
       obj.IsBlocked = !obj.IsBlocked;
     }
 

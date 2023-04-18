@@ -143,3 +143,8 @@ export interface TableTopGameListForAdminResponse {
   Boards: TableTopGameForAdmin[];
   TotalCount: number;
 }
+
+export interface TableTopGameIsBlocked {
+  gameBoardId: number;
+  isBlocked: boolean;
+}

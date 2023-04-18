@@ -10,7 +10,7 @@ import Navbar from "./components/Navbar";
 import Login from "./pages/login";
 import MainPage from "./pages/mainPage";
 import Register from "./pages/register";
-import TableBoadGames from "./pages/tableBoadGames";
+import TableBoadGames from "./pages/createTableBoadGames";
 import {
   activeInvitations,
   isAdminAtom,

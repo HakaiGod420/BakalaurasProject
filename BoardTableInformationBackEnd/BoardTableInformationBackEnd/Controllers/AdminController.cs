@@ -28,7 +28,7 @@ namespace BoardTableInformationBackEnd.Controllers
         [HttpPatch("changeGameBoardState")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ChangeGameBoardState([FromBody]GameBoardAprove aproval)
+        public async Task<IActionResult> ChangeGameBoardState([FromBody]GameBoardApprove aproval)
         {
             var response = await _adminService.ChangeGameBoardState(aproval);
 
@@ -42,6 +42,16 @@ namespace BoardTableInformationBackEnd.Controllers
         {
             var response = await _adminService.GetGameBoardsForAdmin(pageIndex, pageSize);
                 
+            return Ok(response);
+        }
+
+        [HttpPatch("updateIsBlocked")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateIsBlocked([FromBody] UpdateIsBlockedDTO request)
+        {
+            var response = await _adminService.UpdateIsBlocked(request.GameBoardId, request.IsBlocked);
+
             return Ok(response);
         }
 

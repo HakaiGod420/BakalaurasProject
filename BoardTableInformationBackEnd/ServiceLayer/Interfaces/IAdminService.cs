@@ -10,8 +10,8 @@ namespace ServiceLayer.Interfaces
     public interface IAdminService
     {
         public Task<GameBoardReviewResponse> GetBoardForReview(GetGameBoardsForReviewRequestDTO request);
-        public Task<bool> ChangeGameBoardState(GameBoardAprove aproval);
+        public Task<bool> ChangeGameBoardState(GameBoardApprove aproval);
         public Task<GameBoardListForAdmin> GetGameBoardsForAdmin(int pageSize,int pageIndex);
-        public Task<bool> UpdateIsActive(int gameBoardId, bool isActive);
+        public Task<bool> UpdateIsBlocked(int gameBoardId, bool isBlocked);
     }
 }

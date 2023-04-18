@@ -15,8 +15,9 @@ namespace DataLayer.Repositories.GameBoard
         public Task <GameCardListResponse> GetGameBoardInfo(int startIndex, int endIndex,string? searchTerm, FilterDTO filter);
         public Task<SingleGameBoardView?> GetGameBoard(int id);
         public Task<GameBoardReviewResponse> GetGameBoardsForReview(GetGameBoardsForReviewRequestDTO request);
-        public Task<bool> SetGameBoardState(GameBoardAprove aproval);
+        public Task<bool> SetGameBoardState(GameBoardApprove aproval);
         public Task<GameBoardListForAdmin> GetGameBoardListForAdmin(int pageSize, int pageIndex);
+        public Task<bool> ChangeGameBoardState(int gameBoardId, bool isActive);
 
     }
 }

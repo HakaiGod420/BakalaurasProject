@@ -22,7 +22,8 @@ namespace BoardTableInformationBackEnd.Controllers
         [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetCustomerData(int id)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUserData(int id)
         {
             var userView = await _userService.GetUser(id);
 
@@ -57,7 +58,7 @@ namespace BoardTableInformationBackEnd.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(LoginUserModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> LoginUser(LoginUserModel loginModel)
         {
             var result = await _userService.Login(loginModel);
@@ -73,13 +74,19 @@ namespace BoardTableInformationBackEnd.Controllers
         [HttpPost("addAddress")]
         [Authorize]
         [ProducesResponseType(typeof(bool), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddUserAddress(AddressCreateDto address)
         {
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result  = await _addressService.AddNewAddress(address);
 
             if(result == false)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, result);
+                return BadRequest();
             }
            
             return new CreatedResult(String.Empty, result);
@@ -106,6 +113,7 @@ namespace BoardTableInformationBackEnd.Controllers
         [HttpGet("getUserSettings")]
         [Authorize]
         [ProducesResponseType(typeof(UserSettings), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserSettings()
         {
             var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
@@ -114,7 +122,7 @@ namespace BoardTableInformationBackEnd.Controllers
 
             if (result == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, result);
+                return NotFound();
             }
 
             return new OkObjectResult(result);
@@ -123,15 +131,22 @@ namespace BoardTableInformationBackEnd.Controllers
         [HttpPut("updateAddress")]
         [Authorize]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType( StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateUserAddress([FromBody] UpdateUserAddress address)
         {
             var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest(ModelState);
+            }
 
             var result = await _addressService.UpdateUserAddress(id,address);
 
             if (result == false)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, result);
+                return NotFound();
             }
             return new OkObjectResult(result);
         }
@@ -139,14 +154,14 @@ namespace BoardTableInformationBackEnd.Controllers
         [HttpGet("getUserInformation")]
         [Authorize]
         [ProducesResponseType(typeof(UserInformationDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(Nullable), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(Nullable), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserInformation(string userName)
         {
             var result = await _userService.GetUserInformation(userName);
 
             if (result == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, result);
+                return NotFound();
             }
             return new OkObjectResult(result);
         }

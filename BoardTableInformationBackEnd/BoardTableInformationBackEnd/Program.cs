@@ -108,6 +108,7 @@ namespace BoardTableInformationBackEnd
             app.UseAuthorization();
 
 
+            
             app.MapControllers();
 
             app.Run();

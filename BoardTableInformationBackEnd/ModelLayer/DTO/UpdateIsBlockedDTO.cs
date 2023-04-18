@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ModelLayer.DTO
 {
-    public class GameBoardApprove
+    public class UpdateIsBlockedDTO
     {
+        [Required]
         public int GameBoardId { get; set; }
-        public bool IsAproved { get; set; }
+        [Required]
+        public bool IsBlocked { get; set; }
     }
 }

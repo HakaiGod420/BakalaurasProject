@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
 import {
+  TableTopGameIsBlocked,
   TableTopGameListForAdminResponse,
   TableTopGamesForReviewResponse,
   TabletopGameAproval,
@@ -37,6 +38,21 @@ export async function updateGameBoardState(
 
   const response = await axios
     .patch(SERVER_API + "/api/admin/changeGameBoardState", tabletopGameAproval)
+    .catch((error) => {
+      console.log(error);
+    });
+
+  return response?.data;
+}
+
+export async function updateGameBoardIsBlocked(
+  gameBoardNewState: TableTopGameIsBlocked
+) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.patch["Authorization"] = `Bearer ${token.token}`;
+  const response = await axios
+    .patch(SERVER_API + "/api/admin/updateIsBlocked", gameBoardNewState)
     .catch((error) => {
       console.log(error);
     });

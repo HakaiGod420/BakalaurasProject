@@ -27,6 +27,21 @@ namespace DataLayer.Repositories.GameBoard
             return tableBoard;
         }
 
+        public async Task<bool> ChangeGameBoardState(int gameBoardId, bool isBlocked)
+        {
+            var gameBoard = await _dbContext.BoardGames.SingleOrDefaultAsync(x => x.BoardGameId == gameBoardId);
+
+            if (gameBoard == null)
+            {
+                return false;
+            }
+
+            gameBoard.IsBlocked = isBlocked;
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<List<BoardGameSimpleDto>> GetBoardsSimple(string titlePart)
         {
             var result = await _dbContext.BoardGames.AsQueryable()
@@ -197,7 +212,7 @@ namespace DataLayer.Repositories.GameBoard
             };
         }
 
-        public async Task<bool> SetGameBoardState(GameBoardAprove approval)
+        public async Task<bool> SetGameBoardState(GameBoardApprove approval)
         {
             var game = await _dbContext.BoardGames.FindAsync(approval.GameBoardId);
 
