@@ -172,6 +172,11 @@ namespace BoardTableInformationBackEnd.Controllers
         [ProducesResponseType(typeof(Nullable), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ChangeUserInformation([FromBody] ChangeUserInformationDTO userInformationDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Model is not valid");
+            }
+
             userInformationDTO.UserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
 
             await _userService.ChangeUserInformation(userInformationDTO);

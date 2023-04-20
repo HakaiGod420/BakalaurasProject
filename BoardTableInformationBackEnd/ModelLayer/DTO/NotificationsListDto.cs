@@ -8,6 +8,6 @@ namespace ModelLayer.DTO
 {
     public class NotificationsListDto
     {
-        public List<NotificationSettingsDto> Notifications { get; set; }
+        public List<NotificationSettingsDto>? Notifications { get; set; }
     }
 }

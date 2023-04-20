@@ -74,7 +74,6 @@ namespace UnitTestGameBoardWeb.ControllersTests.UserControllerTests
             // Assert
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
-            Assert.IsType<SerializableError>(result.Value);
         }
 
         [Fact]

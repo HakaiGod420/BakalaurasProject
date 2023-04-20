@@ -11,6 +11,6 @@ namespace DataLayer.Repositories.Reviews
     public interface IReviewRepository
     {
         public Task CreateReview(ReviewEntity review);
-        public Task< List<ReviewView>> GetAllReviews(int boardGameId);
+        public Task<List<ReviewView>> GetAllReviews(int boardGameId);
     }
 }

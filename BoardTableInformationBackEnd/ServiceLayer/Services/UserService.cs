@@ -179,8 +179,20 @@ namespace ServiceLayer.Services
             return jwt;
         }
 
-        public async Task<bool> UpdateNotifications(int id,NotificationsListDto notificationsListDto)
+        public async Task<bool> UpdateNotifications(int id, NotificationsListDto notificationsListDto)
         {
+
+            if (notificationsListDto == null)
+            {
+                return false;
+
+            }
+
+            if (notificationsListDto.Notifications == null)
+            {
+                return false;
+            }
+
            foreach(var notification in notificationsListDto.Notifications)
             {
                if(notification.Title == "Invitation")
@@ -201,5 +213,7 @@ namespace ServiceLayer.Services
         {
             return await _repository.GetUserInformation(userName);
         }
+
+
     }
 }

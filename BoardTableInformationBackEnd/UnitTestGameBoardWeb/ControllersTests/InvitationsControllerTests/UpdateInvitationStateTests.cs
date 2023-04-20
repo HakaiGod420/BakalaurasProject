@@ -17,22 +17,26 @@ namespace UnitTestGameBoardWeb.ControllersTests.InvitationsControllerTests
     {
         private readonly InvitationController _invitationController;
         private readonly Mock<IInvitationService> _mockInvitationService;
+        private readonly int _userId;
 
         public UpdateInvitationStateTests()
         {
             _mockInvitationService = new Mock<IInvitationService>();
             _invitationController = new InvitationController(_mockInvitationService.Object);
-            _invitationController.ControllerContext = new ControllerContext();
-            _invitationController.ControllerContext.HttpContext = new DefaultHttpContext();
-            _invitationController.ControllerContext.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            _userId = 1;
+            var claims = new List<Claim> { new Claim("UserId", _userId.ToString()) };
+            var identity = new ClaimsIdentity(claims, "TestAuthType");
+            var user = new ClaimsPrincipal(identity);
+            _invitationController.ControllerContext = new ControllerContext
             {
-            new Claim("UserId", "1")
-            }));
+                HttpContext = new DefaultHttpContext { User = user }
+            };
         }
 
         [Fact]
         public async Task UpdateInvitationState_ValidData_ReturnsOkResult()
         {
+
             // Arrange
             var data = new InvitationStateChangeDto()
             {

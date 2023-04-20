@@ -79,7 +79,7 @@ namespace BoardTableInformationBackEnd.Controllers
         [ProducesResponseType(typeof(bool), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> UpdateInvitationState([FromBody] InvitationStateChangeDto data)
         {
-            var id = Convert.ToInt32(HttpContext.User.FindFirst("UserId"));
+            var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
             data.UserId = id;
 
             if(data.InvitationId < 0 || data.State == null)
