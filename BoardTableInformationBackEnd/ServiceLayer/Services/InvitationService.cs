@@ -94,7 +94,6 @@ namespace ServiceLayer.Services
             await Task.Run(() =>
             SendInvitatiosToOthers(invititionEntity));
             
-
             return data;
         }
 
@@ -115,7 +114,6 @@ namespace ServiceLayer.Services
                      await _invitationRepository.SentInvitation(invitationToSent);
                 };
             }
-
         }
 
         public async Task<int> ActiveInvitationCount(int id)
