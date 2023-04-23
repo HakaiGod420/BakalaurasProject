@@ -83,7 +83,7 @@ function CreateStep2({
           </div>
         </div>
         <div>
-          <div className=" font-bold flex justify-center">
+          <div className=" font-bold flex justify-center mt-5">
             <p>Average playing time for one game</p>
           </div>
           <div className="p-2 flex justify-center">

@@ -4,15 +4,10 @@ using DataLayer.Repositories.BoardType;
 using DataLayer.Repositories.Category;
 using DataLayer.Repositories.GameBoard;
 using DataLayer.Repositories.Image;
-using DataLayer.Repositories.User;
-using Microsoft.Extensions.Configuration;
 using ModelLayer.DTO;
 using ServiceLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+
 
 namespace ServiceLayer.Services
 {
@@ -39,6 +34,11 @@ namespace ServiceLayer.Services
 
         public async Task<CreatedGameBoard> CreateGameBoard(CreateBoardGame board,int userId)
         {
+            if(board == null)
+            {
+                throw new ArgumentNullException(nameof(board));
+            }
+
             var gameBoard = new BoardGameEntity
             {
                 Title = board.Title,
@@ -51,7 +51,7 @@ namespace ServiceLayer.Services
                 Rules = board.Rules,
                 Thubnail_Location = board.ThumbnailName,
                 UserId = userId,
-                TableBoardStateId = board.SaveAsDraft ? ModelLayer.Enum.TableBoardState.Reviewing : ModelLayer.Enum.TableBoardState.Draft,
+                TableBoardStateId = ModelLayer.Enum.TableBoardState.Reviewing,
             };
 
             foreach(var item in board.Categories)

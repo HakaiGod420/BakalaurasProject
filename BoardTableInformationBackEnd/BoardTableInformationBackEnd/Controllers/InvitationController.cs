@@ -128,5 +128,25 @@ namespace BoardTableInformationBackEnd.Controllers
 
             return new CreatedResult(String.Empty, invitation);
         }
+
+        [HttpGet("getInvitationsByCountry")]
+        [Authorize]
+        [ProducesResponseType(typeof(InvitationsListResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetInvitationsByCountry([FromQuery] string country, [FromQuery] int pageIndex, [FromQuery] int pageSize)
+        {
+            if(country == null)
+            {
+                return BadRequest();
+            }
+
+            if(pageIndex < 0 || pageSize < 0)
+            {
+                return BadRequest();
+            }
+
+            var invitations = await _invitationService.GetInvitationsByCountry(country, pageIndex, pageSize);
+
+            return Ok(invitations);
+        }
     }
 }

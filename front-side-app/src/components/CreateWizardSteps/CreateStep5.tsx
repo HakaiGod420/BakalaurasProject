@@ -1,5 +1,4 @@
 import { FileUpload, FileUploadHandlerEvent } from "primereact/fileupload";
-import { useState } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
@@ -20,8 +19,6 @@ function CreateStep5({
   setThumbnail,
 }: Props) {
   const { handleStep, previousStep, nextStep } = useWizard();
-
-  const [rules, setRules] = useState<string>("");
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);
@@ -119,9 +116,9 @@ function CreateStep5({
           Previous
         </button>
 
-        {rules !== "" ? (
+        {images.length !== 0 ? (
           <button
-            disabled={rules.length <= 100}
+            disabled={images.length <= 0}
             className="btn m-2 min-w-[100px]"
             onClick={() => inputHandlerNext()}
           >

@@ -20,7 +20,7 @@ export async function postEventInGoogleCalendar(
   event: GoogleEvent
 ) {
   axios.defaults.headers.post["Authorization"] = `Bearer ${accessToken}`;
-
+  console.log(accessToken);
   const response = await axios
     .post(GOOGLE_CALENDER_API, event)
     .catch((error) => {

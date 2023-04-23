@@ -1,14 +1,14 @@
-import AcceptedInvitationsList from "../components/AcceptedInvititationsList";
-import CreatedInvitationList from "../components/CreatedInvitationsList";
-import EventsInvitationComponent from "../components/EventsInvitationsComponent";
+import InvitationTabs from "../components/InvitationTabs";
+
+const handleTabChange = (tab: "active" | "created" | "accepted") => {
+  console.log("Selected tab:", tab);
+};
 
 function MyEvents() {
   return (
     <div className="bg-white">
       <div>
-        <EventsInvitationComponent />
-        <AcceptedInvitationsList />
-        <CreatedInvitationList />
+        <InvitationTabs onTabChange={handleTabChange} />
       </div>
     </div>
   );

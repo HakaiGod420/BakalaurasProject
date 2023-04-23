@@ -27,8 +27,8 @@ function CreateTabletopGameModal() {
 
   const [title, setTitle] = useState<string>("");
   const [playerAge, setPlayerAge] = useState<number>();
-  const [averageTime, setAverageTime] = useState<number | undefined>(0);
-  const [playerCount, setPlayerCount] = useState<number | undefined>(0);
+  const [averageTime, setAverageTime] = useState<number | undefined>();
+  const [playerCount, setPlayerCount] = useState<number | undefined>();
   const [description, setDescription] = useState<string>("");
   const [rules, setRules] = useState<string | undefined>();
 

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DataLayer.Repositories.Invitation
@@ -150,6 +151,41 @@ namespace DataLayer.Repositories.Invitation
                     && x.InvitationStateId == 1
                     && x.SelectedActiveGame.MeetDate > DateTime.Now)
                 .CountAsync();
+        }
+
+        public async Task<InvitationsListResponse> GetInvitationsByCountry(string country,int pageIndex, int pageSize)
+        {
+            var query = _dbContext.ActiveGames
+                .Include(x => x.BoardGame)
+                .Include(x => x.Address)
+                .Where(x =>
+                    x.InvitationStateId == ActiveGameState.Open
+                    && x.MeetDate > DateTime.Now
+                    && x.Address.Country == country)
+                .Select(x => new InvitationItem
+                {
+                    InvitationId = x.ActiveGameId,
+                    BoardGameId = x.BoardGameId,
+                    BoardGameTitle = x.BoardGame.Title,
+                    Date = x.MeetDate,
+                    Location = x.Address.FullAddress,
+                    MaxPlayer = x.PlayersNeed,
+                    AcceptedPlayer = x.RegistredPlayerCount,
+                    ImageUrl = "Images/" + Regex.Replace(x.BoardGame.Title, @"[^\w\s]+", "").Replace(" ", "_") + "/" + x.BoardGame.Thubnail_Location,
+                });
+
+            var totalCount = await query.CountAsync();
+
+            var result = await query
+                .Skip(pageSize*pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new InvitationsListResponse
+            { 
+                Invitations = result,
+                TotalCount = totalCount
+            };
         }
     }
 }

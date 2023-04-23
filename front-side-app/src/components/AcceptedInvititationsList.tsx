@@ -30,7 +30,6 @@ function AcceptedInvitationsList() {
   const totalPages = Math.ceil(invitations.length / itemsPerPage);
 
   const onAccept = async (invitationId: number) => {
-    console.log("sad");
     const newState: InvitationStateChange = {
       InvitationId: invitationId,
       State: "accept",

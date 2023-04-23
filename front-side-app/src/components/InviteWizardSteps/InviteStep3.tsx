@@ -1,10 +1,11 @@
 import { Collapse, Space } from "antd";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import { useWizard } from "react-use-wizard";
 import marker from "../../assets/images/market.png";
+import { Countries } from "../../constants/Countries";
 import { Address } from "../../services/types/Invitation";
 import { MapCoordinates } from "../../services/types/Miscellaneous";
 interface Props {
@@ -72,11 +73,46 @@ function InviteStep3({
     setMapsCoords(lating);
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const filteredCountries = Countries.filter((country) =>
+    country.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
+
+  const handleSelect = (event: any) => {
+    handleChange("Country", event.target.value);
+    setSearchTerm(event.target.outerText);
+    setIsOpen(false);
+  };
+
+  const handleInput = (event: any) => {
+    setSearchTerm(event.target.value);
+    setIsOpen(true);
+  };
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">
       <div>
         <h1 className="text-center uppercase font-bold text-[20px]">
-          "Add the address where the event will take place.
+          Add the address where the event will take place.
         </h1>
         <p className="text-center p-2">
           To host your own table top event and invite other players to join you,
@@ -97,14 +133,35 @@ function InviteStep3({
               <div className=" font-bold flex justify-center w-[200px] md:w-[400px] lg:w-[400px] xl:w-[200px] ">
                 <p className="text-[#bad0ef] font-bold text-[15px]">Country</p>
               </div>
-              <div className="p-2 flex justify-center">
-                <input
-                  onChange={(e) => handleChange("Country", e.target.value)}
-                  value={address.Country}
-                  type="text"
-                  className="input input-bordered input-success w-full max-w-xs text-[#bad0ef]"
-                />
+              <div className="p-2 flex justify-center relative" ref={ref}>
+                <div className="relative w-full max-w-xs">
+                  <input
+                    type="text"
+                    placeholder="Search for a country"
+                    className="input input-bordered input-success w-full max-w-xs text-[#bad0ef] z-10 rounded-md"
+                    value={searchTerm}
+                    onChange={handleInput}
+                    onFocus={() => setIsOpen(true)}
+                  />
+                  {isOpen && (
+                    <div className="absolute top-full left-0 w-full z-20">
+                      <ul className="list-none p-0 m-0 rounded-md bg-gray-700 text-white overflow-y-scroll max-h-32">
+                        {filteredCountries.slice(0, 5).map((country) => (
+                          <li
+                            key={country}
+                            className="px-3 py-2 hover:bg-gray-600 cursor-pointer"
+                            onClick={handleSelect}
+                            value={country}
+                          >
+                            {country}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
+
               <div className=" font-bold flex justify-center w-[200px] md:w-[400px] lg:w-[400px] xl:w-[200px] ">
                 <p className="text-[#bad0ef] font-bold text-[15px]">City</p>
               </div>

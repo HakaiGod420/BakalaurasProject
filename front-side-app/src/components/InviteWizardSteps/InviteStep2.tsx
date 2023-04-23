@@ -50,7 +50,7 @@ function InviteStep2({
           change these settings at any time before the event starts.
         </p>
         <div>
-          <div className=" font-bold flex justify-center">
+          <div className=" font-bold flex justify-center mt-5">
             <p>Participants count</p>
           </div>
           <div className="p-2 flex justify-center">
@@ -64,7 +64,7 @@ function InviteStep2({
           </div>
         </div>
         <div>
-          <div className=" font-bold flex justify-center">
+          <div className=" font-bold flex justify-center mt-5">
             <p>Minimal participants age</p>
           </div>
           <div className="p-2 flex justify-center">

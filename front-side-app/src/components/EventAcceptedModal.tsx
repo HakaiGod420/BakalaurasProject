@@ -33,6 +33,7 @@ const EventAcceptedModal: React.FC<Props> = ({
   };
 
   const handleLoginSuccess = async (response: any) => {
+    console.log(response.access_token);
     if (userInvitation !== undefined) {
       const meetStart: MeetDate = {
         dateTime: userInvitation.EventDate,
@@ -61,18 +62,23 @@ const EventAcceptedModal: React.FC<Props> = ({
       };
 
       await postEventInGoogleCalendar(response.access_token, event);
-      await onAccept(userInvitation.InvitationId);
+      //await onAccept(userInvitation.InvitationId);
       onClose();
     }
   };
 
-  const handleLoginFailure = () => {
-    alert("Unable to connect to Google. Please try again later.");
-  };
+  const scopes = [
+    "https://www.googleapis.com/auth/calendar.events",
+    "https://www.googleapis.com/auth/calendar",
+  ];
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => handleLoginSuccess(tokenResponse),
+    scope: scopes.join(" "),
   });
+  const handleLoginFailure = () => {
+    alert("Unable to connect to Google. Please try again later.");
+  };
 
   const onDecline = async () => {
     if (userInvitation !== undefined) {

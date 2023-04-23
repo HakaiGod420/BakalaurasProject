@@ -96,7 +96,7 @@ const GameCardList: React.FC = () => {
 
   useEffect(() => {
     const fetchGameBoards = async () => {
-      const response = await getBoardGameList(0, 5, searchTermText, filters);
+      const response = await getBoardGameList(0, 8, searchTermText, filters);
       setGameBoards(response?.BoardGames);
       setTotalCount(response?.TotalCount!);
     };

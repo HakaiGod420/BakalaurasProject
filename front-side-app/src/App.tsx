@@ -7,10 +7,10 @@ import { useRecoilState } from "recoil";
 import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import TableBoadGames from "./pages/createTableBoadGames";
 import Login from "./pages/login";
 import MainPage from "./pages/mainPage";
 import Register from "./pages/register";
-import TableBoadGames from "./pages/createTableBoadGames";
 import {
   activeInvitations,
   isAdminAtom,
@@ -34,6 +34,7 @@ import AdminMenu from "./pages/AdminPages/adminMenu";
 import BoardGamesForReview from "./pages/AdminPages/boardGamesForReview";
 import BoardGameViewAdmin from "./pages/AdminPages/boardGamesView";
 import BoardList from "./pages/boardList";
+import Events from "./pages/events";
 import Gameboard from "./pages/gameboard";
 import MyEvents from "./pages/myEvents";
 import Settings from "./pages/settings";
@@ -91,6 +92,7 @@ function App() {
           <Route path="/gameboards/" element={<BoardList />} />
           <Route path="/gameboards/:id" element={<Gameboard />} />
           <Route path="/adminmenu" element={<AdminMenu />} />
+          <Route path="/events" element={<Events />} />
           <Route
             path="/adminmenu/review-gameboard"
             element={<BoardGamesForReview />}

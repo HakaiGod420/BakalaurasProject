@@ -45,12 +45,6 @@ function InviteStep4({
     return current && current < dayjs().endOf("day");
   };
 
-  const disabledDateTime = () => ({
-    disabledHours: () => range(0, 24).splice(4, 20),
-    disabledMinutes: () => range(30, 60),
-    disabledSeconds: () => [55, 56],
-  });
-
   const inputHandlerSkip = () => {
     setStepNumber(stepNumber + 1);
     nextStep();
@@ -84,10 +78,9 @@ function InviteStep4({
                 fontWeight: "bold",
                 colorAdjust: "revert",
               }}
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD HH:mm"
               disabledDate={disabledDate}
-              disabledTime={disabledDateTime}
-              showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+              showTime={{ defaultValue: dayjs("00:00:00", "HH:mm") }}
               value={date}
               onChange={(e) => setDate(e)}
               dateRender={(current) => {

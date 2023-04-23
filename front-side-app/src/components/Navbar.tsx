@@ -26,6 +26,8 @@ export default function Navbar() {
     window.location.replace("/");
   };
 
+  const [showDropdown, setShowDropdown] = useState(false);
+
   return (
     <div>
       <script src="https://unpkg.com/@themesberg/flowbite@1.1.1/dist/flowbite.bundle.js"></script>
@@ -50,22 +52,48 @@ export default function Navbar() {
                 </li>
                 <li>
                   <Link
-                    to="/tableboardgames"
+                    to="/gameboards"
                     className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-green-700 md:p-0"
                   >
-                    Add table board game
+                    Tabletop games
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    to={"/gameboards"}
-                    className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-green-700 md:p-0"
-                  >
-                    Table top game List
-                  </Link>
+                <li
+                  className="relative"
+                  onMouseEnter={() => setShowDropdown(true)}
+                  onMouseLeave={() => setShowDropdown(false)}
+                >
+                  <button className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-green-700 md:p-0">
+                    Community
+                  </button>
+                  {showDropdown && (
+                    <ul
+                      className="absolute z-10 w-40 bg-gray-800 rounded-md mt-0"
+                      onMouseEnter={() => setShowDropdown(true)}
+                      onMouseLeave={() => setShowDropdown(false)}
+                    >
+                      <li className="px-3 py-2">
+                        <Link
+                          to="/tableboardgames"
+                          className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-gray-400 md:p-0"
+                        >
+                          Create Invitation or table board game
+                        </Link>
+                      </li>
+                      <li className="px-3 py-2">
+                        <Link
+                          to="/events"
+                          className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-gray-400 md:p-0"
+                        >
+                          Ongoing invitations
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
               </ul>
             </li>
+
             <li className="flex items-center rounded-md bg-white h-10 min-w-0">
               <SearchBar />
             </li>
