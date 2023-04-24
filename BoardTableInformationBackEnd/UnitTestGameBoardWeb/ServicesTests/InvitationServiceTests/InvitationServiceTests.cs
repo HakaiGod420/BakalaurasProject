@@ -491,7 +491,5 @@ namespace UnitTestGameBoardWeb.ServicesTests.InvitationServiceTests
             // Act and Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => _invitationService.GetInvitationsByCountry(country, pageIndex, pageSize));
         }
-
-
     }
 }

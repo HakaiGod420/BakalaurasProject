@@ -2,6 +2,7 @@ import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
 import {
   InvitationStateChange,
+  InvitationsList,
   SentPersonalInvitation,
   UserInvitation,
 } from "../types/Invitation";
@@ -120,4 +121,25 @@ export async function sentPersonalInvitation(
     .catch((error) => {
       console.log(error);
     });
+}
+
+export async function getInvitationList(
+  country: string,
+  pageIndex: number,
+  pageSize: number
+) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.get["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .get<InvitationsList>(
+      SERVER_API + "/api/gameboardinvitation/getInvitationsByCountry",
+      { params: { country: country, pageIndex: pageIndex, pageSize: pageSize } }
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+
+  return response?.data;
 }

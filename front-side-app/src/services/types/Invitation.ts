@@ -62,3 +62,19 @@ export interface Overide {
   method: string;
   minutes: number;
 }
+
+export interface InvitationItem {
+  InvitationId: number;
+  BoardGameId: number;
+  BoardGameTitle: string;
+  Date: string;
+  Location: string;
+  MaxPlayer: number;
+  AcceptedPlayer: number;
+  ImageUrl: string;
+}
+
+export interface InvitationsList {
+  Invitations: InvitationItem[];
+  TotalCount: number;
+}

@@ -19,6 +19,11 @@ namespace DataLayer.Repositories.Reviews
         }
         public async Task CreateReview(ReviewEntity review)
         {
+            if(review == null)
+            {
+                throw new ArgumentNullException(nameof(review));
+            }
+
             _dbContext.Reviews.Add(review);
 
             await _dbContext.SaveChangesAsync();

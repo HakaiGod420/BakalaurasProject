@@ -7,8 +7,6 @@ using DataLayer.Repositories.Image;
 using ModelLayer.DTO;
 using ServiceLayer.Interfaces;
 
-
-
 namespace ServiceLayer.Services
 {
     public class BoardGameService : IBoardGameService
