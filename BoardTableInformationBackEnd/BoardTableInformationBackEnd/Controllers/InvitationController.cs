@@ -148,5 +148,34 @@ namespace BoardTableInformationBackEnd.Controllers
 
             return Ok(invitations);
         }
+
+        [HttpPost("joinInvitation")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> JointInvitation([FromBody] JoinInvitationDTO invitation)
+        {
+            var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+
+            if (invitation == null)
+            {
+                return BadRequest();
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if(invitation.SelectedActiveInvitation <= 0 || id <= 0)
+            {
+                return UnprocessableEntity(typeof(JoinInvitationDTO));
+            }
+
+            await _invitationService.JointInvitation(invitation,id);
+
+            return new CreatedResult(String.Empty, invitation);
+        }
     }
 }

@@ -491,5 +491,38 @@ namespace UnitTestGameBoardWeb.ServicesTests.InvitationServiceTests
             // Act and Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => _invitationService.GetInvitationsByCountry(country, pageIndex, pageSize));
         }
+
+        [Fact]
+        public async Task JointInvitation_ValidInvitationAndUserId_CallsInvitationRepositoryMethods()
+        {
+            // Arrange
+            var invitation = new JoinInvitationDTO { SelectedActiveInvitation = 1 };
+            var userId = 1;
+
+            // Act
+            await _invitationService.JointInvitation(invitation, userId);
+
+            // Assert
+            _mockInvitationRepository.Verify(r => r.JointInvitation(It.Is<SentInvitationEntity>(i =>
+                i.UserId == userId &&
+                i.InvitationStateId == (int)InvitationState.Accepted &&
+                i.SelectedActiveGameId == invitation.SelectedActiveInvitation)), Times.Once);
+
+            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task JointInvitation_NullInvitation_ThrowsArgumentNullException()
+        {
+            // Arrange
+            JoinInvitationDTO invitation = null;
+            var userId = 1;
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _invitationService.JointInvitation(invitation, userId));
+            _mockInvitationRepository.Verify(r => r.JointInvitation(It.IsAny<SentInvitationEntity>()), Times.Never);
+            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(It.IsAny<int>()), Times.Never);
+        }
+
     }
 }

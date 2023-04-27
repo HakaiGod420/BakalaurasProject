@@ -22,6 +22,11 @@ namespace DataLayer.Repositories.BoardType
 
         public async Task<BoardTypeEntity> CreateType(BoardTypeEntity boardType)
         {
+            if(boardType == null)
+            {
+                throw new ArgumentNullException(nameof(boardType));
+            }
+
             _dbContext.BoardTypes.Add(boardType);
             await _dbContext.SaveChangesAsync();
             return boardType;

@@ -17,5 +17,6 @@ namespace ServiceLayer.Interfaces
         public Task<int> ActiveInvitationCount(int id);
         public Task SentInvitationToUser(SingeUserSentInvitationDTO invitation);
         public Task<InvitationsListResponse> GetInvitationsByCountry(string country, int pageIndex, int pageSize);
+        public Task JointInvitation(JoinInvitationDTO invitation, int userId);
     }
 }

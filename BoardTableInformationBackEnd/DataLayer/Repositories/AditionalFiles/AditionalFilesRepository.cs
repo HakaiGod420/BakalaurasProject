@@ -19,6 +19,12 @@ namespace DataLayer.Repositories.AditionalFiles
 
         public async Task<AditionalFileEntity> AddFile(AditionalFileEntity file)
         {
+            if (file == null)
+            {
+                throw new ArgumentNullException(nameof(file));
+            }
+
+
             _dbContext.AditionalFiles.Add(file);
             await _dbContext.SaveChangesAsync();
             return file;

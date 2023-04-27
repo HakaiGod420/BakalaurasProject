@@ -62,7 +62,7 @@ const EventAcceptedModal: React.FC<Props> = ({
       };
 
       await postEventInGoogleCalendar(response.access_token, event);
-      //await onAccept(userInvitation.InvitationId);
+      await onAccept(userInvitation.InvitationId);
       onClose();
     }
   };

@@ -20,6 +20,9 @@ namespace DataLayer.Repositories.Image
 
         public async Task<ImageEntity> AddImage(ImageEntity image)
         {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
             _dbContext.Images.Add(image);
             await _dbContext.SaveChangesAsync();
             return image;

@@ -1,15 +1,8 @@
 ﻿using DataLayer.DBContext;
 using DataLayer.Models;
-using DataLayer.Repositories.GameBoard;
 using DataLayer.Repositories.Reviews;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace UnitTestGameBoardWeb.RepositoryTests
 {
@@ -58,6 +51,70 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         {
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => _repository.CreateReview(null));
+        }
+
+        [Fact]
+        public async Task GetAllReviews_BoardGameListIsEmpty_ReturnsEmptyList()
+        {
+            // Arrange
+            var boardGameId = 1;
+
+            // Act
+            var result = await _repository.GetAllReviews(boardGameId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetAllReviews_BoardGameIdIsNegative_ThrowsArgumentException()
+        {
+            // Arrange
+            var boardGameId = -1;
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetAllReviews(boardGameId));
+        }
+
+        [Fact]
+        public async Task GetAllReviews_ReviewsFound_ReturnsListWithReviewViews()
+        {
+            // Arrange
+            var boardGameId = 1;
+            var writer = new UserEntity {
+                UserId = 1, UserName = "testuser",
+                Email ="TestEmail@gmail.com",
+                Password = new byte[9],
+                PasswordSalt = new byte[50],
+                RegistrationTime = DateTime.Now, LastTimeConnection = DateTime.Now
+            };
+
+            _context.Users.Add(writer);
+            await _context.SaveChangesAsync();
+
+            var reviews = new List<ReviewEntity>
+            {
+                new ReviewEntity { ReviewId = 1, WriterId = writer.UserId, Comment = "Test review 1", Rating = 4, WriteDate = new DateTime(2022, 1, 1), SelectedBoardGameId = boardGameId },
+                new ReviewEntity { ReviewId = 2, WriterId = writer.UserId, Comment = "Test review 2", Rating = 3, WriteDate = new DateTime(2022, 2, 1), SelectedBoardGameId = boardGameId }
+            };
+
+            _context.Reviews.AddRange(reviews);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetAllReviews(boardGameId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(reviews.Count, result.Count);
+            Assert.Equal(reviews[0].ReviewId, result[0].ReviewId);
+            Assert.Null(result[0].ProfileImage);
+            Assert.Equal(writer.UserName, result[0].Username);
+            Assert.Equal(writer.UserId, result[0].CreatorId);
+            Assert.Equal(reviews[0].Comment, result[0].ReviewText);
+            Assert.Equal(reviews[0].Rating, result[0].Rating);
+            Assert.Equal(reviews[0].WriteDate, result[0].Written);
         }
     }
 }

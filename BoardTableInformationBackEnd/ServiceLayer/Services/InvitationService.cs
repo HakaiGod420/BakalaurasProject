@@ -149,5 +149,25 @@ namespace ServiceLayer.Services
 
             return _invitationRepository.GetInvitationsByCountry(country, pageIndex, pageSize);
         }
+
+        public async Task JointInvitation(JoinInvitationDTO invitation, int userId)
+        {
+            if(invitation == null)
+            {
+                throw new ArgumentNullException("JoinInvitationDTO is null");
+            }
+
+            var newInvitationAcception = new SentInvitationEntity
+            {
+                UserId = userId,
+                InvitationStateId = (int)InvitationState.Accepted,
+                SelectedActiveGameId = invitation.SelectedActiveInvitation,
+            };
+
+            var id = await _invitationRepository.JointInvitation(newInvitationAcception);
+
+            await _invitationRepository.UpdatePlayerCount(id);
+        }
+
     }
 }

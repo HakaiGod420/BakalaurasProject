@@ -49,13 +49,13 @@ const InvitationTabs: React.FC<InvitationTabsProps> = ({ onTabChange }) => {
           <EventsInvitationComponent />
         </div>
       )}
-      {activeTab === "created" && (
+      {activeTab === "accepted" && (
         <div>
           {" "}
           <AcceptedInvitationsList />
         </div>
       )}
-      {activeTab === "accepted" && (
+      {activeTab === "created" && (
         <div>
           {" "}
           <CreatedInvitationList />

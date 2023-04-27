@@ -1,8 +1,13 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { getInvitationList } from "../services/api/InvitationService";
+import toast from "react-hot-toast";
+import {
+  getInvitationList,
+  joinToInvitation,
+} from "../services/api/InvitationService";
 import { SERVER_API } from "../services/constants/ClienConstants";
-import { InvitationItem } from "../services/types/Invitation";
+import { InvitationItem, UserInvitation } from "../services/types/Invitation";
+import EventAcceptedModal from "./EventAcceptedModal";
 import SectionDivider from "./core/SectionDivider";
 
 function PublicEvents() {
@@ -13,11 +18,18 @@ function PublicEvents() {
     InvitationItem[] | undefined
   >([]);
 
-  /*
-  const totalPages = Math.ceil(
-    activeInvitations ? activeInvitations.length / eventsPerPage : 1
-  );
-*/
+  const [isOpen, setIsOpen] = useState(false);
+  const [invitation, setInvitation] = useState<UserInvitation>();
+
+  const onAccept = async (invitationId: number) => {
+    const loading = toast.loading("Accepting invitation...");
+
+    await joinToInvitation(invitationId);
+
+    toast.success("Invitation accepted", {
+      id: loading,
+    });
+  };
   const paginate = async (pageNumber: number) => {
     const response = await getInvitationList(
       "Lithuania",
@@ -28,6 +40,26 @@ function PublicEvents() {
     setCurrentPage(pageNumber);
   };
 
+  const openModel = (invitation: InvitationItem) => {
+    const newInvitationAcception: UserInvitation = {
+      InvitationId: invitation.InvitationId,
+      ActiveGameId: 0,
+      BoardGameTitle: invitation.BoardGameTitle,
+      BoardGameId: invitation.BoardGameId,
+      EventDate: invitation.Date,
+      EventFullLocation: invitation.Location,
+      MaxPlayerCount: invitation.MaxPlayer,
+      AcceptedCount: invitation.AcceptedPlayer,
+      Map_X_Cords: 0,
+      Map_Y_Cords: 0,
+    };
+    setInvitation(newInvitationAcception);
+    setIsOpen(true);
+  };
+
+  const onClose = () => {
+    setIsOpen(false);
+  };
   useEffect(() => {
     const getInvitations = async () => {
       const response = await getInvitationList(
@@ -79,7 +111,10 @@ function PublicEvents() {
                   <span className="font-bold">Accepted Players:</span>{" "}
                   {event.AcceptedPlayer}
                 </p>
-                <button className="text-white bg-green-500 py-2 px-4 rounded mt-2 ml-auto">
+                <button
+                  onClick={() => openModel(event)}
+                  className="text-white bg-green-500 py-2 px-4 rounded mt-2 ml-auto"
+                >
                   Join
                 </button>
               </div>
@@ -104,6 +139,13 @@ function PublicEvents() {
           ))}
         </ul>
       </div>
+      {isOpen && (
+        <EventAcceptedModal
+          userInvitation={invitation}
+          onClose={onClose}
+          onAccept={onAccept}
+        />
+      )}
     </div>
   );
 }

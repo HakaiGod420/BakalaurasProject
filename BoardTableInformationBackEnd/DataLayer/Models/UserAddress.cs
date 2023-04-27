@@ -17,6 +17,5 @@ namespace DataLayer.Models
         public string Province { get; set; }
         public double? Map_X_Coords { get; set; } = null;
         public double? Map_Y_Coords { get; set; } = null;
-
     }
 }

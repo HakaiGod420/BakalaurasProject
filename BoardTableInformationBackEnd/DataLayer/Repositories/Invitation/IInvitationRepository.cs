@@ -19,5 +19,6 @@ namespace DataLayer.Repositories.Invitation
         public Task<bool> UpdatePlayerCount(int invitationId);
         public Task<int> ActiveInvitationCount(int userId);
         public Task<InvitationsListResponse> GetInvitationsByCountry(string country,int pageIndex,int pageSize);
+        public Task<int> JointInvitation(SentInvitationEntity invitation);
     }
 }

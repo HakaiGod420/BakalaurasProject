@@ -22,6 +22,11 @@ namespace DataLayer.Repositories.Invitation
 
         public async Task<ActiveGameEntity> AddInvitation(ActiveGameEntity invitation)
         {
+            if(invitation == null)
+            {
+                throw new ArgumentNullException("ActiveGameEntity");
+            }
+
             await _dbContext.ActiveGames.AddAsync(invitation);
             await _dbContext.SaveChangesAsync();
             return invitation;
@@ -103,6 +108,11 @@ namespace DataLayer.Repositories.Invitation
 
         public async Task<bool> SentInvitation(SentInvitationEntity invitation)
         {
+            if(invitation == null || invitation.SelectedActiveGameId <= 0)
+            {
+                return false;
+            }    
+
             _dbContext.SentInvitations.Add(invitation);
             await _dbContext.SaveChangesAsync();
             return true;
@@ -138,6 +148,7 @@ namespace DataLayer.Repositories.Invitation
                     return false;
                 }
                 await _dbContext.SaveChangesAsync();
+
                 return true;
             }
             return false;
@@ -186,6 +197,15 @@ namespace DataLayer.Repositories.Invitation
                 Invitations = result,
                 TotalCount = totalCount
             };
+        }
+
+        public async Task<int> JointInvitation(SentInvitationEntity invitation)
+        {
+            _dbContext.SentInvitations.Add(invitation);
+
+            await _dbContext.SaveChangesAsync();
+
+            return invitation.SentInvitationId;
         }
     }
 }

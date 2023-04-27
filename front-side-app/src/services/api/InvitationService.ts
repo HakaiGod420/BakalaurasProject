@@ -88,6 +88,26 @@ export async function updateInvitationState(
   }
 }
 
+export async function joinToInvitation(invitationId: number) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .post(SERVER_API + "/api/gameboardinvitation/joinInvitation", {
+      SelectedActiveInvitation: invitationId,
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  if (response?.data) {
+    return response.data;
+  } else {
+    return [];
+  }
+}
+
 export async function getActiveInvitationCount() {
   const token = JSON.parse(localStorage.getItem("token") ?? "{}");
 

@@ -19,6 +19,11 @@ namespace DataLayer.Repositories.Address
 
         public async Task<AddressEntity> AddAddress(AddressEntity address)
         {
+            if (address == null)
+            {
+                throw new ArgumentNullException(nameof(AddressEntity));
+            }
+
             var result = _dbContext.Addresses.Add(address);
             await _dbContext.SaveChangesAsync();
             return result.Entity;
@@ -26,6 +31,11 @@ namespace DataLayer.Repositories.Address
 
         public async Task<UserAddressEntity> AddAddressToUser(UserAddressEntity address)
         {
+            if (address == null)
+            {
+                throw new ArgumentNullException(nameof(UserAddressEntity));
+            }
+
             _dbContext.UserAddress.Add(address);
             await _dbContext.SaveChangesAsync();
             return address;
@@ -52,6 +62,10 @@ namespace DataLayer.Repositories.Address
 
         public async Task<UserAddressEntity> UpdateUserAddress(UserAddressEntity address)
         {
+            if(address == null)
+            {
+                throw new ArgumentNullException(nameof(Address));
+            }
             _dbContext.UserAddress.Update(address);
             await _dbContext.SaveChangesAsync();
             return address;

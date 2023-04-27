@@ -31,6 +31,11 @@ namespace DataLayer.Repositories.Reviews
 
         public async Task<List<ReviewView>> GetAllReviews(int boardGameId)
         {
+            if(boardGameId <= 0)
+            {
+                throw new ArgumentException("Board game id should be bigger thant 0");
+            }
+
             var result = await _dbContext.Reviews
                 .Include(x => x.Writer)
                 .Where(x => x.SelectedBoardGameId == boardGameId && !x.IsBlocked)
