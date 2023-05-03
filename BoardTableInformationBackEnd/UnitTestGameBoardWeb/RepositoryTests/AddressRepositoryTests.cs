@@ -164,6 +164,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         [Fact]
         public async Task CheckIfUserHasAddress_UserWithoutAddress_ReturnsNull()
         {
+            _context.Database.EnsureDeleted();
             // Arrange
             var user = new UserEntity
             {
@@ -200,6 +201,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         [Fact]
         public async Task UpdateUserAddress_ValidAddress_ReturnsUpdatedAddressEntity()
         {
+            _context.Database.EnsureDeleted();
             // Arrange
             var address = new UserAddressEntity
             {

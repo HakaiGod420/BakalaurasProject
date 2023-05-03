@@ -56,6 +56,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         {
 
             // Act
+            _context.Database.EnsureDeleted();
             var result = await _repository.GetTypes();
 
             // Assert
@@ -88,6 +89,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetTypes_ActiveAndInactiveBoardTypesExist_ReturnsListWithOnlyActiveTypeDTOs()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var boardType1 = new BoardTypeEntity { BoardTypeName = "Test BoardType 1", IsActive = true };
             var boardType2 = new BoardTypeEntity { BoardTypeName = "Test BoardType 2", IsActive = false };
             _context.BoardTypes.AddRange(boardType1, boardType2);

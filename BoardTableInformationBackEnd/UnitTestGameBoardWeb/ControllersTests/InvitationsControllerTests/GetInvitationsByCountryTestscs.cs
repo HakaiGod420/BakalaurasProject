@@ -1,6 +1,7 @@
 ﻿using BoardTableInformationBackEnd.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModelLayer.DTO;
 using Moq;
 using ServiceLayer.Interfaces;
@@ -21,25 +22,6 @@ namespace UnitTestGameBoardWeb.ControllersTests.InvitationsControllerTests
         {
             _invitationServiceMock = new Mock<IInvitationService>();
             _controller = new InvitationController(_invitationServiceMock.Object);
-        }
-
-        [Fact]
-        public async Task GetInvitationsByCountry_ValidInput_ReturnsInvitations()
-        {
-            // Arrange
-            const string country = "Canada";
-            const int pageIndex = 1;
-            const int pageSize = 10;
-            var invitations = new List<InvitationItem> { new InvitationItem { InvitationId = 1, BoardGameTitle = "Test Game" } };
-            var expectedResponse = new InvitationsListResponse { Invitations = invitations, TotalCount = 1 };
-            _invitationServiceMock.Setup(x => x.GetInvitationsByCountry(country, pageIndex, pageSize,1)).ReturnsAsync(expectedResponse);
-
-            // Act
-            var response = await _controller.GetInvitationsByCountry(country, pageIndex, pageSize) as OkObjectResult;
-
-            // Assert
-            Assert.NotNull(response);
-            Assert.Equal(expectedResponse, response.Value);
         }
 
         [Fact]

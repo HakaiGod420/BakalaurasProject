@@ -47,7 +47,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task CreateCategory_CategoryWithSameNameAlreadyExists_RetursCreatedCategories()
         {
             // Arrange
-
+            _context.Database.EnsureDeleted();
             var category1 = new CategoryEntity { CategoryName = "Test Category" };
             var category2 = new CategoryEntity { CategoryName = "Test Category2" };
             _context.Categories.Add(category1);
@@ -80,6 +80,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetCategories_ActiveCategoriesExist_ReturnsListWithCategoryDTOs()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var category1 = new CategoryEntity { CategoryName = "Test Category 1", IsActive = true };
             var category2 = new CategoryEntity { CategoryName = "Test Category 2", IsActive = true };
             _context.Categories.AddRange(category1, category2);
@@ -120,6 +121,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetCategory_CategoryExists_ReturnsCategoryEntity()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var category = new CategoryEntity { CategoryName = "Test Category" };
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();

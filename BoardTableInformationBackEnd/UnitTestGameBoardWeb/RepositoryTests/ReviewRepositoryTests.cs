@@ -81,6 +81,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetAllReviews_ReviewsFound_ReturnsListWithReviewViews()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var boardGameId = 1;
             var writer = new UserEntity {
                 UserId = 1, UserName = "testuser",

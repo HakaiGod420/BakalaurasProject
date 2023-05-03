@@ -45,6 +45,11 @@ namespace DataLayer.Repositories.GameBoard
 
         public async Task<List<BoardGameSimpleDto>> GetBoardsSimple(string titlePart)
         {
+            if(titlePart == null)
+            {
+                return new List<BoardGameSimpleDto>();
+            }
+
             var result = await _dbContext.BoardGames.AsQueryable()
                 .Where(x => x.Title.StartsWith(titlePart))
                 .Select(x => new BoardGameSimpleDto { Id = x.BoardGameId, Title = x.Title })
@@ -175,7 +180,7 @@ namespace DataLayer.Repositories.GameBoard
             var count = await query.CountAsync();
             var result = await query
                 .Skip(pageIndex * pageSize)
-                .Take(pageIndex)
+                .Take(pageSize)
                 .ToListAsync();
 
             return new GameBoardListForAdmin

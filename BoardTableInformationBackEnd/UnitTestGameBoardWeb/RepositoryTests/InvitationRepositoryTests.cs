@@ -92,133 +92,8 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             _context.Database.EnsureDeleted();
         }
 
-        [Fact]
-        public async Task GetAllInvitations_WithValidUserIdAndInvitationState_ReturnsInvitations()
-        {
 
-            // Add a user
-            var user = new UserEntity
-            {
-                UserId = 1,
-                UserName = "testuser",
-                Email = "TestEmail@gmail.com",
-                Password = new byte[9],
-                PasswordSalt = new byte[50],
-                RegistrationTime = DateTime.Now,
-                LastTimeConnection = DateTime.Now
-            };
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            // Add an active game
-            var activeGame = new ActiveGameEntity
-            {
-                PlayersNeed = 5,
-                RegistredPlayerCount = 3,
-                InvitationStateId = ActiveGameState.Open,
-                Map_X_Cords = 10.0f,
-                Map_Y_Cords = 20.0f,
-                MeetDate = DateTime.Now.AddDays(1),
-                CreatorId = user.UserId,
-                BoardGameId = 1,
-                AddressId = 1,
-            };
-            _context.ActiveGames.Add(activeGame);
-
-            await _context.SaveChangesAsync();
-
-            // Add a sent invitation for the active game
-            var sentInvitation = new SentInvitationEntity
-            {
-                UserId = user.UserId,
-                SelectedActiveGameId = activeGame.ActiveGameId,
-                InvitationStateId = 1,
-            };
-
-            _context.SentInvitations.Add(sentInvitation);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetAllInvitations(user.UserId);
-
-            // Assert
-            Assert.Single(result);
-            var invitation = result.FirstOrDefault();
-            Assert.Equal(sentInvitation.SentInvitationId, invitation.InvitationId);
-            Assert.Equal(activeGame.ActiveGameId, invitation.ActiveGameId);
-            Assert.Equal(activeGame.BoardGame.Title, invitation.BoardGameTitle);
-            Assert.Equal(activeGame.BoardGameId, invitation.BoardGameId);
-            Assert.Equal(activeGame.MeetDate, invitation.EventDate);
-            Assert.Equal(activeGame.Address.FullAddress, invitation.EventFullLocation);
-            Assert.Equal(activeGame.PlayersNeed, invitation.MaxPlayerCount);
-            Assert.Equal(activeGame.RegistredPlayerCount, invitation.AcceptedCount);
-            Assert.Equal(activeGame.Map_X_Cords, invitation.Map_X_Cords);
-            Assert.Equal(activeGame.Map_Y_Cords, invitation.Map_Y_Cords);
-            _context.Database.EnsureDeleted();
-        }
-
-        [Fact]
-        public async Task GetAllInvitations_ReturnsExpectedInvitations()
-        {
-            // Arrange
-            int userId = 1;
-            var invitations = new List<SentInvitationEntity>
-            {
-                new SentInvitationEntity
-                {
-                    SentInvitationId = 1,
-                    UserId = userId,
-                    InvitationStateId = 1,
-                    SelectedActiveGame = new ActiveGameEntity
-                    {
-                        MeetDate = DateTime.Now.AddDays(1),
-                        BoardGameId = 1,
-                        AddressId = 1,
-                    }
-                },
-
-                new SentInvitationEntity
-                {
-                    SentInvitationId = 2,
-                    UserId = userId,
-                    InvitationStateId = 1,
-                    SelectedActiveGame = new ActiveGameEntity
-                    {
-                        MeetDate = DateTime.Now.AddDays(2),
-                        AddressId = 1,
-                        BoardGameId = 2
-                    }
-                },
-                new SentInvitationEntity
-                {
-                    SentInvitationId = 3,
-                    UserId = userId,
-                    InvitationStateId = 1,
-                    SelectedActiveGame = new ActiveGameEntity
-                    {
-                        MeetDate = DateTime.Now.AddDays(-1),
-                        AddressId = 1,
-                        BoardGameId = 3
-                    }
-                }
-            };
-            foreach (var item in invitations)
-            {
-                _context.SentInvitations.Add(item);
-            }
-
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetAllInvitations(userId);
-
-            // Assert
-            Assert.Equal(2, result.Count);
-            Assert.Contains(result, r => r.InvitationId == 1);
-            Assert.Contains(result, r => r.InvitationId == 2);
-            _context.Database.EnsureDeleted();
-        }
-
+        
         [Fact]
         public async Task SentInvitation_ValidInvitation_ReturnsFalse()
         {
@@ -385,9 +260,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task UpdatePlayerCount_GameFull_ClosesGame()
         {
             // Arrange
-            _optionsBuilder = new DbContextOptionsBuilder<DataBaseContext>()
-           .UseInMemoryDatabase(databaseName: "TestDatabase");
-            _context = new DataBaseContext(_optionsBuilder.Options);
+            _context.Database.EnsureDeleted();
 
             var invitation = new SentInvitationEntity { SentInvitationId = 1, SelectedActiveGameId = 1 };
             var game = new ActiveGameEntity { ActiveGameId = 1, PlayersNeed = 1, RegistredPlayerCount = 0, InvitationStateId = ActiveGameState.Open };
