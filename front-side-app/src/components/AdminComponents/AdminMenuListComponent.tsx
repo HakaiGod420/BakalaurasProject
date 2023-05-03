@@ -1,8 +1,6 @@
 import { IconType } from "react-icons";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { BiGame } from "react-icons/bi";
-import { FaUsers } from "react-icons/fa";
-import { HiOutlineMailOpen } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 interface MenuItem {
@@ -25,7 +23,7 @@ const menuItems: MenuItem[] = [
     to: "review-gameboard",
     description:
       "Review and approve or reject new tabletop games created by users.",
-  },
+  } /*
   {
     label: "View Users",
     icon: FaUsers,
@@ -38,7 +36,7 @@ const menuItems: MenuItem[] = [
     to: "/admin/view-event-invitations",
     description:
       "View all event invitations sent to users and manage event RSVPs.",
-  },
+  },*/,
 ];
 
 function AdminMenuListComponent() {

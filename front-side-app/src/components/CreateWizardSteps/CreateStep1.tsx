@@ -1,4 +1,7 @@
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 import { useWizard } from "react-use-wizard";
+import { checkIfGameBoardExist } from "../../services/api/GameBoardService";
 
 interface Props {
   stepNumber: number;
@@ -8,11 +11,41 @@ interface Props {
 }
 
 function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
-  const { handleStep, nextStep } = useWizard();
+  const { nextStep } = useWizard();
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);
     nextStep();
+  };
+
+  const handleNextStep = async () => {
+    const loading = toast.loading("Checking if game board exists...");
+    var result = await checkIfGameBoardExist(title).catch(
+      (error: AxiosError) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          toast.error("Error occured", {
+            id: loading,
+          });
+
+          return;
+        }
+      }
+    );
+    console.log(result);
+    if (result) {
+      toast.error("Game Board exist", {
+        id: loading,
+      });
+      return;
+    }
+
+    toast.success("Game board doesnt exist", {
+      id: loading,
+    });
+
+    inputHandlerNext();
   };
 
   return (
@@ -43,7 +76,7 @@ function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
           <button
             disabled={title === ""}
             className="btn m-2 min-w-[100px]"
-            onClick={() => inputHandlerNext()}
+            onClick={() => handleNextStep()}
           >
             Next
           </button>

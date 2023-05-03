@@ -102,5 +102,27 @@ namespace BoardTableInformationBackEnd.Controllers
             return new OkObjectResult(board);
         }
 
+        [Authorize]
+        [HttpGet("gameBoardExist")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GameBoardExist([FromQuery]string gameBoardName)
+        {
+            var board = await _gameBoardService.IsGameBoardExist(gameBoardName);
+
+            return new OkObjectResult(board);
+        }
+
+        [Authorize]
+        [HttpGet("getUserCreatedGameBoards")]
+        [ProducesResponseType(typeof(UserCreatedTableTopGamesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUserCreatedGameBoards([FromQuery] string username,[FromQuery]int pageIndex, [FromQuery]int pageSize)
+        {
+            var board = await _gameBoardService.GetUserCreatedGameB(username, pageIndex, pageSize);
+
+            return new OkObjectResult(board);
+        }
+
     }
 }

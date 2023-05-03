@@ -213,6 +213,39 @@ namespace DataLayer.Repositories.GameBoard
             };
         }
 
+        public async Task<UserCreatedTableTopGamesResponse> GetGameBoardUsers(string username, int pageIndex, int pageSize)
+        {
+            var query = _dbContext.BoardGames
+                .Include(x => x.User)
+                .Where(x => x.User.UserName == username && !x.IsBlocked && x.TableBoardStateId == TableBoardState.Activated)
+                .Select(x => new UserCreatedGameBoardsItem
+                {
+                    GameBoardId = x.BoardGameId,
+                    Title = x.Title,
+                    ImageUrl = "Images/" + Regex.Replace(x.Title, @"[^\w\s]+", "").Replace(" ", "_") + "/" + x.Thubnail_Location,
+                });
+
+            var totalCount = await query.CountAsync();
+
+            var result = await query
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new UserCreatedTableTopGamesResponse
+            {
+                TotalCount = totalCount,
+                GameBoards = result
+            };
+        }
+
+        public async Task<bool> IsGameBoardExist(string gameBoardTitle)
+        {
+            var isExist = await _dbContext.BoardGames.AnyAsync(x => x.Title.Contains(gameBoardTitle));
+
+            return isExist;
+        }
+
         public async Task<bool> SetGameBoardState(GameBoardApprove approval)
         {
             var game = await _dbContext.BoardGames.FindAsync(approval.GameBoardId);

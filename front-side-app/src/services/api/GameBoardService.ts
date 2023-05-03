@@ -5,6 +5,7 @@ import {
   Filter,
   SingleTabletopGame,
   TableTopGameCardsResponse,
+  UserCreatedGameBoardsReposne,
 } from "../types/TabletopGame";
 
 export async function getBoardGameList(
@@ -57,6 +58,49 @@ export async function getGameBoardTypesAndCategories() {
     .get<CategoriesAndTypes>(SERVER_API + "/api/selectList/typesAndCategories")
     .catch((error) => {
       console.log(error);
+    });
+
+  return response?.data;
+}
+
+export async function checkIfGameBoardExist(gameboardName: string) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.get["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .get<boolean>(SERVER_API + "/api/gameboard/gameBoardExist", {
+      params: { gameBoardName: gameboardName },
+    })
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+
+  return response?.data;
+}
+
+export async function getGameBoardsCreatedByUser(
+  username: string,
+  pageIndex: number,
+  pageSize: number
+) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.get["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .get<UserCreatedGameBoardsReposne>(
+      SERVER_API + "/api/gameboard/getUserCreatedGameBoards",
+      {
+        params: {
+          username: username,
+          pageIndex: pageIndex,
+          pageSize: pageSize,
+        },
+      }
+    )
+    .catch((error) => {
+      return Promise.reject(error);
     });
 
   return response?.data;

@@ -148,3 +148,14 @@ export interface TableTopGameIsBlocked {
   gameBoardId: number;
   isBlocked: boolean;
 }
+
+export interface UserCreatedGameBoardsReposne {
+  GameBoards: UserCreatedGameBoard[];
+  TotalCount: number;
+}
+
+export interface UserCreatedGameBoard {
+  GameBoardId: number;
+  Title: string;
+  ImageUrl: string;
+}

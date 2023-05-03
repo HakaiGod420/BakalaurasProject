@@ -18,14 +18,9 @@ function CreateStep5({
   thumbnail,
   setThumbnail,
 }: Props) {
-  const { handleStep, previousStep, nextStep } = useWizard();
+  const { previousStep, nextStep } = useWizard();
 
   const inputHandlerNext = () => {
-    setStepNumber(stepNumber + 1);
-    nextStep();
-  };
-
-  const inputHandlerSkip = () => {
     setStepNumber(stepNumber + 1);
     nextStep();
   };
@@ -116,22 +111,13 @@ function CreateStep5({
           Previous
         </button>
 
-        {images.length !== 0 ? (
-          <button
-            disabled={images.length <= 0}
-            className="btn m-2 min-w-[100px]"
-            onClick={() => inputHandlerNext()}
-          >
-            Next
-          </button>
-        ) : (
-          <button
-            className="btn m-2 min-w-[100px]"
-            onClick={() => inputHandlerSkip()}
-          >
-            Skip
-          </button>
-        )}
+        <button
+          disabled={images.length <= 0 || thumbnail === undefined}
+          className="btn m-2 min-w-[100px]"
+          onClick={() => inputHandlerNext()}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

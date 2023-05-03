@@ -154,5 +154,15 @@ namespace ServiceLayer.Services
         {
             return await _gameBoardRepository.GetGameBoard(boardId);
         }
+
+        public Task<bool> IsGameBoardExist(string gameBoardTitle)
+        {
+            return _gameBoardRepository.IsGameBoardExist(gameBoardTitle);
+        }
+
+        public async Task<UserCreatedTableTopGamesResponse> GetUserCreatedGameB(string username, int pageIndex, int pageSize)
+        {
+            return await _gameBoardRepository.GetGameBoardUsers(username, pageIndex, pageSize);
+        }
     }
 }
