@@ -37,6 +37,7 @@ namespace DataLayer.Repositories.GameBoard
             }
 
             gameBoard.IsBlocked = isBlocked;
+            gameBoard.UpdateTime = DateTime.Now;
             await _dbContext.SaveChangesAsync();
 
             return true;
@@ -230,6 +231,7 @@ namespace DataLayer.Repositories.GameBoard
                 game.TableBoardStateId = TableBoardState.Rejected;
             }
 
+            game.UpdateTime = DateTime.Now;
             await _dbContext.SaveChangesAsync();
             return true;
         }

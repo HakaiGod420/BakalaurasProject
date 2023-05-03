@@ -2,9 +2,11 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { FaCalendarAlt, FaStar, FaUser } from "react-icons/fa";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import NoImageFile from "../../assets/images/noImage.png";
 import { getGameBoard } from "../../services/api/GameBoardService";
 import { SERVER_API } from "../../services/constants/ClienConstants";
+import { validTokenAtom } from "../../services/constants/recoil/globalStates";
 import { SingleTabletopGame } from "../../services/types/TabletopGame";
 import RatingModal from "../RatingModal";
 import LoadingComponent from "../core/LoadingComponent";
@@ -14,6 +16,7 @@ const GameBoardCard: React.FC = () => {
   let { id } = useParams();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [validToken] = useRecoilState(validTokenAtom);
 
   const onClose = () => {
     setIsOpen(false);
@@ -110,14 +113,16 @@ const GameBoardCard: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex justify-between mt-4">
-                <button
-                  onClick={() => setIsOpen(true)}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-2 px-4 rounded"
-                >
-                  Rate
-                </button>
-              </div>
+              {validToken && (
+                <div className="flex justify-between mt-4">
+                  <button
+                    onClick={() => setIsOpen(true)}
+                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-2 px-4 rounded"
+                  >
+                    Rate
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <TableTopTabs gameBoard={gameBoard} />

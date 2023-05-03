@@ -5,8 +5,8 @@ import { useRecoilState } from "recoil";
 import { getUserInformation } from "../services/api/UserServics";
 import { userName } from "../services/constants/recoil/globalStates";
 import { UserInformation } from "../services/types/User";
-import LoadingComponent from "./core/LoadingComponent";
 import InviteToGameFromProfile from "./InviteToGame";
+import LoadingComponent from "./core/LoadingComponent";
 
 const UserInformationProfile: React.FC = () => {
   const params = useParams();
@@ -48,7 +48,7 @@ const UserInformationProfile: React.FC = () => {
         <div className="w-full max-w-3xl p-4 rounded-lg shadow-lg">
           <div className="flex items-center space-x-8 mb-8">
             <img
-              src={profilePicture}
+              src={require("../assets/images/profileImageDefault.png")}
               alt="Profile picture"
               className="w-40 h-40 rounded-full border-4 border-gray-300 shadow-md"
             />

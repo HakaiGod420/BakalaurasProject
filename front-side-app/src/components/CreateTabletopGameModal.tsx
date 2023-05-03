@@ -213,54 +213,59 @@ function CreateTabletopGameModal() {
   };
 
   const publishTableTopGame = async () => {
-    const loading = toast.loading("Creating your game...");
+    try {
+      const loading = toast.loading("Creating your game...");
 
-    const categoriesMapped: Category[] = [];
-    const typesMapped: BoardType[] = [];
+      const categoriesMapped: Category[] = [];
+      const typesMapped: BoardType[] = [];
 
-    categories.forEach((category) => {
-      categoriesMapped.push({ CategoryName: category });
-    });
+      categories.forEach((category) => {
+        categoriesMapped.push({ CategoryName: category });
+      });
 
-    types.forEach((type) => {
-      typesMapped.push({ BoardTypeName: type });
-    });
+      types.forEach((type) => {
+        typesMapped.push({ BoardTypeName: type });
+      });
 
-    let uploadedAdditionalFiles: AditionalFile[] = [];
-    if (files.length !== 0) {
-      uploadedAdditionalFiles = await postAdditionalFiles();
+      let uploadedAdditionalFiles: AditionalFile[] = [];
+      if (files.length !== 0) {
+        uploadedAdditionalFiles = await postAdditionalFiles();
+      }
+
+      let uploadedImages: Image[] = [];
+
+      if (images.length !== 0) {
+        uploadedImages = await uploadImages();
+      }
+
+      let uploadedThumbnailName: string = "";
+      if (thumbnail !== undefined) {
+        uploadedThumbnailName = await uploadThumbnail();
+      }
+
+      const CreatedTableTopGame: TabletopGameCreation = {
+        Title: title,
+        PlayerCount: playerCount,
+        PLayingAge: playerAge,
+        PlayingTime: averageTime,
+        Description: description,
+        Images: uploadedImages,
+        Categories: categoriesMapped,
+        BoardTypes: typesMapped,
+        AditionalFiles: uploadedAdditionalFiles,
+        SaveAsDraft: false,
+        ThumbnailName: uploadedThumbnailName,
+      };
+
+      await postTableTopGame(CreatedTableTopGame);
+
+      toast.success("Successfully created game", {
+        id: loading,
+      });
+      navigate("/");
+    } catch (error) {
+      console.error(error);
     }
-
-    let uploadedImages: Image[] = [];
-
-    if (images.length !== 0) {
-      uploadedImages = await uploadImages();
-    }
-
-    let uploadedThumbnailName: string = "";
-    if (thumbnail !== undefined) {
-      uploadedThumbnailName = await uploadThumbnail();
-    }
-
-    const CreatedTableTopGame: TabletopGameCreation = {
-      Title: title,
-      PlayerCount: playerCount,
-      PLayingAge: playerAge,
-      PlayingTime: averageTime,
-      Description: description,
-      Images: uploadedImages,
-      Categories: categoriesMapped,
-      BoardTypes: typesMapped,
-      AditionalFiles: uploadedAdditionalFiles,
-      SaveAsDraft: false,
-      ThumbnailName: uploadedThumbnailName,
-    };
-    console.log(CreatedTableTopGame);
-    await postTableTopGame(CreatedTableTopGame);
-    toast.success("Successfully created game", {
-      id: loading,
-    });
-    //navigate("/");
   };
 
   return (

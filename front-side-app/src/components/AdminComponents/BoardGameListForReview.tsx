@@ -40,10 +40,11 @@ const BoardGameListForReview: React.FC = () => {
   };
 
   const changeState = async (gameBoardId: number, state: boolean) => {
+    console.log(gameBoardId, state);
     const loading = toast.loading("Changed gameboard state");
     const newGameBoardState: TabletopGameAproval = {
       GameBoardId: gameBoardId,
-      IsApproved: state,
+      IsAproved: state,
     };
 
     const response = await updateGameBoardState(newGameBoardState);

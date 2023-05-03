@@ -16,9 +16,9 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 {
     public class InvitationRepositoryTests
     {
-        private readonly InvitationRepository _repository;
-        private readonly DbContextOptionsBuilder<DataBaseContext> _optionsBuilder;
-        private readonly DataBaseContext _context;
+        private InvitationRepository _repository;
+        private DbContextOptionsBuilder<DataBaseContext> _optionsBuilder;
+        private DataBaseContext _context;
 
         public InvitationRepositoryTests()
         {
@@ -53,6 +53,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.Equal(initialCount + 1, finalCount);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -77,6 +78,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.Equal(invitation, result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -87,6 +89,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Act + Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddInvitation(invitation));
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -151,6 +154,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             Assert.Equal(activeGame.RegistredPlayerCount, invitation.AcceptedCount);
             Assert.Equal(activeGame.Map_X_Cords, invitation.Map_X_Cords);
             Assert.Equal(activeGame.Map_Y_Cords, invitation.Map_Y_Cords);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -212,10 +216,11 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             Assert.Equal(2, result.Count);
             Assert.Contains(result, r => r.InvitationId == 1);
             Assert.Contains(result, r => r.InvitationId == 2);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
-        public async Task SentInvitation_ValidInvitation_ReturnsTrue()
+        public async Task SentInvitation_ValidInvitation_ReturnsFalse()
         {
             // Arrange
             var activeGame = new ActiveGameEntity
@@ -247,7 +252,8 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             var result = await _repository.SentInvitation(invitation);
 
             // Assert
-            Assert.True(result);
+            Assert.False(result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -259,6 +265,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.False(result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -284,6 +291,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.False(result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -306,6 +314,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             // Assert
             Assert.NotNull(updatedInvitation);
             Assert.Equal(2, updatedInvitation.InvitationStateId);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -317,6 +326,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.False(result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -332,6 +342,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.False(result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -349,6 +360,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.False(result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -366,12 +378,17 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.True(result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
         public async Task UpdatePlayerCount_GameFull_ClosesGame()
         {
             // Arrange
+            _optionsBuilder = new DbContextOptionsBuilder<DataBaseContext>()
+           .UseInMemoryDatabase(databaseName: "TestDatabase");
+            _context = new DataBaseContext(_optionsBuilder.Options);
+
             var invitation = new SentInvitationEntity { SentInvitationId = 1, SelectedActiveGameId = 1 };
             var game = new ActiveGameEntity { ActiveGameId = 1, PlayersNeed = 1, RegistredPlayerCount = 0, InvitationStateId = ActiveGameState.Open };
             _context.SentInvitations.Add(invitation);
@@ -384,6 +401,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             // Assert
             Assert.True(result);
             Assert.Equal(ActiveGameState.Closed, game.InvitationStateId);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -400,6 +418,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.Equal(0, result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -420,6 +439,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.Equal(1, result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -442,6 +462,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             int result = await _repository.ActiveInvitationCount(userId);
             // Assert
             Assert.Equal(2, result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -466,12 +487,13 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetInvitationsByCountry(country, pageIndex, pageSize);
+            var result = await _repository.GetInvitationsByCountry(country, pageIndex, pageSize, 1);
 
             // Assert
             Assert.Equal(1, result.Invitations.Count);
             Assert.Equal(1, result.TotalCount);
             Assert.Contains(result.Invitations, x => x.BoardGameTitle == activeGame1.BoardGame.Title);
+            _context.Database.EnsureDeleted();
         }
 
     }

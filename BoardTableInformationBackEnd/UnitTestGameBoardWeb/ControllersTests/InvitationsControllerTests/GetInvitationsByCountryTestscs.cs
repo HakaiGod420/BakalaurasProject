@@ -32,7 +32,7 @@ namespace UnitTestGameBoardWeb.ControllersTests.InvitationsControllerTests
             const int pageSize = 10;
             var invitations = new List<InvitationItem> { new InvitationItem { InvitationId = 1, BoardGameTitle = "Test Game" } };
             var expectedResponse = new InvitationsListResponse { Invitations = invitations, TotalCount = 1 };
-            _invitationServiceMock.Setup(x => x.GetInvitationsByCountry(country, pageIndex, pageSize)).ReturnsAsync(expectedResponse);
+            _invitationServiceMock.Setup(x => x.GetInvitationsByCountry(country, pageIndex, pageSize,1)).ReturnsAsync(expectedResponse);
 
             // Act
             var response = await _controller.GetInvitationsByCountry(country, pageIndex, pageSize) as OkObjectResult;

@@ -82,7 +82,7 @@ function InviteStep3({
   );
 
   const handleSelect = (event: any) => {
-    handleChange("Country", event.target.value);
+    handleChange("Country", event.target.outerText);
     setSearchTerm(event.target.outerText);
     setIsOpen(false);
   };

@@ -12,17 +12,32 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20230306165653_game-board-v1.5")]
-    partial class gameboardv15
+    [Migration("20230501133508_initial-v2")]
+    partial class initialv2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.14")
+                .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ActiveGameEntityUserEntity", b =>
+                {
+                    b.Property<int>("ActiveGamesParcipatorsActiveGameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActiveGamesParcipatorsActiveGameId", "UsersUserId");
+
+                    b.HasIndex("UsersUserId");
+
+                    b.ToTable("UserActiveGame", (string)null);
+                });
 
             modelBuilder.Entity("BoardGameEntityBoardTypeEntity", b =>
                 {
@@ -52,6 +67,106 @@ namespace DataLayer.Migrations
                     b.HasIndex("CategoriesCategoryId");
 
                     b.ToTable("BoardGameCategory", (string)null);
+                });
+
+            modelBuilder.Entity("DataLayer.Models.ActiveGameEntity", b =>
+                {
+                    b.Property<int>("ActiveGameId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActiveGameId"), 1L, 1);
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BoardGameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvitationStateId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Map_X_Cords")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Map_Y_Cords")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("MeetDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PlayersNeed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RegistredPlayerCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActiveGameId");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("BoardGameId");
+
+                    b.HasIndex("CreatorId");
+
+                    b.ToTable("ActiveGames");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.ActiveGameStateEntity", b =>
+                {
+                    b.Property<int>("StateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StateId"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StateId");
+
+                    b.ToTable("ActiveGameStates");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.AddressEntity", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"), 1L, 1);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("DataLayer.Models.AditionalFileEntity", b =>
@@ -96,6 +211,9 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PlayableAge")
                         .HasColumnType("int");
@@ -150,6 +268,9 @@ namespace DataLayer.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("BoardTypeId");
 
                     b.ToTable("BoardTypes");
@@ -168,6 +289,9 @@ namespace DataLayer.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
@@ -185,7 +309,7 @@ namespace DataLayer.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("BoardGameId")
+                    b.Property<int?>("BoardGameId")
                         .HasColumnType("int");
 
                     b.Property<string>("Location")
@@ -197,6 +321,58 @@ namespace DataLayer.Migrations
                     b.HasIndex("BoardGameId");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.InvitationStateEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InvitationStates");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.ReviewEntity", b =>
+                {
+                    b.Property<int>("ReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SelectedBoardGameId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("WriteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WriterId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("SelectedBoardGameId");
+
+                    b.HasIndex("WriterId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("DataLayer.Models.RoleEntity", b =>
@@ -214,6 +390,34 @@ namespace DataLayer.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("DataLayer.Models.SentInvitationEntity", b =>
+                {
+                    b.Property<int>("SentInvitationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SentInvitationId"), 1L, 1);
+
+                    b.Property<int>("InvitationStateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SelectedActiveGameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SentInvitationId");
+
+                    b.HasIndex("InvitationStateId");
+
+                    b.HasIndex("SelectedActiveGameId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SentInvitations");
+                });
+
             modelBuilder.Entity("DataLayer.Models.TableBoardStateEntity", b =>
                 {
                     b.Property<int>("TableBoardStateId")
@@ -229,6 +433,41 @@ namespace DataLayer.Migrations
                     b.ToTable("TableBoardStates");
                 });
 
+            modelBuilder.Entity("DataLayer.Models.UserAddressEntity", b =>
+                {
+                    b.Property<int>("UserAddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserAddressId"), 1L, 1);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Map_X_Coords")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Map_Y_Coords")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserAddressId");
+
+                    b.ToTable("UserAddress");
+                });
+
             modelBuilder.Entity("DataLayer.Models.UserEntity", b =>
                 {
                     b.Property<int>("UserId")
@@ -237,9 +476,15 @@ namespace DataLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EnableInvitationNotifications")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("LastTimeConnection")
                         .HasColumnType("datetime2");
@@ -271,6 +516,8 @@ namespace DataLayer.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("AddressId");
+
                     b.HasIndex("RoleId");
 
                     b.HasIndex("UserStateId");
@@ -291,6 +538,21 @@ namespace DataLayer.Migrations
                     b.HasKey("UserStateId");
 
                     b.ToTable("UserStates");
+                });
+
+            modelBuilder.Entity("ActiveGameEntityUserEntity", b =>
+                {
+                    b.HasOne("DataLayer.Models.ActiveGameEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ActiveGamesParcipatorsActiveGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Models.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UsersUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BoardGameEntityBoardTypeEntity", b =>
@@ -321,6 +583,33 @@ namespace DataLayer.Migrations
                         .HasForeignKey("CategoriesCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DataLayer.Models.ActiveGameEntity", b =>
+                {
+                    b.HasOne("DataLayer.Models.AddressEntity", "Address")
+                        .WithMany("ActiveGameInThisAddress")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Models.BoardGameEntity", "BoardGame")
+                        .WithMany("ActiveGames")
+                        .HasForeignKey("BoardGameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Models.UserEntity", "Creator")
+                        .WithMany("ActiveGamesCreators")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
+                    b.Navigation("BoardGame");
+
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("DataLayer.Models.AditionalFileEntity", b =>
@@ -357,15 +646,63 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DataLayer.Models.BoardGameEntity", "BoardGame")
                         .WithMany("Images")
-                        .HasForeignKey("BoardGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BoardGameId");
 
                     b.Navigation("BoardGame");
                 });
 
+            modelBuilder.Entity("DataLayer.Models.ReviewEntity", b =>
+                {
+                    b.HasOne("DataLayer.Models.BoardGameEntity", "SelectedBoardGame")
+                        .WithMany("Reviews")
+                        .HasForeignKey("SelectedBoardGameId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Models.UserEntity", "Writer")
+                        .WithMany("Reviews")
+                        .HasForeignKey("WriterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SelectedBoardGame");
+
+                    b.Navigation("Writer");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.SentInvitationEntity", b =>
+                {
+                    b.HasOne("DataLayer.Models.InvitationStateEntity", "InvitationState")
+                        .WithMany("Invitations")
+                        .HasForeignKey("InvitationStateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Models.ActiveGameEntity", "SelectedActiveGame")
+                        .WithMany("SentInvitations")
+                        .HasForeignKey("SelectedActiveGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Models.UserEntity", "User")
+                        .WithMany("ReceivedInvitations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InvitationState");
+
+                    b.Navigation("SelectedActiveGame");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DataLayer.Models.UserEntity", b =>
                 {
+                    b.HasOne("DataLayer.Models.UserAddressEntity", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("DataLayer.Models.RoleEntity", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
@@ -378,16 +715,37 @@ namespace DataLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Address");
+
                     b.Navigation("Role");
 
                     b.Navigation("UserState");
                 });
 
+            modelBuilder.Entity("DataLayer.Models.ActiveGameEntity", b =>
+                {
+                    b.Navigation("SentInvitations");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.AddressEntity", b =>
+                {
+                    b.Navigation("ActiveGameInThisAddress");
+                });
+
             modelBuilder.Entity("DataLayer.Models.BoardGameEntity", b =>
                 {
+                    b.Navigation("ActiveGames");
+
                     b.Navigation("AditionalFiles");
 
                     b.Navigation("Images");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.InvitationStateEntity", b =>
+                {
+                    b.Navigation("Invitations");
                 });
 
             modelBuilder.Entity("DataLayer.Models.RoleEntity", b =>
@@ -398,6 +756,15 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.TableBoardStateEntity", b =>
                 {
                     b.Navigation("BoardGames");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.UserEntity", b =>
+                {
+                    b.Navigation("ActiveGamesCreators");
+
+                    b.Navigation("ReceivedInvitations");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("DataLayer.Models.UserStateEntity", b =>

@@ -144,7 +144,9 @@ namespace BoardTableInformationBackEnd.Controllers
                 return BadRequest();
             }
 
-            var invitations = await _invitationService.GetInvitationsByCountry(country, pageIndex, pageSize);
+            var id = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+
+            var invitations = await _invitationService.GetInvitationsByCountry(country, pageIndex, pageSize,id);
 
             return Ok(invitations);
         }

@@ -43,7 +43,7 @@ export default function Navbar() {
               <ul className="flex-col md:flex-row flex md:space-x-8 mt-4 md:mt-0 md:text-sm md:font-medium">
                 <li>
                   <Link
-                    to="#"
+                    to={"/"}
                     className=" md:bg-transparent text-white block pl-3 pr-4 py-2 md:text-white md:hover:text-green-700 md:p-0 rounded focus:outline-none"
                     aria-current="page"
                   >
@@ -68,7 +68,7 @@ export default function Navbar() {
                   </button>
                   {showDropdown && (
                     <ul
-                      className="absolute z-10 w-40 bg-gray-800 rounded-md mt-0"
+                      className="absolute z-10 w-[250px] bg-gray-800 rounded-md mt-0"
                       onMouseEnter={() => setShowDropdown(true)}
                       onMouseLeave={() => setShowDropdown(false)}
                     >
@@ -77,7 +77,7 @@ export default function Navbar() {
                           to="/tableboardgames"
                           className="text-white hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-gray-400 md:p-0"
                         >
-                          Create Invitation or table board game
+                          {<p>Create Invitation or table board game</p>}
                         </Link>
                       </li>
                       <li className="px-3 py-2">

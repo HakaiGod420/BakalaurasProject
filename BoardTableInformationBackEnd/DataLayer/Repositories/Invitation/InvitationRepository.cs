@@ -164,15 +164,24 @@ namespace DataLayer.Repositories.Invitation
                 .CountAsync();
         }
 
-        public async Task<InvitationsListResponse> GetInvitationsByCountry(string country,int pageIndex, int pageSize)
+        public async Task<InvitationsListResponse> GetInvitationsByCountry(string country,int pageIndex, int pageSize,int userId)
         {
+            var activeIds = new List<int>();
+
+            activeIds = await _dbContext.SentInvitations
+                .Where(x => x.UserId == userId && x.InvitationStateId != 3)
+                .Select(x => x.SelectedActiveGameId)
+                .ToListAsync();
+
             var query = _dbContext.ActiveGames
                 .Include(x => x.BoardGame)
                 .Include(x => x.Address)
                 .Where(x =>
                     x.InvitationStateId == ActiveGameState.Open
                     && x.MeetDate > DateTime.Now
-                    && x.Address.Country == country)
+                    && x.Address.Country == country
+                    && x.CreatorId != userId
+                    && !activeIds.Contains(x.ActiveGameId))
                 .Select(x => new InvitationItem
                 {
                     InvitationId = x.ActiveGameId,

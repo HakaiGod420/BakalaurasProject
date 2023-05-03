@@ -470,10 +470,10 @@ namespace UnitTestGameBoardWeb.ServicesTests.InvitationServiceTests
                 Invitations = new List<InvitationItem>(),
                 TotalCount = 0
             };
-            _mockInvitationRepository.Setup(repo => repo.GetInvitationsByCountry(country, pageIndex, pageSize)).ReturnsAsync(expectedResponse);
+            _mockInvitationRepository.Setup(repo => repo.GetInvitationsByCountry(country, pageIndex, pageSize, 1)).ReturnsAsync(expectedResponse);
 
             // Act
-            var result = await _invitationService.GetInvitationsByCountry(country, pageIndex, pageSize);
+            var result = await _invitationService.GetInvitationsByCountry(country, pageIndex, pageSize,1);
 
             // Assert
             Assert.IsType<InvitationsListResponse>(result);
@@ -489,7 +489,7 @@ namespace UnitTestGameBoardWeb.ServicesTests.InvitationServiceTests
             int pageSize = 10;
 
             // Act and Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => _invitationService.GetInvitationsByCountry(country, pageIndex, pageSize));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _invitationService.GetInvitationsByCountry(country, pageIndex, pageSize,1));
         }
 
         [Fact]

@@ -126,7 +126,7 @@ export interface TableTopGamesForReviewResponse {
 
 export interface TabletopGameAproval {
   GameBoardId: number;
-  IsApproved: boolean;
+  IsAproved: boolean;
 }
 
 export interface TableTopGameForAdmin {

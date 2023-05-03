@@ -140,14 +140,14 @@ namespace ServiceLayer.Services
             await _invitationRepository.SentInvitation(invitationToSent);
         }
 
-        public Task<InvitationsListResponse> GetInvitationsByCountry(string country, int pageIndex, int pageSize)
+        public Task<InvitationsListResponse> GetInvitationsByCountry(string country, int pageIndex, int pageSize,int userId)
         {
             if(country == null)
             {
                 throw new ArgumentNullException("Country must be selected");
             }
 
-            return _invitationRepository.GetInvitationsByCountry(country, pageIndex, pageSize);
+            return _invitationRepository.GetInvitationsByCountry(country, pageIndex, pageSize,userId);
         }
 
         public async Task JointInvitation(JoinInvitationDTO invitation, int userId)

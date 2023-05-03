@@ -98,6 +98,7 @@ function CreateStep8({
           Previous
         </button>
         <button
+          disabled={categories.length === 0 || types.length === 0}
           className="btn m-2 min-w-[100px]"
           onClick={() => inputHandlerNext()}
         >

@@ -138,6 +138,11 @@ function PublicEvents() {
             </li>
           ))}
         </ul>
+        {activeInvitations?.length === 0 && (
+          <div className="text-[50px] text-black p-[200px]">
+            <p>No events found</p>
+          </div>
+        )}
       </div>
       {isOpen && (
         <EventAcceptedModal

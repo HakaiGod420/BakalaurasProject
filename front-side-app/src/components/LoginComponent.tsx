@@ -13,6 +13,7 @@ import {
 import { CheckJWTIsAdmin } from "../services/midlewear/AuthVerify";
 import { ErrorBasic } from "../services/types/Error";
 import { LoginData } from "../services/types/User";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 function LoginComponent() {
   const [password, setPassword] = useState("");
@@ -81,7 +82,7 @@ function LoginComponent() {
           <h2 className="text-gray-900 text-lg font-medium title-font mb-5">
             Sign In
           </h2>
-          {showError && <Alert message={errorName} type="error" showIcon />}
+          {showError && <Alert message={errorName} type="error" icon={<AiOutlineCloseCircle/>} showIcon />}
           <div className="mb-4">
             <label
               htmlFor="username"

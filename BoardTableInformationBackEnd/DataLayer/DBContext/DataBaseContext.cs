@@ -48,7 +48,7 @@ namespace DataLayer.DBContext
 
         public static string GetConnectionString()
         {
-            return "data source=boardgamedatabase.database.windows.net;initial catalog=boardgame;persist security info=false;user id=hakaigod420;password=Krokodilas0858; TrustServerCertificate=True";
+            return "Server=localhost\\SQLEXPRESS;Database=gameboard;Trusted_Connection=True;";
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -28,7 +28,7 @@ export default function ShortDescription() {
             something for everyone. So why not take a break from technology and
             enjoy some old-fashioned tabletop gaming with friends and family?
           </p>
-          <Link to={"/companies"}>
+          <Link to={"/gameboards"}>
             <button className="bg-black w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-white md:mx-0 hover:bg-green-600 hover:transition-colors">
               Go To Games
             </button>
