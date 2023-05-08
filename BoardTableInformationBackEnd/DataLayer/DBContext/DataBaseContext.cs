@@ -90,7 +90,6 @@ namespace DataLayer.DBContext
             builder.Entity<ReviewEntity>().HasOne(x => x.SelectedBoardGame).WithMany(x => x.Reviews).HasForeignKey(x => x.SelectedBoardGameId).OnDelete(DeleteBehavior.NoAction);
 
 
-
             /*
              * 
             builder.Entity<ImageEntity>().
