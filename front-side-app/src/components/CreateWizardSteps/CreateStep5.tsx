@@ -69,7 +69,7 @@ function CreateStep5({
               name="demo[]"
               multiple={false}
               auto
-              accept="image/*png"
+              accept="image/*"
               maxFileSize={100000000}
               customUpload={true}
               uploadHandler={UploadThumbail}
@@ -90,7 +90,7 @@ function CreateStep5({
               name="demo[]"
               multiple={true}
               auto
-              accept="image/*png"
+              accept="image/*"
               maxFileSize={100000000}
               customUpload={true}
               uploadHandler={Upload}

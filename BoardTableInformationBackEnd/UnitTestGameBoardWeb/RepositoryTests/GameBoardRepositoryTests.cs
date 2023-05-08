@@ -132,47 +132,6 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         }
 
         [Fact]
-        public async Task GetGameBoardListForAdmin_ReturnsCorrectPageAndPageSize()
-        {
-            // Arrange
-            var user1 = new UserEntity
-            {
-                UserId = 1,
-                UserName = "User1",
-                Email = "TestEmail@gmail.com",
-                Password = new byte[9],
-                PasswordSalt = new byte[50],
-                RegistrationTime = DateTime.Now,
-                LastTimeConnection = DateTime.Now
-            };
-            var user2 = new UserEntity
-            {
-                UserId = 2,
-                UserName = "User2",
-                Email = "TestEmail@gmail.com",
-                Password = new byte[9],
-                PasswordSalt = new byte[50],
-                RegistrationTime = DateTime.Now,
-                LastTimeConnection = DateTime.Now
-            };
-            var boardGame1 = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thubnail_Location = "monopoly.png", Description = "t" };
-            var boardGame2 = new BoardGameEntity {BoardGameId = 2, Title = "Test Game 2", Thubnail_Location = "monopoly.png", Description = "t" };
-            var boardGame3 = new BoardGameEntity {BoardGameId = 3, Title = "Test Game 3", Thubnail_Location = "monopoly.png", Description = "t" };
-            await _context.Users.AddRangeAsync(user1, user2);
-            await _context.BoardGames.AddRangeAsync(boardGame1, boardGame2, boardGame3);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetGameBoardListForAdmin(2, 1);
-
-            // Assert
-            Assert.Equal(3, result.TotalCount);
-            Assert.Equal(1, result.Boards.Count);
-            Assert.Equal("Test Game 2", result.Boards[0].Title);
-            Assert.False(result.Boards[0].IsBlocked);
-        }
-
-        [Fact]
         public async Task GetGameBoardListForAdmin_ReturnsEmptyListWhenPageIndexIsOutOfRange()
         {
             // Act

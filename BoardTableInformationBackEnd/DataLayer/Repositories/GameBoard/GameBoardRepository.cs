@@ -87,7 +87,8 @@ namespace DataLayer.Repositories.GameBoard
                     Types = result.BoardTypes.Select(x => x.BoardTypeName).ToList(),
                     Images = result.Images.Select(x => new GetImageDTO { Location = x.Location + "/" + x.Alias, FileName = x.Alias }).ToList(),
                     Files = result.AditionalFiles.Select(x => new GetAditionalFilesDTO { Location = x.FileLocation + "/" + x.FileName, FileName = x.FileName }).ToList(),
-                    Rating = result.Reviews.Any() ? result.Reviews.Average(r => r.Rating) : 0.0
+                    Rating = result.Reviews.Any() ? result.Reviews.Average(r => r.Rating) : 0.0,
+                    RatingCount = result.Reviews.Count()
             };
 
                 return finalObject;
@@ -246,14 +247,17 @@ namespace DataLayer.Repositories.GameBoard
 
         public async Task<bool> IsGameBoardExist(string gameBoardTitle)
         {
-            var isExist = await _dbContext.BoardGames.AnyAsync(x => x.Title.Contains(gameBoardTitle));
+            var isExist = await _dbContext.BoardGames.AnyAsync(x => x.Title.Contains(gameBoardTitle) && (x.TableBoardStateId == TableBoardState.Activated || x.TableBoardStateId == TableBoardState.Reviewing));
 
             return isExist;
         }
 
         public async Task<bool> SetGameBoardState(GameBoardApprove approval)
         {
-            var game = await _dbContext.BoardGames.FindAsync(approval.GameBoardId);
+            var game = await _dbContext.BoardGames
+                .Include(x => x.Categories)
+                .Include(x => x.BoardTypes)
+                .FirstOrDefaultAsync(x => x.BoardGameId == approval.GameBoardId);
 
             if (game == null)
             {
@@ -263,6 +267,20 @@ namespace DataLayer.Repositories.GameBoard
             if (approval.IsAproved)
             {
                 game.TableBoardStateId = TableBoardState.Activated;
+
+                foreach(var category in game.Categories)
+                {
+                    category.IsActive = true;
+                    _dbContext.Categories.Update(category);
+                    await _dbContext.SaveChangesAsync();
+                }
+
+                foreach (var type in game.BoardTypes)
+                {
+                    type.IsActive = true;
+                    _dbContext.BoardTypes.Update(type);
+                    await _dbContext.SaveChangesAsync();
+                }
             }
             else
             {

@@ -10,7 +10,7 @@ namespace DataLayer.Models
     public class ActiveGameStateEntity
     {
         [Key]
-        public int StateId { get; set; }
+        public int ActiveGameStateId { get; set; }
         public string Name { get; set; }
     }
 }

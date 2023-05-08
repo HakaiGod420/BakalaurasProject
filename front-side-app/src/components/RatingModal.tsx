@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { useParams } from "react-router-dom";
-import { postRating } from "../services/api/RatingService";
+import { getOldReview, postRating } from "../services/api/RatingService";
 import { Rating } from "../services/types/Rating";
 
 interface Props {
   onClose: () => void;
+  existingRating: number | undefined;
+  ratingCount: number | undefined;
+  setNewRating: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
-const RatingModal: React.FC<Props> = ({ onClose }) => {
+const RatingModal: React.FC<Props> = ({
+  onClose,
+  existingRating,
+  ratingCount,
+  setNewRating,
+}) => {
   const [rating, setRating] = useState<number>(0);
-  const [comment, setComment] = useState<string>("");
+  const [comment, setComment] = useState<string | undefined>("");
+  const [oldExist, setOldExist] = useState<boolean>(false);
+  const [oldRating, setOldRating] = useState<number>(0);
 
   let { id } = useParams();
 
@@ -31,8 +41,44 @@ const RatingModal: React.FC<Props> = ({ onClose }) => {
     toast.success("Review posted", {
       id: loading,
     });
+    if (!oldExist) {
+      if (ratingCount === 0) {
+        setNewRating(rating);
+        return;
+      }
+      const sumOfRatings = existingRating! * ratingCount!;
+      const newRatingCount = ratingCount! + 1;
+      const newRatingValue = (sumOfRatings + rating) / newRatingCount;
+      setNewRating(newRatingValue);
+    }
+
+    if (oldExist) {
+      if (ratingCount === 0) {
+        setNewRating(rating);
+        onClose();
+        return;
+      }
+      const sumOfRatings = existingRating! * ratingCount! - oldRating + rating;
+      const newRatingValue = sumOfRatings / ratingCount!;
+      setNewRating(newRatingValue);
+    }
+
     onClose();
   };
+
+  useEffect(() => {
+    const getUserOldReview = async () => {
+      const response = await getOldReview(Number(id));
+
+      if (response != undefined) {
+        setRating(response.Rating);
+        setComment(response.Comment);
+        setOldRating(response.Rating);
+        setOldExist(true);
+      }
+    };
+    getUserOldReview();
+  }, []);
 
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center">

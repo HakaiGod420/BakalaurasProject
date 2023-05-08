@@ -39,7 +39,7 @@ const GameCard: React.FC<TableTopGameCard> = ({
           />
         )}
 
-        <div className="bg-gray-900 text-white p-4">
+        <div className="bg-gray-900 text-white p-4 max-h-[130px] min-h-[130px]">
           <h3 className="text-lg font-bold">{Title}</h3>
           <p className="text-sm">{dayjs(ReleaseDate).format("YYYY-MM-DD")}</p>
         </div>

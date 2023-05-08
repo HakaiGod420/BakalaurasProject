@@ -35,7 +35,7 @@ namespace DataLayer.Models
         public int PlayableAge { get; set; }
 
         [Required]
-        [MaxLength(3000)]
+        [MaxLength(5000)]
         public string Description { get; set; }
 
         public DateTime CreationTime { get; set; }

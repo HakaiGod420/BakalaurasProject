@@ -120,6 +120,11 @@ const GameCardList: React.FC = () => {
           style={{ minHeight: "20px" }}
         >
           {isLoading && <LoadingComponent />}
+          {!isLoading && gameBoards?.length === 0 && (
+            <div className="text-black text-[25px] p-10">
+              No table top games was found
+            </div>
+          )}
         </div>
       </div>
     </div>

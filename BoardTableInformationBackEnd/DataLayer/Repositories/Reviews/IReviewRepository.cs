@@ -12,5 +12,9 @@ namespace DataLayer.Repositories.Reviews
     {
         public Task CreateReview(ReviewEntity review);
         public Task<List<ReviewView>> GetAllReviews(int boardGameId);
+        public Task<ReviewEntity?> GetReview(int userId, int boardGameId);
+        public Task UpdateReview(ReviewEntity review);
+        public Task<OldReview?> GetOldReview(int userId,int boardGameId);
+
     }
 }

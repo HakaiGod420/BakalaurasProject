@@ -114,7 +114,10 @@ function CreateTabletopGameModal() {
   };
 
   const postImages = async (formData: FormData) => {
-    console.log(postImages);
+    const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+    axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
+
     await axios
       .post(SERVER_API + "/api/upload/imagePost", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -128,6 +131,10 @@ function CreateTabletopGameModal() {
   };
 
   const postFiles = async (formData: FormData) => {
+    const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+    axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
+
     await axios
       .post(SERVER_API + "/api/upload/filePost", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -184,6 +191,7 @@ function CreateTabletopGameModal() {
       selectedImages.push({ Alias: newFileName, Location: location });
       counter++;
     });
+
     formData.append("tabletopTitle", title.replace(/[^A-Z0-9]+/gi, "_"));
 
     await postImages(formData);
@@ -239,6 +247,7 @@ function CreateTabletopGameModal() {
       }
 
       let uploadedThumbnailName: string = "";
+
       if (thumbnail !== undefined) {
         uploadedThumbnailName = await uploadThumbnail();
       }
@@ -262,7 +271,9 @@ function CreateTabletopGameModal() {
       toast.success("Successfully created game", {
         id: loading,
       });
-      navigate("/");
+      const object = document.getElementById("my-modal-5")! as HTMLInputElement;
+      object.checked = false;
+      handleOnClose();
     } catch (error) {
       console.error(error);
     }

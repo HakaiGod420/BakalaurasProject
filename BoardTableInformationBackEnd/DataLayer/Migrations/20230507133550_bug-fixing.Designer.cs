@@ -4,6 +4,7 @@ using DataLayer.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230507133550_bug-fixing")]
+    partial class bugfixing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,9 +86,6 @@ namespace DataLayer.Migrations
                     b.Property<int>("CreatorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InvitationStateActiveGameStateId")
-                        .HasColumnType("int");
-
                     b.Property<int>("InvitationStateId")
                         .HasColumnType("int");
 
@@ -113,24 +112,22 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.HasIndex("InvitationStateActiveGameStateId");
-
                     b.ToTable("ActiveGames");
                 });
 
             modelBuilder.Entity("DataLayer.Models.ActiveGameStateEntity", b =>
                 {
-                    b.Property<int>("ActiveGameStateId")
+                    b.Property<int>("StateId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActiveGameStateId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StateId"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ActiveGameStateId");
+                    b.HasKey("StateId");
 
                     b.ToTable("ActiveGameStates");
                 });
@@ -608,19 +605,11 @@ namespace DataLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("DataLayer.Models.ActiveGameStateEntity", "InvitationState")
-                        .WithMany()
-                        .HasForeignKey("InvitationStateActiveGameStateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Address");
 
                     b.Navigation("BoardGame");
 
                     b.Navigation("Creator");
-
-                    b.Navigation("InvitationState");
                 });
 
             modelBuilder.Entity("DataLayer.Models.AditionalFileEntity", b =>

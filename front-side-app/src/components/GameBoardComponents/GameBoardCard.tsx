@@ -18,6 +18,9 @@ const GameBoardCard: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [validToken] = useRecoilState(validTokenAtom);
 
+  const [gameBoardRating, setGameBoardRating] = useState<number | undefined>(0);
+  const [ratingCount, setRatingCount] = useState<number | undefined>(0);
+
   const onClose = () => {
     setIsOpen(false);
   };
@@ -28,8 +31,9 @@ const GameBoardCard: React.FC = () => {
   useEffect(() => {
     const getGameBoardAsync = async () => {
       const data = await getGameBoard(Number(id));
+      setGameBoardRating(data?.Rating);
+      setRatingCount(data?.RatingCount);
       setGameBoard(data);
-      console.log(data);
     };
 
     getGameBoardAsync();
@@ -37,7 +41,14 @@ const GameBoardCard: React.FC = () => {
 
   return (
     <div>
-      {isOpen && <RatingModal onClose={onClose} />}
+      {isOpen && (
+        <RatingModal
+          setNewRating={setGameBoardRating}
+          existingRating={gameBoardRating}
+          ratingCount={ratingCount}
+          onClose={onClose}
+        />
+      )}
       {gameBoard ? (
         <div>
           <div className="max-w-screen-xl mx-auto p-4 flex flex-col md:flex-row items-center md:items-start">
@@ -109,7 +120,7 @@ const GameBoardCard: React.FC = () => {
                 <div className="mt-2 flex flex-wrap items-center">
                   <FaStar className="h-5 w-5 text-gray-400" />
                   <p className="ml-2 text-sm font-medium text-gray-500">
-                    Rating: {gameBoard.Rating?.toFixed(2)}/5
+                    Rating: {gameBoardRating?.toFixed(2)}/5
                   </p>
                 </div>
               </div>

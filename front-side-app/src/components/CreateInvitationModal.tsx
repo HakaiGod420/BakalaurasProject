@@ -112,7 +112,7 @@ function CreateInvitationModal() {
     toast.success("Successfully created", {
       id: loading,
     });
-    navigate("/myeventes");
+    //navigate("/myeventes");
   };
   return (
     <div className="">

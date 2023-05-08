@@ -1,5 +1,5 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import React, { useState } from "react";
+import React from "react";
 import {
   GoogleEvent,
   MeetDate,
@@ -26,12 +26,6 @@ const EventAcceptedModal: React.FC<Props> = ({
   userInvitation,
   onAccept,
 }) => {
-  const [isTracking, setIsTracking] = useState(false);
-
-  const handleTracking = () => {
-    setIsTracking(true);
-  };
-
   const handleLoginSuccess = async (response: any) => {
     console.log(response.access_token);
     if (userInvitation !== undefined) {

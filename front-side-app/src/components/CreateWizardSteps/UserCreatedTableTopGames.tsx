@@ -17,9 +17,10 @@ const UserCreatedTableTopGames = () => {
 
   const paginate = async (pageNumber: number) => {
     if (!params.username) return;
+    console.log(pageNumber);
     const response = await getGameBoardsCreatedByUser(
       params.username,
-      0,
+      pageNumber - 1,
       itemsPerPage
     ).catch((error: AxiosError) => {
       return;

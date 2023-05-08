@@ -48,5 +48,23 @@ namespace BoardTableInformationBackEnd.Controllers
 
             return new OkObjectResult(reviews);
         }
+
+        [HttpGet("oldReview")]
+        [Authorize]
+        [ProducesResponseType(typeof(OldReview), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> GetOldReview([FromQuery] int boardGameId)
+        {
+            var userId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserId"));
+
+            if (boardGameId < 0)
+            {
+                return UnprocessableEntity(nameof(boardGameId));
+            }
+
+            var oldReview = await _reviewService.GetOldReview(userId, boardGameId);
+
+            return new OkObjectResult(oldReview);
+        }
     }
 }

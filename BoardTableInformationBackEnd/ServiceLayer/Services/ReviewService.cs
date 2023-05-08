@@ -21,6 +21,16 @@ namespace ServiceLayer.Services
 
         public async Task CreateReview(CreateReviewDto review, int userId)
         {
+            var existingReview = await _reviewRepository.GetReview(userId,review.BoardGameId);
+
+            if(existingReview != null)
+            {
+                existingReview.Rating = review.Rating;
+                existingReview.Comment = review.Comment;
+                await _reviewRepository.UpdateReview(existingReview);
+                return;
+            }
+
             var newReview = new ReviewEntity
             {
                 WriterId = userId,
@@ -32,6 +42,11 @@ namespace ServiceLayer.Services
             };
 
            await _reviewRepository.CreateReview(newReview);
+        }
+
+        public async Task<OldReview?> GetOldReview(int userId, int boardGameId)
+        {
+            return await _reviewRepository.GetOldReview(userId, boardGameId);
         }
 
         public async Task<List<ReviewView>> GetReviews(int boardGameId)

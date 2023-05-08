@@ -24,5 +24,6 @@ namespace ModelLayer.DTO
         public List<GetImageDTO> Images { get; set; }
         public List<GetAditionalFilesDTO> Files { get; set; }
         public double? Rating { get; set; }
+        public int RatingCount { get; set; }
     }
 }

@@ -12,3 +12,8 @@ export interface ReviewView {
   Rating: number;
   Written: string;
 }
+
+export interface OldReview {
+  Rating: number;
+  Comment: string | undefined;
+}

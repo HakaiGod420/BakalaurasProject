@@ -1,5 +1,6 @@
 import "leaflet/dist/leaflet.css";
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaExclamationCircle } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { changeUserInformation } from "../../services/api/UserServics";
@@ -66,17 +67,14 @@ const ChangeUserInformation: React.FC<UserInformationProps> = ({ onClose }) => {
       NewPassword: password,
     };
 
-    const response = (await changeUserInformation(
-      userChangeInfomration
-    )) as any;
-
-    console.log(response);
-
-    if (response.response.status === 200) {
-      setShowError(false);
-    } else {
-      setError("Old password wrong  ");
+    try {
+      await changeUserInformation(userChangeInfomration);
+      setShowError(false); // hide error if request succeeds
+      toast.success("User information changed");
+    } catch (err: any) {
       setShowError(true);
+      setError("Old password wrong");
+      return;
     }
   };
   return (

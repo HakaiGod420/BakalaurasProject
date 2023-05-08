@@ -27,7 +27,7 @@ namespace DataLayer.Repositories.Invitation
                 throw new ArgumentNullException("ActiveGameEntity");
             }
 
-            await _dbContext.ActiveGames.AddAsync(invitation);
+            _dbContext.ActiveGames.Add(invitation);
             await _dbContext.SaveChangesAsync();
             return invitation;
         }

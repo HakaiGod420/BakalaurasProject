@@ -92,12 +92,10 @@ export async function changeUserInformation(
 
   axios.defaults.headers.put["Authorization"] = `Bearer ${token.token}`;
 
-  const response = await axios
-    .put(SERVER_API + "/api/user/changeUserInformation", userInfoChanges)
-    .catch((error) => {
-      console.log(error);
-      return error;
-    });
+  const response = await axios.put(
+    SERVER_API + "/api/user/changeUserInformation",
+    userInfoChanges
+  );
 
   return response;
 }

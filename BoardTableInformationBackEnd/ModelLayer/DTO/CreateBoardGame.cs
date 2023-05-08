@@ -24,7 +24,7 @@ namespace ModelLayer.DTO
         public int PlayableAge { get; set; }
 
         [Required]
-        [MaxLength(3000)]
+        [MaxLength(5000)]
         public string Description { get; set; }
 
         [MaxLength(2000)]

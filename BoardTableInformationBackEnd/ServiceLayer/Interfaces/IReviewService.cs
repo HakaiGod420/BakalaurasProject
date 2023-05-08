@@ -11,5 +11,6 @@ namespace ServiceLayer.Interfaces
     {
         public Task CreateReview(CreateReviewDto review, int userId);
         public Task<List<ReviewView>> GetReviews(int boardGameId);
+        public Task<OldReview?> GetOldReview(int userId, int boardGameId);
     }
 }

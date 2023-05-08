@@ -62,6 +62,7 @@ export interface SingleTabletopGame {
   Thumbnail_Location: string;
   CreatorName: string;
   CreatorId: number;
+  RatingCount: number;
   Categories: string[];
   Types: string[];
   Images: TabletopImage[];

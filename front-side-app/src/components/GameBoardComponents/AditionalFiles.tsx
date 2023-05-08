@@ -58,29 +58,33 @@ const AditionalFiles: React.FC<AditionalFilesProps> = ({ files }) => {
   return (
     <div className="bg-gray-800 p-6 rounded-lg">
       <h2 className="text-lg font-bold mb-4 text-gray-100">Additional Files</h2>
-      <ul className="grid gap-4">
-        {files.map((file, index) => (
-          <motion.li
-            key={index}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-lg shadow-md"
-          >
-            <div className="flex items-center">
-              {getFileTypeIcon(file.FileName)}
-              <span className="text-gray-100 ml-2">{file.FileName}</span>
-            </div>
-            <a
-              href={SERVER_API + "/" + file.Location}
-              download
-              className="text-gray-400 hover:text-gray-100"
+      {files.length === 0 ? (
+        <div className="text-gray-100">No additional files</div>
+      ) : (
+        <ul className="grid gap-4">
+          {files.map((file, index) => (
+            <motion.li
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-lg shadow-md"
             >
-              <IoMdDownload size={20} />
-            </a>
-          </motion.li>
-        ))}
-      </ul>
+              <div className="flex items-center">
+                {getFileTypeIcon(file.FileName)}
+                <span className="text-gray-100 ml-2">{file.FileName}</span>
+              </div>
+              <a
+                href={SERVER_API + "/" + file.Location}
+                download
+                className="text-gray-400 hover:text-gray-100"
+              >
+                <IoMdDownload size={20} />
+              </a>
+            </motion.li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

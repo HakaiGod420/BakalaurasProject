@@ -15,31 +15,31 @@ namespace BoardTableInformationBackEnd.Controllers
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<IActionResult> UploadImage([FromForm] CreateImageDto images)
         {
-            if(images.FileNames.Count == 0 || images.Images.Count == 0)
+            if (images.FileNames.Count == 0 || images.Images.Count == 0)
             {
                 return BadRequest("No Images where to send it");
             }
 
-            if(images.TabletopTitle == null || images.TabletopTitle == "")
+            if (images.TabletopTitle == null || images.TabletopTitle == "")
             {
                 return BadRequest("Empty tabletop or null");
             }
 
             var location = Directory.GetCurrentDirectory() + "\\Files\\Images\\" + images.TabletopTitle;
             try
-            {  
+            {
                 bool exists = System.IO.Directory.Exists(location);
 
                 if (!exists)
                 {
                     System.IO.Directory.CreateDirectory(location);
                     var count = 0;
-                    foreach(var image in images.Images)
+                    foreach (var image in images.Images)
                     {
                         var locationWithName = location + "/" + images.FileNames[count];
                         using (Stream stream = new FileStream(locationWithName, FileMode.Create))
                         {
-                            image.CopyTo(stream);
+                            await image.CopyToAsync(stream);
                         }
                         count++;
                     }
@@ -52,11 +52,10 @@ namespace BoardTableInformationBackEnd.Controllers
                         var locationWithName = location + "/" + images.FileNames[count];
                         using (Stream stream = new FileStream(locationWithName, FileMode.Create))
                         {
-                            image.CopyTo(stream);
+                            await image.CopyToAsync(stream);
                         }
                         count++;
                     }
-
                 }
             }
             catch (Exception ex)
@@ -87,7 +86,7 @@ namespace BoardTableInformationBackEnd.Controllers
                         var locationWithName = location + "/" + files.FileNames[count];
                         using (Stream stream = new FileStream(locationWithName, FileMode.Create))
                         {
-                            file.CopyTo(stream);
+                            await file.CopyToAsync(stream);
                         }
                         count++;
                     }
@@ -100,11 +99,10 @@ namespace BoardTableInformationBackEnd.Controllers
                         var locationWithName = location + "/" + files.FileNames[count];
                         using (Stream stream = new FileStream(locationWithName, FileMode.Create))
                         {
-                            file.CopyTo(stream);
+                            await file.CopyToAsync(stream);
                         }
                         count++;
                     }
-
                 }
             }
             catch (Exception ex)

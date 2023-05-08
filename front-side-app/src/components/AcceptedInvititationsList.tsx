@@ -102,7 +102,7 @@ function AcceptedInvitationsList() {
         {invitations.length === 0 && (
           <div>
             {!loading ? (
-              <p className="text-gray-700 text-[50px] font-bold flex justify-center opacity-25">
+              <p className="text-gray-700 text-[50px] font-bold flex justify-center opacity-25 p-20">
                 No accepted invitations
               </p>
             ) : (
