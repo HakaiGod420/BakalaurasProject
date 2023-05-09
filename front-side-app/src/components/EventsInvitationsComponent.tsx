@@ -15,6 +15,7 @@ import EventAcceptedModal from "./EventAcceptedModal";
 import EventCard from "./core/EventCard";
 import LoadingComponent from "./core/LoadingComponent";
 import SectionDivider from "./core/SectionDivider";
+import { useNavigate } from "react-router-dom";
 
 function EventsInvitationComponent() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +29,8 @@ function EventsInvitationComponent() {
   const [loading, setLoading] = useState(true);
   const [accpetedInvitation, setAcceptedInvitations] =
     useRecoilState(acceptedInvitations);
+
+  const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
   const [selectedGameInvitation, setSelectedGameInvitation] = useState<
@@ -68,6 +71,7 @@ function EventsInvitationComponent() {
     toast.success("Invitation accepted", {
       id: loading,
     });
+    navigate("/myeventes/accepted");
   };
 
   const onReject = async (invitationId: number) => {

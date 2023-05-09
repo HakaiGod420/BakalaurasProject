@@ -21,7 +21,7 @@ const BoardGameListAdmin: React.FC = () => {
 
   // Example game board data
 
-  const fetchGameBoardsForReview = async (pageNumber: number) => {
+  const fetchGames = async (pageNumber: number) => {
     const response = await getBoardGamesListForAdmin(
       pageNumber - 1,
       gameBoardsPerPage
@@ -34,7 +34,7 @@ const BoardGameListAdmin: React.FC = () => {
   // Change page
   const paginate = async (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    await fetchGameBoardsForReview(pageNumber);
+    await fetchGames(pageNumber);
   };
 
   const handleStateChange = async (gameBoardId: number, isBlocked: boolean) => {
@@ -53,7 +53,7 @@ const BoardGameListAdmin: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchGameBoardsForReview(1);
+    fetchGames(1);
   }, [setTotalCount]);
 
   return (
@@ -63,7 +63,7 @@ const BoardGameListAdmin: React.FC = () => {
           {totalCount && totalCount > 0 ? (
             <div>
               <div className="pt-5">
-                <SectionDivider label={"Game boards for review"} />
+                <SectionDivider label={"All game boards"} />
               </div>
 
               <div className="overflow-x-auto">

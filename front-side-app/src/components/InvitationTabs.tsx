@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import AcceptedInvitationsList from "./AcceptedInvititationsList";
 import CreatedInvitationList from "./CreatedInvitationsList";
 import EventsInvitationComponent from "./EventsInvitationsComponent";
@@ -10,7 +11,11 @@ interface InvitationTabsProps {
 }
 
 const InvitationTabs: React.FC<InvitationTabsProps> = ({ onTabChange }) => {
-  const [activeTab, setActiveTab] = useState<Tab>("active");
+  let { activatedTab } = useParams();
+
+  const [activeTab, setActiveTab] = useState<Tab>(
+    activatedTab ? (activatedTab as Tab) : "active"
+  );
 
   const handleTabClick = (tab: Tab) => {
     setActiveTab(tab);

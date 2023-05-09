@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getReviews } from "../../services/api/RatingService";
 import { ReviewView } from "../../services/types/Rating";
 
@@ -53,7 +53,9 @@ const GameReviews = () => {
                 />
                 <div className="flex-1">
                   <div className="text-white font-medium">
-                    {review.Username}
+                    <Link to={`/profile/${review.Username}`}>
+                      {review.Username}
+                    </Link>
                   </div>
                   <div className="text-gray-400 text-sm">
                     {dayjs(review.Written).format("YYYY-MM-DD HH:mm")}

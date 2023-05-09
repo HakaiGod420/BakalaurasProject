@@ -10,6 +10,7 @@ import {
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import { useNavigate } from "react-router-dom";
 import { postEventInGoogleCalendar } from "../services/api/GoogleAPI";
 
 dayjs.extend(utc);
@@ -26,6 +27,7 @@ const EventAcceptedModal: React.FC<Props> = ({
   userInvitation,
   onAccept,
 }) => {
+
   const handleLoginSuccess = async (response: any) => {
     console.log(response.access_token);
     if (userInvitation !== undefined) {
@@ -58,6 +60,7 @@ const EventAcceptedModal: React.FC<Props> = ({
       await postEventInGoogleCalendar(response.access_token, event);
       await onAccept(userInvitation.InvitationId);
       onClose();
+
     }
   };
 

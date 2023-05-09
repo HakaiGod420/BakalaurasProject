@@ -110,6 +110,7 @@ namespace DataLayer.Repositories.GameBoard
                 .Include(x => x.Reviews)
                 .Where(x => filter.Types == null || !filter.Types.Any() || x.BoardTypes.Any(bt => filter.Types.Contains(bt.BoardTypeId)))
                 .Where(x => filter.Categories == null || !filter.Categories.Any() || x.Categories.Any(bt => filter.Categories.Contains(bt.CategoryId)))
+                .Where(x => !x.IsBlocked)
                 .Select(x => new GameBoardCardItemDTO
                 {
                     GameBoardId = x.BoardGameId,
@@ -162,7 +163,7 @@ namespace DataLayer.Repositories.GameBoard
 
         }
 
-        public async Task<GameBoardListForAdmin> GetGameBoardListForAdmin(int pageSize, int pageIndex)
+        public async Task<GameBoardListForAdmin> GetGameBoardListForAdmin(int pageIndex, int pageSize)
         {
             var query = _dbContext.BoardGames
                 .Include(x => x.User)

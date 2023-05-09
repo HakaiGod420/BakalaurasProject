@@ -87,6 +87,7 @@ function App() {
           <Route path="/tableboardgames/" element={<TableBoadGames />} />
           <Route path="/register/*" element={<Register />} />
           <Route path="/profile/:username" element={<UserProfile />} />
+          <Route path="/myeventes/:activatedTab" element={<MyEvents />} />
           <Route path="/myeventes/" element={<MyEvents />} />
           <Route path="/settings/*" element={<Settings />} />
           <Route path="/gameboards/" element={<BoardList />} />

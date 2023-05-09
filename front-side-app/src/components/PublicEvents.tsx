@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import {
   getInvitationList,
   joinToInvitation,
@@ -14,6 +15,7 @@ function PublicEvents() {
   const [currentPage, setCurrentPage] = useState(1);
   const [eventsPerPage] = useState(3);
   const [totalPages, setTotalPages] = useState(1);
+  const navigate = useNavigate();
   const [activeInvitations, setActiveInvitations] = useState<
     InvitationItem[] | undefined
   >([]);
@@ -29,7 +31,9 @@ function PublicEvents() {
     toast.success("Invitation accepted", {
       id: loading,
     });
+    navigate("/myeventes/accepted");
   };
+
   const paginate = async (pageNumber: number) => {
     const response = await getInvitationList(
       "Lithuania",
