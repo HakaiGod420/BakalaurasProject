@@ -12,17 +12,18 @@ import {
 } from "../../services/types/TabletopGame";
 import LoadingComponent from "../core/LoadingComponent";
 import SectionDivider from "../core/SectionDivider";
+import GameEditFormModal from "./GameEditFormModal";
 
 const BoardGameListForReview: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [gameBoardsPerPage] = useState(5);
 
   const [totalCount, setTotalCount] = useState<number | undefined>(0);
+  const [selectedId, setSelectedId] = useState<number | undefined>(0);
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
 
   const [gameBoardsForReview, setGameBoardsForReview] =
     useState<TableTopGameItemForReview[]>();
-
-  // Example game board data
 
   const fetchGameBoardsForReview = async (pageNumber: number) => {
     const response = await getBoardGameListForReview(
@@ -59,6 +60,11 @@ const BoardGameListForReview: React.FC = () => {
         id: loading,
       });
     }
+  };
+
+  const handleEditForm = (gameBoardId: number) => {
+    setSelectedId(gameBoardId);
+    setOpenEditModal(true);
   };
 
   useEffect(() => {
@@ -100,13 +106,21 @@ const BoardGameListForReview: React.FC = () => {
                           )}
                         </td>
                         <td className="p-3">{gameBoard.CreatorName}</td>
-                        <td className="p-3 flex justify-between items-center">
+                        <td className="p-3 flex  items-center">
                           <button className="p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px]">
                             <a href={`/gameboards/${gameBoard.GameBoardId}`}>
                               View
                             </a>
                           </button>
-                          <div className="flex items-center">
+                          <button
+                            onClick={() =>
+                              handleEditForm(gameBoard.GameBoardId)
+                            }
+                            className=" ml-10 p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px]"
+                          >
+                            Edit
+                          </button>
+                          <div className=" ml-10 flex items-center">
                             <button
                               onClick={() =>
                                 changeState(gameBoard.GameBoardId, true)
@@ -189,6 +203,12 @@ const BoardGameListForReview: React.FC = () => {
         <div className="flex justify-center items-center h-[500px]">
           <LoadingComponent />
         </div>
+      )}
+      {openEditModal && (
+        <GameEditFormModal
+          gameBoardId={selectedId}
+          onClose={() => setOpenEditModal(false)}
+        />
       )}
     </div>
   );

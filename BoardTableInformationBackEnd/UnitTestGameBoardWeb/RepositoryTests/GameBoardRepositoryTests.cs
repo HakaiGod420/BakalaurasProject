@@ -30,6 +30,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetBoardsSimple_ReturnsMatchingBoardGames()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var boardGame1 = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thubnail_Location = "monopoly.png", Description = "t" };
             var boardGame2 = new BoardGameEntity { BoardGameId = 2, Title = "Test Game 2", Thubnail_Location = "monopoly.png", Description = "t" };
             var boardGame3 = new BoardGameEntity { BoardGameId = 3, Title = "Game 3", Thubnail_Location = "monopoly.png", Description = "t" };
@@ -66,6 +67,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetBoardsSimple_ReturnsEmptyListWhenTitlePartIsNull()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thubnail_Location = "monopoly.png", Description = "t" };
 
             await _context.BoardGames.AddAsync(boardGame);
@@ -83,6 +85,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task AddGameBoard_SavesNewBoardGame()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game", Thubnail_Location = "monopoly.png", Description = "t" };
 
             // Act
@@ -107,6 +110,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task ChangeGameBoardState_ChangesIsBlockedFieldAndReturnsTrue()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game", Thubnail_Location = "monopoly.png", Description = "t" };
             await _context.BoardGames.AddAsync(boardGame);
             await _context.SaveChangesAsync();
@@ -123,7 +127,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         [Fact]
         public async Task ChangeGameBoardState_ReturnsFalseWhenBoardGameIdIsInvalid()
         {
-
+            _context.Database.EnsureDeleted();
             // Act
             var result = await _repository.ChangeGameBoardState(1, true);
 
@@ -134,6 +138,8 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         [Fact]
         public async Task GetGameBoardListForAdmin_ReturnsEmptyListWhenPageIndexIsOutOfRange()
         {
+            _context.Database.EnsureDeleted();
+
             // Act
             var result = await _repository.GetGameBoardListForAdmin(10, 1);
 

@@ -96,12 +96,14 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             Assert.Equal(category1.CategoryName, result[0].Label);
             Assert.Equal(category2.CategoryId.ToString(), result[1].Value);
             Assert.Equal(category2.CategoryName, result[1].Label);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
         public async Task GetCategories_ActiveAndInactiveCategoriesExist_ReturnsListWithOnlyActiveCategoryDTOs()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var category1 = new CategoryEntity { CategoryName = "Test Category 1", IsActive = true };
             var category2 = new CategoryEntity { CategoryName = "Test Category 2", IsActive = false };
             _context.Categories.AddRange(category1, category2);

@@ -16,9 +16,11 @@ namespace DataLayer.Repositories.Invitation
         public Task<List<UserInvitationDto>> GetAllActiveInvitations(int userId);
         public Task<List<UserInvitationDto>> GetAllCreatedInvitations(int userId);
         public Task UpdateStateInvitation(int newStateId, int invitationId, int userId);
-        public Task<bool> UpdatePlayerCount(int invitationId);
+        public Task<bool> UpdatePlayerCount(int invitationId, bool reducePlayer = false);
         public Task<int> ActiveInvitationCount(int userId);
         public Task<InvitationsListResponse> GetInvitationsByCountry(string country,int pageIndex,int pageSize, int userId);
         public Task<int> JointInvitation(SentInvitationEntity invitation);
+        public Task<List<Parcipant>> GetParticipants(int invitationId);
+        public Task<bool> ChangeParticipantState(int userId, int activeGameId, bool IsBlocked);
     }
 }

@@ -169,5 +169,14 @@ namespace ServiceLayer.Services
             await _invitationRepository.UpdatePlayerCount(id);
         }
 
+        public async Task<List<Parcipant>> GetParticipants(int invitationId)
+        {
+            return await _invitationRepository.GetParticipants(invitationId);
+        }
+
+        public async Task<bool> ChangeParticipantsState(int userId, int activeGameId, bool IsBlocked)
+        {
+            return await _invitationRepository.ChangeParticipantState(userId, activeGameId,IsBlocked);
+        }
     }
 }

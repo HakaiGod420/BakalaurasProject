@@ -129,7 +129,7 @@ namespace DataLayer.Repositories.Invitation
             }
         }
 
-        public async Task<bool> UpdatePlayerCount(int invitationId)
+        public async Task<bool> UpdatePlayerCount(int invitationId, bool reducePlayer = false)
         {
             var activeGameId = await _dbContext.SentInvitations.Where(x => x.SentInvitationId == invitationId).Select(x=>x.SelectedActiveGameId).FirstOrDefaultAsync();
 
@@ -137,7 +137,14 @@ namespace DataLayer.Repositories.Invitation
 
             if(invitation != null)
             {
-                invitation.RegistredPlayerCount++;
+                if (reducePlayer)
+                {
+                    invitation.RegistredPlayerCount--;
+                }
+                else
+                {
+                    invitation.RegistredPlayerCount++;
+                }
 
                 if(invitation.RegistredPlayerCount == invitation.PlayersNeed)
                 {
@@ -215,6 +222,55 @@ namespace DataLayer.Repositories.Invitation
             await _dbContext.SaveChangesAsync();
 
             return invitation.SentInvitationId;
+        }
+
+        public async Task<List<Parcipant>> GetParticipants(int invitationId)
+        {
+            var result = await _dbContext.SentInvitations
+                .Where(x => x.SelectedActiveGameId == invitationId)
+                .Select(x => new Parcipant
+                {
+                    UserId = x.UserId,
+                    UserName = x.User.UserName,
+                    IsBlocked = x.IsBlocked,
+                })
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<bool> ChangeParticipantState(int userId, int activeGameId, bool IsBlocked)
+        {
+            var entity = await _dbContext.SentInvitations.Where(x => x.UserId == userId && x.SelectedActiveGameId == activeGameId).FirstOrDefaultAsync();
+
+            if(entity == null)
+            {
+                return false;
+            }
+
+            if(!IsBlocked)
+            {
+                entity.IsBlocked = false;
+                var checkIfCanBeAdd = await UpdatePlayerCount(entity.SentInvitationId);
+
+                if (!checkIfCanBeAdd)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                await UpdatePlayerCount(entity.SentInvitationId,true);
+
+                entity.IsBlocked = true;
+            }
+
+            _dbContext.SentInvitations.Update(entity);
+
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+
         }
     }
 }

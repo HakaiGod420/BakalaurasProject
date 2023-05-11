@@ -81,6 +81,7 @@ function CreatedInvitationList() {
               onAccept={onAccept}
               onReject={onReject}
               itsInvitation={false}
+              createdInvitation={true}
             />
           ))}
         </div>

@@ -78,3 +78,15 @@ export interface InvitationsList {
   Invitations: InvitationItem[];
   TotalCount: number;
 }
+
+export interface Participant {
+  UserId: number;
+  UserName: string;
+  IsBlocked: boolean;
+}
+
+export interface ParticipationState {
+  UserId: number;
+  ActiveGameId: number;
+  IsBlocked: boolean;
+}

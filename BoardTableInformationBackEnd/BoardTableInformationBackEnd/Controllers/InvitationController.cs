@@ -179,5 +179,46 @@ namespace BoardTableInformationBackEnd.Controllers
 
             return new CreatedResult(String.Empty, invitation);
         }
+
+        [HttpGet("parcipants")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<Parcipant>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetParcipants([FromQuery] int activeInvitationId)
+        {
+            if(activeInvitationId <= 0)
+            {
+                return BadRequest();
+            }
+
+            var particpants = await _invitationService.GetParticipants(activeInvitationId);
+
+            return Ok(particpants);
+        }
+
+        [HttpPatch("participants")]
+        [Authorize]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> UpdateParticipant([FromBody] ParticipantUpdateDTO participant)
+        {
+            if(participant == null)
+            {
+                return BadRequest();
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if(participant.ActiveGameId <= 0 || participant.UserId <= 0)
+            {
+                return UnprocessableEntity(typeof(ParticipantUpdateDTO));
+            }
+
+            var result = await _invitationService.ChangeParticipantsState(participant.UserId,participant.ActiveGameId,participant.IsBlocked);
+
+            return Ok(result);
+        }
     }
 }

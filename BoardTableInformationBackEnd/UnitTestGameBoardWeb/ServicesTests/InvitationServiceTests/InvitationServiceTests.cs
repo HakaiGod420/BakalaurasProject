@@ -42,7 +42,7 @@ namespace UnitTestGameBoardWeb.ServicesTests.InvitationServiceTests
             };
             _mockInvitationRepository.Setup(r => r.UpdateStateInvitation(Convert.ToInt32(InvitationState.Accepted), data.InvitationId, data.UserId))
                 .Returns(Task.CompletedTask);
-            _mockInvitationRepository.Setup(r => r.UpdatePlayerCount(data.InvitationId))
+            _mockInvitationRepository.Setup(r => r.UpdatePlayerCount(data.InvitationId,false))
                 .ReturnsAsync(true);
 
             // Act
@@ -50,7 +50,7 @@ namespace UnitTestGameBoardWeb.ServicesTests.InvitationServiceTests
 
             // Assert
             _mockInvitationRepository.Verify(r => r.UpdateStateInvitation(Convert.ToInt32(InvitationState.Accepted), data.InvitationId, data.UserId), Times.Once);
-            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(data.InvitationId), Times.Once);
+            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(data.InvitationId,false), Times.Once);
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace UnitTestGameBoardWeb.ServicesTests.InvitationServiceTests
 
             // Assert
             _mockInvitationRepository.Verify(r => r.UpdateStateInvitation(Convert.ToInt32(InvitationState.Declined), data.InvitationId, data.UserId), Times.Once);
-            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(data.InvitationId), Times.Never);
+            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(data.InvitationId, false), Times.Never);
         }
 
         [Fact]
@@ -508,7 +508,7 @@ namespace UnitTestGameBoardWeb.ServicesTests.InvitationServiceTests
                 i.InvitationStateId == (int)InvitationState.Accepted &&
                 i.SelectedActiveGameId == invitation.SelectedActiveInvitation)), Times.Once);
 
-            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(It.IsAny<int>()), Times.Once);
+            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(It.IsAny<int>(), false), Times.Once);
         }
 
         [Fact]
@@ -521,7 +521,7 @@ namespace UnitTestGameBoardWeb.ServicesTests.InvitationServiceTests
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => _invitationService.JointInvitation(invitation, userId));
             _mockInvitationRepository.Verify(r => r.JointInvitation(It.IsAny<SentInvitationEntity>()), Times.Never);
-            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(It.IsAny<int>()), Times.Never);
+            _mockInvitationRepository.Verify(r => r.UpdatePlayerCount(It.IsAny<int>(),false), Times.Never);
         }
 
     }

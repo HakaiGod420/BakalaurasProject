@@ -6,12 +6,14 @@ import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import { Link } from "react-router-dom";
 import marker from "../../assets/images/market.png";
 import { UserInvitation } from "../../services/types/Invitation";
+import ParcipantsModal from "../ParcipantsModal";
 
 interface EventInvitationProps {
   invitation: UserInvitation;
   onAccept: (invitationId: number) => void;
   onReject: (invitationId: number) => void;
   itsInvitation: boolean;
+  createdInvitation?: boolean;
 }
 
 const EventCard: React.FC<EventInvitationProps> = ({
@@ -19,8 +21,10 @@ const EventCard: React.FC<EventInvitationProps> = ({
   onAccept,
   onReject,
   itsInvitation,
+  createdInvitation,
 }) => {
   const [showMap, setShowMap] = useState(false);
+  const [parcipantsOpen, setParcipantsOpen] = useState(false);
 
   const toggleMap = () => {
     setShowMap(!showMap);
@@ -60,7 +64,17 @@ const EventCard: React.FC<EventInvitationProps> = ({
               Max Players: {invitation.MaxPlayerCount}
             </p>
             <p className="text-sm text-gray-600">
-              Accepted: {invitation.AcceptedCount}/{invitation.MaxPlayerCount}
+              Accepted: {invitation.AcceptedCount}/{invitation.MaxPlayerCount}{" "}
+              {createdInvitation && (
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => setParcipantsOpen(true)}
+                    className="h-[40px] w-[140px] m-3 bg-green-500 rounded-md text-black font-bold hover:bg-green-600"
+                  >
+                    View Parcipants
+                  </button>
+                </div>
+              )}
             </p>
           </div>
           {itsInvitation && (
@@ -134,6 +148,12 @@ const EventCard: React.FC<EventInvitationProps> = ({
             </div>
           </div>
         </div>
+      )}
+      {parcipantsOpen && (
+        <ParcipantsModal
+          activeGameId={invitation.ActiveGameId}
+          onClose={() => setParcipantsOpen(false)}
+        />
       )}
     </div>
   );

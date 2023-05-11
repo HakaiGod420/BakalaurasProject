@@ -342,6 +342,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetInvitationsByCountry_ReturnsInvitationsByCountry()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             string country = "Canada";
             int pageIndex = 0;
             int pageSize = 10;

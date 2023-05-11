@@ -3,6 +3,8 @@ import { SERVER_API } from "../constants/ClienConstants";
 import {
   InvitationStateChange,
   InvitationsList,
+  Participant,
+  ParticipationState,
   SentPersonalInvitation,
   UserInvitation,
 } from "../types/Invitation";
@@ -161,5 +163,38 @@ export async function getInvitationList(
       console.log(error);
     });
 
+  return response?.data;
+}
+
+export async function getParticipants(invitationId: number) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.get["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .get<Participant[]>(SERVER_API + "/api/gameboardinvitation/parcipants", {
+      params: { activeInvitationId: invitationId },
+    })
+    .catch((error) => {
+      Promise.reject(error);
+      return;
+    });
+
+  return response?.data;
+}
+
+export async function changeParticipantState(state: ParticipationState) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.patch["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .patch<boolean>(SERVER_API + "/api/gameboardinvitation/participants", state)
+    .catch((error) => {
+      Promise.reject(error);
+      return;
+    });
+
+  console.log(response);
   return response?.data;
 }

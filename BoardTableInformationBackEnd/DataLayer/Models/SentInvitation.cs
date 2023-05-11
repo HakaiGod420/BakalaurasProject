@@ -18,6 +18,7 @@ namespace DataLayer.Models
         public int UserId { get; set; }
         public virtual UserEntity User { get; set; }
         public int InvitationStateId { get; set; }
+        public bool IsBlocked { get; set; } = false;
         public virtual InvitationStateEntity InvitationState { get; set; }
     }
 }

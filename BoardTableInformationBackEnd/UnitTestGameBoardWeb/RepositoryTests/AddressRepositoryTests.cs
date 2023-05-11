@@ -139,6 +139,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         [Fact]
         public async Task CheckIfUserHasAddress_UserWithAddress_ReturnsAddressId()
         {
+            _context.Database.EnsureDeleted();
             // Arrange
             var user = new UserEntity {
                 UserId = 1,
