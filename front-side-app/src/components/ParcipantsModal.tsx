@@ -69,51 +69,55 @@ const ParcipantsModal: React.FC<ModalProps> = ({ onClose, activeGameId }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-gray-800 rounded-lg p-6 max-w-[500px] w-full">
         <h2 className="text-xl font-semibold mb-4 text-white">Participants</h2>
-        <table className="w-full bg-gray-700 text-white rounded-md">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 rounded-tl-lg">Username</th>
-              <th className="rounded-tr-lg">Block</th>
-              <th>Profile</th>
-            </tr>
-          </thead>
-          <tbody>
-            {participants?.map((participant) => (
-              <tr
-                key={participant.UserId}
-                className="hover:bg-gray-600 bg-gray-500"
-              >
-                <td className="px-4 py-2">
-                  <span>{participant.UserName}</span>
-                </td>
-                <td className="flex justify-center">
-                  {participant.IsBlocked ? (
-                    <button
-                      onClick={() => updateParticipant(participant.UserId)}
-                      className="text-black bg-green-500 p-2 m-1 rounded-md font-bold w-20 hover-bg-green-600s"
-                    >
-                      Unblock
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => updateParticipant(participant.UserId)}
-                      className="text-black bg-red-500 p-2 m-1 rounded-md font-bold w-20 hover:bg-red-600"
-                    >
-                      Block
-                    </button>
-                  )}
-                </td>
-                <td>
-                  <Link to={"/profile/" + participant.UserName}>
-                    <button className="text-black bg-gray-200 p-2 m-1 rounded-md font-bold w-30 hover:bg-gray-300">
-                      Go To Profile
-                    </button>
-                  </Link>
-                </td>
+        {participants?.length === 0 ? (
+          <p className="text-center text-white">No participants</p>
+        ) : (
+          <table className="w-full bg-gray-700 text-white rounded-md">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 rounded-tl-lg">Username</th>
+                <th className="rounded-tr-lg">Block</th>
+                <th>Profile</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {participants?.map((participant) => (
+                <tr
+                  key={participant.UserId}
+                  className="hover:bg-gray-600 bg-gray-500"
+                >
+                  <td className="px-4 py-2">
+                    <span>{participant.UserName}</span>
+                  </td>
+                  <td className="flex justify-center">
+                    {participant.IsBlocked ? (
+                      <button
+                        onClick={() => updateParticipant(participant.UserId)}
+                        className="text-black bg-green-500 p-2 m-1 rounded-md font-bold w-20 hover-bg-green-600s"
+                      >
+                        Unblock
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => updateParticipant(participant.UserId)}
+                        className="text-black bg-red-500 p-2 m-1 rounded-md font-bold w-20 hover:bg-red-600"
+                      >
+                        Block
+                      </button>
+                    )}
+                  </td>
+                  <td>
+                    <Link to={"/profile/" + participant.UserName}>
+                      <button className="text-black bg-gray-200 p-2 m-1 rounded-md font-bold w-30 hover:bg-gray-300">
+                        Go To Profile
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
         <button
           onClick={onClose}
           className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"

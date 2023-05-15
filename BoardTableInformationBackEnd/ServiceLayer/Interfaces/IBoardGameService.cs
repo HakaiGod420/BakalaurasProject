@@ -15,6 +15,6 @@ namespace ServiceLayer.Interfaces
         public Task<SingleGameBoardView?> GetGameBoard(int boardId);
         public Task<bool> IsGameBoardExist(string gameBoardTitle);
         public Task<UserCreatedTableTopGamesResponse> GetGameBoardsCreatedByUser(string userId, int pageIndex,int pageSize);
-        public Task UpdateGameBoard();
+        public Task UpdateGameBoard(UpdateBoardGame boardGameModel);
     }
 }

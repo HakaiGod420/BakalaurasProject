@@ -74,6 +74,7 @@ function App() {
     setUsernameInRecoil();
     validateToken();
     getActiveInvitations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValidToken, setIsAdmin, setActiveInvitations]);
 
   return (

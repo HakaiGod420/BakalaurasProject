@@ -20,7 +20,7 @@ namespace DataLayer.Repositories.GameBoard
         public Task<bool> ChangeGameBoardState(int gameBoardId, bool isActive);
         public Task<bool> IsGameBoardExist(string gameBoardTitle);
         public Task<UserCreatedTableTopGamesResponse> GetGameBoardUsers(string userId, int pageIndex, int pageSize);
-        public Task UpdateGameBoard();
+        public Task UpdateGameBoard(UpdateBoardGame boardGameModel);
 
     }
 }

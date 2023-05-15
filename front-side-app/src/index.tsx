@@ -6,6 +6,7 @@ import { RecoilRoot } from "recoil";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import { GOOGLE_CLIENT_API } from "./services/constants/ClienConstants";
 import "./style.css";
 
 const root = ReactDOM.createRoot(
@@ -15,7 +16,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <RecoilRoot>
-        <GoogleOAuthProvider clientId="62937807337-17oq46jbnes9i3btmku972j0vuaudsb3.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_API}>
           <App />
         </GoogleOAuthProvider>
       </RecoilRoot>

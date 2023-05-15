@@ -139,8 +139,10 @@ namespace BoardTableInformationBackEnd.Controllers
             {
                 return BadRequest("Model is not correct");
             }
-            var updatedGameBoard = await _gameBoardService.UpdateGameBoard(boardGameModel, id);
-            return new OkObjectResult(updatedGameBoard);
+
+             await _gameBoardService.UpdateGameBoard(boardGameModel);
+
+            return new OkObjectResult(true);
         }
 
     }
