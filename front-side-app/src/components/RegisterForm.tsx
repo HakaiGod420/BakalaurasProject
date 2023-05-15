@@ -1,9 +1,9 @@
 import { Alert } from "antd";
-import axios from "axios";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import { SERVER_API } from "../services/constants/ClienConstants";
+import { registerToSystem } from "../services/api/UserServics";
 import { RegisterData } from "../services/types/User";
 
 function RegisterForm() {
@@ -20,6 +20,18 @@ function RegisterForm() {
   }
 
   const registerToWeb = async () => {
+    if (password !== rePassword) {
+      setErrShow(true);
+      setErrorName("Passwords must match");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setErrShow(true);
+      setErrorName("Email is not valid");
+      return;
+    }
+
     const crediantals: RegisterData = {
       userName: usernameSetted,
       email: email,
@@ -28,30 +40,20 @@ function RegisterForm() {
     };
 
     const loading = toast.loading("Creating account");
-    await axios
-      .post(SERVER_API + "/api/user/register", crediantals)
-      .then((res) => {
-        console.log(res);
+
+    await registerToSystem(crediantals)
+      .then(() => {
         toast.success("Successfully created account", {
           id: loading,
         });
         setErrShow(false);
         navigate("/login");
       })
-      .catch((error) => {
+      .catch(() => {
         setErrShow(true);
         toast.error("Error", {
           id: loading,
         });
-
-        if (password !== rePassword) {
-          setErrorName("Passwords must match");
-          return;
-        }
-
-        if (!isValidEmail(email)) {
-          setErrorName("Email is not valid");
-        }
       });
   };
 
@@ -68,7 +70,15 @@ function RegisterForm() {
           <h2 className="text-gray-900 text-lg font-medium title-font mb-5">
             Sign Up
           </h2>
-          {hidenErr && <Alert message={errorName} type="error" showIcon />}
+          {hidenErr && (
+            <Alert
+              className="text-red-500"
+              message={errorName}
+              type="error"
+              icon={<AiOutlineCloseCircle />}
+              showIcon
+            />
+          )}
           <div className="mb-4">
             <label
               htmlFor="username"

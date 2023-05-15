@@ -37,7 +37,7 @@ const RatingModal: React.FC<Props> = ({
       Rating: rating,
       Comment: comment,
     };
-    const response = await postRating(newRating);
+    await postRating(newRating);
     toast.success("Review posted", {
       id: loading,
     });
@@ -70,7 +70,7 @@ const RatingModal: React.FC<Props> = ({
     const getUserOldReview = async () => {
       const response = await getOldReview(Number(id));
 
-      if (response != undefined) {
+      if (response !== undefined) {
         setRating(response.Rating);
         setComment(response.Comment);
         setOldRating(response.Rating);
@@ -78,6 +78,7 @@ const RatingModal: React.FC<Props> = ({
       }
     };
     getUserOldReview();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

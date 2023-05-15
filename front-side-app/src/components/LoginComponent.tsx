@@ -1,10 +1,10 @@
 import { Alert } from "antd";
-import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { SERVER_API } from "../services/constants/ClienConstants";
+import { loginToSystem } from "../services/api/UserServics";
 import {
   isAdminAtom,
   userName,
@@ -13,7 +13,6 @@ import {
 import { CheckJWTIsAdmin } from "../services/midlewear/AuthVerify";
 import { ErrorBasic } from "../services/types/Error";
 import { LoginData } from "../services/types/User";
-import { AiOutlineCloseCircle } from "react-icons/ai";
 
 function LoginComponent() {
   const [password, setPassword] = useState("");
@@ -35,26 +34,26 @@ function LoginComponent() {
     };
 
     const loading = toast.loading("Trying to log in");
-    await axios
-      .post(SERVER_API + "/api/user/login", crediantals)
-      .then((res) => {
+
+    loginToSystem(crediantals)
+      .then(() => {
         setShowError(false);
-        toast.success("Successfully login in", {
+        toast.success("Successfully logged in", {
           id: loading,
         });
-        localStorage.setItem("token", JSON.stringify({ token: res.data }));
         setUsernameRecoil(username);
         setValidToken(true);
         navigate("/");
       })
       .catch((error) => {
+        console.log("Error occurred:", error);
         const errorBasic: ErrorBasic = {
           status: error.response.status,
           code: error.code,
           message: error.message,
         };
         if (errorBasic.status === 400) {
-          setErrorName("Wrong crendiantials. Please check it");
+          setErrorName("Wrong credentials. Please check them.");
           setShowError(true);
           toast.error("Failed to login", {
             id: loading,
@@ -82,7 +81,14 @@ function LoginComponent() {
           <h2 className="text-gray-900 text-lg font-medium title-font mb-5">
             Sign In
           </h2>
-          {showError && <Alert message={errorName} type="error" icon={<AiOutlineCloseCircle/>} showIcon />}
+          {showError && (
+            <Alert
+              message={errorName}
+              type="error"
+              icon={<AiOutlineCloseCircle />}
+              showIcon
+            />
+          )}
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -97,7 +103,17 @@ function LoginComponent() {
               id="username"
               name="username"
               className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              style={{
+                // Override autofill background color
+                WebkitBoxShadow: "0 0 0 30px white inset",
+                color: "black", // Set default text color to black
+              }}
             />
+            <style>{`
+    input:-webkit-autofill {
+      -webkit-text-fill-color: black;
+    }
+  `}</style>
           </div>
           <div className="mb-4">
             <label
@@ -113,8 +129,19 @@ function LoginComponent() {
               id="password"
               name="password"
               className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              style={{
+                // Override autofill background color
+                WebkitBoxShadow: "0 0 0 30px white inset",
+                color: "black", // Set default text color to black
+              }}
             />
+            <style>{`
+    input:-webkit-autofill {
+      -webkit-text-fill-color: black;
+    }
+  `}</style>
           </div>
+
           <button
             onClick={loginToWeb}
             disabled={username === "" || password === ""}

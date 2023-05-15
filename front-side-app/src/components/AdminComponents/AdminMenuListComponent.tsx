@@ -23,20 +23,7 @@ const menuItems: MenuItem[] = [
     to: "review-gameboard",
     description:
       "Review and approve or reject new tabletop games created by users.",
-  } /*
-  {
-    label: "View Users",
-    icon: FaUsers,
-    to: "/admin/view-users",
-    description: "View and manage all registered users of the site.",
   },
-  {
-    label: "View Event Invitations",
-    icon: HiOutlineMailOpen,
-    to: "/admin/view-event-invitations",
-    description:
-      "View all event invitations sent to users and manage event RSVPs.",
-  },*/,
 ];
 
 function AdminMenuListComponent() {

@@ -13,10 +13,7 @@ function CreateStep3({
   description,
   setDescription,
 }: Props) {
-  const { handleStep, previousStep, nextStep } = useWizard();
-
-  const blockInvalidChar = (e: any) =>
-    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
+  const {previousStep, nextStep } = useWizard();
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);

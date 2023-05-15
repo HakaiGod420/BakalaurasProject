@@ -25,7 +25,7 @@ function CreateStep2({
   averageTime,
   setAverageTime,
 }: Props) {
-  const { handleStep, previousStep, nextStep } = useWizard();
+  const {previousStep, nextStep } = useWizard();
 
   const blockInvalidChar = (e: any) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();

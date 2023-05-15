@@ -54,7 +54,7 @@ const GameImages = ({ images }: GameImagesProps) => {
           >
             <img
               src={SERVER_API + "/" + imageUrl.Location}
-              alt={`Game Image ${index}`}
+              alt={`Game ${index}`}
               className="w-full h-40 object-cover"
             />
           </motion.div>
@@ -83,7 +83,7 @@ const GameImages = ({ images }: GameImagesProps) => {
           >
             <img
               src={SERVER_API + "/" + images[selectedImageIndex].Location}
-              alt={`Game Image ${selectedImageIndex}`}
+              alt={`Game ${selectedImageIndex}`}
               className="w-full h-full object-contain"
             />
             <motion.button

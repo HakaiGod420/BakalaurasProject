@@ -1,17 +1,6 @@
 import axios from "axios";
 import { GoogleEvent } from "../types/Invitation";
 
-const testBody = {
-  start: {
-    dateTime: "2023-04-10T09:00:00",
-    timeZone: "America/Los_Angeles",
-  },
-  end: {
-    dateTime: "2023-04-10T10:00:00",
-    timeZone: "America/Los_Angeles",
-  },
-};
-
 const GOOGLE_CALENDER_API =
   "https://www.googleapis.com/calendar/v3/calendars/primary/events";
 

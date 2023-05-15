@@ -1,14 +1,33 @@
 import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
-import { ErrorBasic } from "../types/Error";
 import {
   AddressEdit,
   ChangedUserInformation,
   LoginData,
   NotificationSettings,
+  RegisterData,
   UserInformation,
   UserSettings,
 } from "../types/User";
+
+export async function registerToSystem(crediantals: RegisterData) {
+  await axios
+    .post(SERVER_API + "/api/user/register", crediantals)
+    .catch((error) => {
+      Promise.reject(error);
+      return error;
+    });
+}
+
+export async function loginToSystem(crediantals: LoginData) {
+  try {
+    const res = await axios.post(SERVER_API + "/api/user/login", crediantals);
+    localStorage.setItem("token", JSON.stringify({ token: res.data }));
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
 
 export async function login(username: string, password: string) {
   const crediantals: LoginData = {
@@ -22,11 +41,7 @@ export async function login(username: string, password: string) {
       return res.data;
     })
     .catch((error) => {
-      const errorBasic: ErrorBasic = {
-        status: error.response.status,
-        code: error.code,
-        message: error.message,
-      };
+      Promise.reject(error);
       return error;
     });
 }
@@ -50,7 +65,7 @@ export async function updateAddress(addressEdt: AddressEdit) {
 
   axios.defaults.headers.put["Authorization"] = `Bearer ${token.token}`;
 
-  const response = await axios
+  await axios
     .put(SERVER_API + "/api/user/updateAddress", addressEdt)
     .catch((error) => {
       console.log(error);
@@ -62,7 +77,7 @@ export async function updateNotifications(notifications: NotificationSettings) {
 
   axios.defaults.headers.patch["Authorization"] = `Bearer ${token.token}`;
 
-  const response = await axios
+  await axios
     .patch(SERVER_API + "/api/user/updateNotifications", notifications)
     .catch((error) => {
       console.log(error);

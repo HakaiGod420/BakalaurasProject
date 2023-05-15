@@ -63,7 +63,7 @@ const ParcipantsModal: React.FC<ModalProps> = ({ onClose, activeGameId }) => {
       setParticipants(response);
     };
     getParticipantsOfGame();
-  }, []);
+  }, [activeGameId]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

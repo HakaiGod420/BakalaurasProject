@@ -92,12 +92,12 @@ namespace ServiceLayer.Services
             invititionEntity = await _invitationRepository.AddInvitation(invititionEntity);
 
             await Task.Run(() =>
-            SendInvitatiosToOthers(invititionEntity));
+            SentInvitatiosToOthers(invititionEntity));
             
             return data;
         }
 
-        private async Task SendInvitatiosToOthers(ActiveGameEntity activeGameEntity)
+        private async Task SentInvitatiosToOthers(ActiveGameEntity activeGameEntity)
         {
             var userIdListWhichToSend = await _userRepository.GetCloseUserIds(activeGameEntity.CreatorId,activeGameEntity.Address);
 

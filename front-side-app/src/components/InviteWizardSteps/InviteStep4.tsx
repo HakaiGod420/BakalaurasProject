@@ -2,7 +2,6 @@ import { DatePicker } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useState } from "react";
 import { useWizard } from "react-use-wizard";
 
 dayjs.extend(customParseFormat);
@@ -24,30 +23,15 @@ function InviteStep4({
   setDate,
   finishMethod,
 }: Props) {
-  const { handleStep, previousStep, nextStep } = useWizard();
-
-  const [rules, setRules] = useState<string>("");
+  const { previousStep } = useWizard();
 
   const inputHandlerNext = () => {
     finishMethod();
   };
 
-  const range = (start: number, end: number) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-      result.push(i);
-    }
-    return result;
-  };
-
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     // Can not select days before today and today
     return current && current < dayjs().endOf("day");
-  };
-
-  const inputHandlerSkip = () => {
-    setStepNumber(stepNumber + 1);
-    nextStep();
   };
 
   const inputHandlerPrevious = () => {

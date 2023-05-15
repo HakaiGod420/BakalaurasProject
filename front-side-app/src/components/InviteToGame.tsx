@@ -26,9 +26,6 @@ const InviteToGameFromProfile: React.FC<Props> = ({
 
   const params = useParams();
 
-  const handleOpenModal = () => {
-    setModalOpen(true);
-  };
 
   const handleCloseModal = () => {
     setModalOpen(false);
@@ -68,6 +65,7 @@ const InviteToGameFromProfile: React.FC<Props> = ({
     };
     console.log(invitations);
     fetchCreatedInvitations();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

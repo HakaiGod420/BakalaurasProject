@@ -1,5 +1,5 @@
 import { Chips } from "primereact/chips";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
@@ -19,16 +19,9 @@ function CreateStep8({
   types,
   setTypes,
 }: Props) {
-  const { handleStep, previousStep, nextStep } = useWizard();
-
-  const [rules, setRules] = useState<string>("");
+  const { previousStep, nextStep } = useWizard();
 
   const inputHandlerNext = () => {
-    setStepNumber(stepNumber + 1);
-    nextStep();
-  };
-
-  const inputHandlerSkip = () => {
     setStepNumber(stepNumber + 1);
     nextStep();
   };

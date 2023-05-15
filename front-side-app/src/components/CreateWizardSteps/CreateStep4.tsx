@@ -9,7 +9,7 @@ interface Props {
 }
 
 function CreateStep4({ stepNumber, setStepNumber }: Props) {
-  const { handleStep, previousStep, nextStep } = useWizard();
+  const { previousStep, nextStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
 

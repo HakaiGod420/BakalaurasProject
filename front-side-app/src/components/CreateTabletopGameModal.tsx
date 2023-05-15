@@ -1,9 +1,11 @@
-import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { Wizard } from "react-use-wizard";
-import { SERVER_API } from "../services/constants/ClienConstants";
+import {
+  postFiles,
+  postImages,
+  postTableTopGame,
+} from "../services/api/GameBoardService";
 import {
   AditionalFile,
   BoardType,
@@ -22,8 +24,6 @@ import CreateStep8 from "./CreateWizardSteps/CreateStep8";
 
 function CreateTabletopGameModal() {
   const [stepNumber, setStetpNumber] = useState<number>(1);
-
-  const navigate = useNavigate();
 
   const [title, setTitle] = useState<string>("");
   const [playerAge, setPlayerAge] = useState<number>();
@@ -94,59 +94,6 @@ function CreateTabletopGameModal() {
     setStetpNumber(1);
   };
 
-  const postTableTopGame = async (tableboardgames: TabletopGameCreation) => {
-    const token = JSON.parse(localStorage.getItem("token") ?? "{}");
-
-    axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
-
-    await axios
-      .post(SERVER_API + "/api/gameboard/create", tableboardgames, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const postImages = async (formData: FormData) => {
-    const token = JSON.parse(localStorage.getItem("token") ?? "{}");
-
-    axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
-
-    await axios
-      .post(SERVER_API + "/api/upload/imagePost", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const postFiles = async (formData: FormData) => {
-    const token = JSON.parse(localStorage.getItem("token") ?? "{}");
-
-    axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
-
-    await axios
-      .post(SERVER_API + "/api/upload/filePost", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const postAdditionalFiles = async () => {
     const additionalFiles: AditionalFile[] = [];
     const formDataAditionalFiles = new FormData();
@@ -170,7 +117,9 @@ function CreateTabletopGameModal() {
     );
 
     console.log(files);
-    await postFiles(formDataAditionalFiles);
+    await postFiles(formDataAditionalFiles).catch((error) => {
+      console.log(error);
+    });
     return additionalFiles;
   };
 
@@ -194,7 +143,9 @@ function CreateTabletopGameModal() {
 
     formData.append("tabletopTitle", title.replace(/[^A-Z0-9]+/gi, "_"));
 
-    await postImages(formData);
+    await postImages(formData).catch((error) => {
+      console.log(error);
+    });
 
     return selectedImages;
   };
@@ -266,7 +217,10 @@ function CreateTabletopGameModal() {
         ThumbnailName: uploadedThumbnailName,
       };
 
-      await postTableTopGame(CreatedTableTopGame);
+      await postTableTopGame(CreatedTableTopGame).catch((error) => {
+        toast.error("Failed to create game", { id: loading });
+        return;
+      });
 
       toast.success("Successfully created game", {
         id: loading,

@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export interface TabletopGameCreation {
   Title: string;
   PlayerCount: number | undefined;
@@ -81,7 +83,7 @@ export interface TabletopAditionalFile {
 
 export interface Filter {
   title: string;
-  creationDate: Date | null;
+  creationDate: Dayjs | null;
   rating: string;
   categories: CategoryOptions[];
   types: TypeOptions[];

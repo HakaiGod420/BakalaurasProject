@@ -36,10 +36,10 @@ const AddressPopup: React.FC<AddressPopupProps> = ({
 
   const [mapCoords, setMapCoords] = useState<MapCoordinates>(defaultCords);
 
-  const [markerShow, setMarkerShow] = useState<boolean>(false);
+  const [, setMarkerShow] = useState<boolean>(false);
 
   const LocationFinderDummy = () => {
-    const map = useMapEvents({
+    useMapEvents({
       click(e) {
         if (e.latlng.lat !== 0 || e.latlng.lng !== 0) {
           const newCords: MapCoordinates = {

@@ -119,9 +119,28 @@ namespace BoardTableInformationBackEnd.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserCreatedGameBoards([FromQuery] string username,[FromQuery]int pageIndex, [FromQuery]int pageSize)
         {
-            var board = await _gameBoardService.GetUserCreatedGameB(username, pageIndex, pageSize);
+            var board = await _gameBoardService.GetGameBoardsCreatedByUser(username, pageIndex, pageSize);
 
             return new OkObjectResult(board);
+        }
+
+        [Authorize(Roles ="Admin")]
+        [HttpPut("updateGameBoard")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateGameBoard([FromForm] UpdateBoardGame boardGameModel)
+        {
+
+            if (boardGameModel == null)
+            {
+                return BadRequest("Wrong gameBoardModal");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Model is not correct");
+            }
+            var updatedGameBoard = await _gameBoardService.UpdateGameBoard(boardGameModel, id);
+            return new OkObjectResult(updatedGameBoard);
         }
 
     }

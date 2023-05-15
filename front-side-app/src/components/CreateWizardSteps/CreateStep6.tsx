@@ -1,5 +1,4 @@
 import { FileUpload, FileUploadHandlerEvent } from "primereact/fileupload";
-import { useState } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
@@ -10,9 +9,7 @@ interface Props {
 }
 
 function CreateStep6({ stepNumber, setStepNumber, files, setFiles }: Props) {
-  const { handleStep, previousStep, nextStep } = useWizard();
-
-  const [rules, setRules] = useState<string>("");
+  const { previousStep, nextStep } = useWizard();
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);

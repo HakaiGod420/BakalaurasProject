@@ -19,8 +19,6 @@ const UserInformationProfile: React.FC = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  const profilePicture = "https://picsum.photos/200";
-
   // Define a class for the user state tag based on the user's state
   const userStateTagClass =
     userInformation?.State === "Active" ? "bg-green-500" : "bg-red-500";
@@ -40,6 +38,7 @@ const UserInformationProfile: React.FC = () => {
       setUserInformation(response);
     };
     getUserInformationAsync();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setUserInformation]);
 
   return (
@@ -49,7 +48,7 @@ const UserInformationProfile: React.FC = () => {
           <div className="flex items-center space-x-8 mb-8">
             <img
               src={require("../assets/images/profileImageDefault.png")}
-              alt="Profile picture"
+              alt="Profile"
               className="w-40 h-40 rounded-full border-4 border-gray-300 shadow-md"
             />
             <div>

@@ -37,6 +37,7 @@ const GameBoardCard: React.FC = () => {
     };
 
     getGameBoardAsync();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setGameBoard]);
 
   return (

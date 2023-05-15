@@ -20,7 +20,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public GameBoardRepositoryTests()
         {
             _optionsBuilder = new DbContextOptionsBuilder<DataBaseContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase");
+            .UseInMemoryDatabase(databaseName: "TestDatabase4");
             _context = new DataBaseContext(_optionsBuilder.Options);
 
             _repository = new GameBoardRepository(_context);
@@ -30,7 +30,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetBoardsSimple_ReturnsMatchingBoardGames()
         {
             // Arrange
-            _context.Database.EnsureDeleted();
+            
             var boardGame1 = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thubnail_Location = "monopoly.png", Description = "t" };
             var boardGame2 = new BoardGameEntity { BoardGameId = 2, Title = "Test Game 2", Thubnail_Location = "monopoly.png", Description = "t" };
             var boardGame3 = new BoardGameEntity { BoardGameId = 3, Title = "Game 3", Thubnail_Location = "monopoly.png", Description = "t" };
@@ -45,6 +45,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             Assert.Equal(2, result.Count);
             Assert.Equal("Test Game 1", result[0].Title);
             Assert.Equal("Test Game 2", result[1].Title);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -53,7 +54,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             // Arrange
             var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thubnail_Location = "monopoly.png", Description = "t" };
 
-            await _context.BoardGames.AddAsync(boardGame);
+            _context.BoardGames.Add(boardGame);
             await _context.SaveChangesAsync();
 
             // Act
@@ -61,16 +62,17 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.Empty(result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
         public async Task GetBoardsSimple_ReturnsEmptyListWhenTitlePartIsNull()
         {
             // Arrange
-            _context.Database.EnsureDeleted();
+
             var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thubnail_Location = "monopoly.png", Description = "t" };
 
-            await _context.BoardGames.AddAsync(boardGame);
+            _context.BoardGames.Add(boardGame);
             await _context.SaveChangesAsync();
 
             // Act
@@ -78,6 +80,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
 
             // Assert
             Assert.Empty(result);
+            _context.Database.EnsureDeleted();
         }
 
 
@@ -85,7 +88,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task AddGameBoard_SavesNewBoardGame()
         {
             // Arrange
-            _context.Database.EnsureDeleted();
+
             var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game", Thubnail_Location = "monopoly.png", Description = "t" };
 
             // Act
@@ -95,6 +98,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             Assert.Equal(boardGame, result);
             Assert.Equal(1, _context.BoardGames.Count());
             Assert.Equal("Test Game", _context.BoardGames.First().Title);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -110,9 +114,9 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task ChangeGameBoardState_ChangesIsBlockedFieldAndReturnsTrue()
         {
             // Arrange
-            _context.Database.EnsureDeleted();
+
             var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game", Thubnail_Location = "monopoly.png", Description = "t" };
-            await _context.BoardGames.AddAsync(boardGame);
+            _context.BoardGames.Add(boardGame);
             await _context.SaveChangesAsync();
 
             // Act
@@ -122,23 +126,25 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             Assert.True(result);
             Assert.True(_context.BoardGames.First().IsBlocked);
             Assert.NotNull(_context.BoardGames.First().UpdateTime);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
         public async Task ChangeGameBoardState_ReturnsFalseWhenBoardGameIdIsInvalid()
         {
-            _context.Database.EnsureDeleted();
+
             // Act
             var result = await _repository.ChangeGameBoardState(1, true);
 
             // Assert
             Assert.False(result);
+            _context.Database.EnsureDeleted();
         }
 
         [Fact]
         public async Task GetGameBoardListForAdmin_ReturnsEmptyListWhenPageIndexIsOutOfRange()
         {
-            _context.Database.EnsureDeleted();
+
 
             // Act
             var result = await _repository.GetGameBoardListForAdmin(10, 1);
@@ -146,6 +152,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             // Assert
             Assert.Empty(result.Boards);
             Assert.Equal(0, result.TotalCount);
+            _context.Database.EnsureDeleted();
         }
     }
 }

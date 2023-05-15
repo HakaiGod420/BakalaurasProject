@@ -23,7 +23,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public InvitationRepositoryTests()
         {
             _optionsBuilder = new DbContextOptionsBuilder<DataBaseContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase");
+            .UseInMemoryDatabase(databaseName: "TestDatabase5");
             _context = new DataBaseContext(_optionsBuilder.Options);
 
             _repository = new InvitationRepository(_context);

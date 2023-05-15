@@ -1,11 +1,10 @@
-import axios from "axios";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Wizard } from "react-use-wizard";
 import { useRecoilState } from "recoil";
-import { SERVER_API } from "../services/constants/ClienConstants";
+import { postInvitation } from "../services/api/InvitationService";
 import { selectedGameBoard } from "../services/constants/recoil/gameboardStates";
 import { Address, Invitation } from "../services/types/Invitation";
 import { MapCoordinates } from "../services/types/Miscellaneous";
@@ -37,23 +36,8 @@ function CreateInvitationModal() {
   const [minimalAge, setMinimalAge] = useState<number>();
   const [mapCoords, setMapCoords] = useState<MapCoordinates>(defaultCords);
   const [date, setDate] = useState<Dayjs | null>();
-  const [selectedGame, setSelectedGame] = useRecoilState(selectedGameBoard);
+  const [selectedGame] = useRecoilState(selectedGameBoard);
   const [address, setAddress] = useState<Address>(DefaultAddress);
-
-  const items = [
-    {
-      label: "Find game",
-    },
-    {
-      label: "Parcipants",
-    },
-    {
-      label: "Address",
-    },
-    {
-      label: "Finish",
-    },
-  ];
 
   const Footer = () => (
     <div className="mt-5 flex justify-center">
@@ -79,24 +63,6 @@ function CreateInvitationModal() {
     setStetpNumber(0);
   };
 
-  const handleOnSubmit = async (invitation: Invitation) => {
-    const token = JSON.parse(localStorage.getItem("token") ?? "{}");
-
-    axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
-
-    await axios
-      .post(
-        SERVER_API + "/api/gameboardinvitation/createInvitation",
-        invitation
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const publishInvitation = async () => {
     const loading = toast.loading("Creating invitation...");
     const Invitation: Invitation = {
@@ -108,7 +74,13 @@ function CreateInvitationModal() {
       PlayersNeeded: maxParcipants ?? 0,
       MinimalAge: minimalAge ?? 0,
     };
-    await handleOnSubmit(Invitation);
+
+    await postInvitation(Invitation).catch((err) => {
+      toast.error("Error", {
+        id: loading,
+      });
+      return;
+    });
     toast.success("Successfully created", {
       id: loading,
     });

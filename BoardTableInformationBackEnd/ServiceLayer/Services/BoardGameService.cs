@@ -160,9 +160,14 @@ namespace ServiceLayer.Services
             return _gameBoardRepository.IsGameBoardExist(gameBoardTitle);
         }
 
-        public async Task<UserCreatedTableTopGamesResponse> GetUserCreatedGameB(string username, int pageIndex, int pageSize)
+        public async Task<UserCreatedTableTopGamesResponse> GetGameBoardsCreatedByUser(string username, int pageIndex, int pageSize)
         {
             return await _gameBoardRepository.GetGameBoardUsers(username, pageIndex, pageSize);
+        }
+
+        public async Task UpdateGameBoard()
+        {
+            return await _gameBoardRepository.UpdateGameBoard();
         }
     }
 }

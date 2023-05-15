@@ -24,7 +24,7 @@ const GameCardList: React.FC = () => {
 
   const [filters, setFilters] = useState<Filter>(emptyFilter);
 
-  const [searchTerm, setSearchTerm] = useSearchParams();
+  const [searchTerm] = useSearchParams();
 
   const filterData = async (toClear: boolean) => {
     console.log(toClear);
@@ -73,6 +73,7 @@ const GameCardList: React.FC = () => {
         }, 1000);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [gameBoards, totalCount]
   );
 
@@ -101,7 +102,7 @@ const GameCardList: React.FC = () => {
       setTotalCount(response?.TotalCount!);
     };
     fetchGameBoards();
-  }, []);
+  }, [filters, searchTermText]);
 
   return (
     <div className="max-w-[1240px] mx-auto mt-10">

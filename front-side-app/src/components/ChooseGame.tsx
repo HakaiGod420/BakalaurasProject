@@ -50,6 +50,7 @@ function ChooseGame({ games }: ChooseGameProps) {
 
   useEffect(() => {
     selectGameNext();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [games]);
 
   return (

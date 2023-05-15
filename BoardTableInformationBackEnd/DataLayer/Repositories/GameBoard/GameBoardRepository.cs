@@ -292,5 +292,10 @@ namespace DataLayer.Repositories.GameBoard
             await _dbContext.SaveChangesAsync();
             return true;
         }
+
+        public Task UpdateGameBoard(UpdateBoardGame boardGameModel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

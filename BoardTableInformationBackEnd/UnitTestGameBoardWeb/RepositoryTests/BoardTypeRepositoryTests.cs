@@ -16,7 +16,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public BoardTypeRepositoryTests()
         {
             _optionsBuilder = new DbContextOptionsBuilder<DataBaseContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase");
+            .UseInMemoryDatabase(databaseName: "TestDatabase2");
             _context = new DataBaseContext(_optionsBuilder.Options);
 
             _repository = new BoardTypeRepository(_context);
@@ -26,6 +26,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetType_BoardTypeExists_ReturnsBoardTypeEntity()
         {
             // Arrange
+            _context.Database.EnsureDeleted();
             var boardType = new BoardTypeEntity { BoardTypeName = "Test BoardType" };
             _context.BoardTypes.Add(boardType);
             await _context.SaveChangesAsync();

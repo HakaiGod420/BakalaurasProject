@@ -32,6 +32,7 @@ namespace UnitTestGameBoardWeb.ControllersTests.GameBoardTests
                 BoardGames = new List<GameBoardCardItemDTO> { new GameBoardCardItemDTO { GameBoardId = 1, Title = "Monopoly", ReleaseDate = DateTime.Now, ThumbnailName = "monopoly.jpg" } },
                 TotalCount = 1
             };
+
             _gameBoardServiceMock.Setup(x => x.GetBoardCardItems(startIndex, backIndex, searchTerm, filter)).ReturnsAsync(expectedGameCardListResponse);
 
             // Act

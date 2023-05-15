@@ -141,21 +141,36 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         {
             _context.Database.EnsureDeleted();
             // Arrange
+            var address = new UserAddressEntity
+            {
+                UserAddressId = 10,
+                Country = "Test Country",
+                City = "Test City",
+                StreetName = "Test Street",
+                Province = "Test Province",
+
+            };
+            _context.UserAddress.Add(address);
+            await _context.SaveChangesAsync();
+
             var user = new UserEntity {
-                UserId = 1,
+                UserId = 10,
                 UserName = "testuser",
                 Email = "TestEmail@gmail.com",
                 Password = new byte[9],
                 PasswordSalt = new byte[50],
                 RegistrationTime = DateTime.Now,
-                LastTimeConnection = DateTime.Now,AddressId = 1
+                LastTimeConnection = DateTime.Now,
+                AddressId = 10
             };
+
+
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.CheckIfUserHasAddress(1);
+            var result = await _repository.CheckIfUserHasAddress(10);
 
             // Assert
             Assert.NotNull(result);

@@ -19,14 +19,13 @@ const GameEditFormModal: React.FC<ModalProps> = ({ onClose, gameBoardId }) => {
   const [description, setDescription] = useState("");
   const [isBlocked, setIsBlocked] = useState(false);
   const [rules, setRules] = useState("");
-  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [, setThumbnail] = useState<File | null>(null);
   const [additionalImages, setAdditionalImages] = useState<File[]>([]);
   const [tags, setTags] = useState<SelectOption[]>([]);
-  const [types, setTypes] = useState<SelectOption[]>([]);
+  const [types] = useState<SelectOption[]>([]);
 
   // Here you can put your categories and types for the Select component
   const categories: SelectOption[] = [];
-  const typesData: SelectOption[] = [];
 
   const handleThumbnailUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) setThumbnail(e.target.files[0]);
@@ -96,7 +95,7 @@ const GameEditFormModal: React.FC<ModalProps> = ({ onClose, gameBoardId }) => {
               className="w-full px-2 py-1 mt-1 bg-gray-700 text-white rounded-md"
             />
           </label>
-          <label className="block mt-4 text-white flex items-center">
+          <label className=" mt-4 text-white flex items-center">
             Is Blocked:
             <input
               type="checkbox"

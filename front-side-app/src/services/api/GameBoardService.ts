@@ -5,8 +5,64 @@ import {
   Filter,
   SingleTabletopGame,
   TableTopGameCardsResponse,
+  TabletopGameCreation,
   UserCreatedGameBoardsReposne,
 } from "../types/TabletopGame";
+
+export const postTableTopGame = async (
+  tableboardgames: TabletopGameCreation
+) => {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
+
+  await axios
+    .post(SERVER_API + "/api/gameboard/create", tableboardgames, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+};
+
+export const postImages = async (formData: FormData) => {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
+
+  await axios
+    .post(SERVER_API + "/api/upload/imagePost", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+};
+
+export const postFiles = async (formData: FormData) => {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.post["Authorization"] = `Bearer ${token.token}`;
+
+  await axios
+    .post(SERVER_API + "/api/upload/filePost", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+};
 
 export async function getBoardGameList(
   startIndex: number,

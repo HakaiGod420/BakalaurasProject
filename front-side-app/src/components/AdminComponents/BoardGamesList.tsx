@@ -54,6 +54,7 @@ const BoardGameListAdmin: React.FC = () => {
 
   useEffect(() => {
     fetchGames(1);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setTotalCount]);
 
   return (

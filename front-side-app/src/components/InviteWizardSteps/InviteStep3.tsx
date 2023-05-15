@@ -27,9 +27,9 @@ function InviteStep3({
 }: Props) {
   const { Panel } = Collapse;
   const icon = L.icon({ iconUrl: marker, iconSize: [40, 40] });
-  const { handleStep, previousStep, nextStep } = useWizard();
+  const { previousStep, nextStep } = useWizard();
 
-  const [markerShow, setMarkerShow] = useState<boolean>(false);
+  const [, setMarkerShow] = useState<boolean>(false);
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);
@@ -49,7 +49,7 @@ function InviteStep3({
   };
 
   const LocationFinderDummy = () => {
-    const map = useMapEvents({
+    useMapEvents({
       click(e) {
         if (e.latlng.lat !== 0 || e.latlng.lng !== 0) {
           const newCords: MapCoordinates = {
@@ -75,7 +75,6 @@ function InviteStep3({
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
 
   const filteredCountries = Countries.filter((country) =>
     country.toLowerCase().startsWith(searchTerm.toLowerCase())

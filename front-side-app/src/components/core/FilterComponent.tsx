@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import Select from "react-select";
@@ -33,7 +34,7 @@ const FilterComponent = ({
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value ? new Date(e.target.value) : null;
-    setFilters({ ...filters, creationDate: date });
+    setFilters({ ...filters, creationDate: dayjs(date) });
   };
 
   const handleCategoryChange = (values: any) => {
@@ -82,6 +83,7 @@ const FilterComponent = ({
     fetchData();
 
     console.log("useEffect called with types:", types);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setTypes, setCategories]);
 
   return (
@@ -111,8 +113,8 @@ const FilterComponent = ({
           id="creationDate"
           value={
             filters.creationDate
-              ? filters.creationDate.toISOString().slice(0, 10)
-              : ""
+              ? filters.creationDate.format("YYYY-MM-DD")
+              : Date.now()
           }
           onChange={handleDateChange}
           placeholder="Creation Date"

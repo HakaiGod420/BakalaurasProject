@@ -79,6 +79,7 @@ function PublicEvents() {
     };
 
     getInvitations();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

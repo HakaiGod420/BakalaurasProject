@@ -150,10 +150,12 @@ namespace DataLayer.Repositories.Invitation
                 {
                     invitation.InvitationStateId = ActiveGameState.Closed;
                 }
+
                 else if(invitation.RegistredPlayerCount > invitation.PlayersNeed)
                 {
                     return false;
                 }
+
                 await _dbContext.SaveChangesAsync();
 
                 return true;

@@ -11,13 +11,11 @@ function CreateStep7({
   setStepNumber,
   publishTabletopGame,
 }: Props) {
-  const { handleStep, previousStep, nextStep } = useWizard();
+  const { previousStep } = useWizard();
 
   const inputHandlerNext = async () => {
     await publishTabletopGame();
   };
-
-  const inputHandlerSkip = () => {};
 
   const inputHandlerPrevious = () => {
     setStepNumber(stepNumber - 1);

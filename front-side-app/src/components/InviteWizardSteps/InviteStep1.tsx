@@ -81,6 +81,7 @@ function CreateStep1({ stepNumber, setStepNumber, title, setTitle }: Props) {
     if (!error) {
       inputHandlerNext();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   return (

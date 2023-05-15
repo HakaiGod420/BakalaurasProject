@@ -55,6 +55,7 @@ namespace UnitTestGameBoardWeb.ControllersTests.ReviewControllerTests
 
             // Assert
             var unprocessableEntityObjectResult = Assert.IsType<UnprocessableEntityObjectResult>(result);
+
             Assert.Equal(nameof(createReviewDto.Rating), unprocessableEntityObjectResult.Value);
         }
     }

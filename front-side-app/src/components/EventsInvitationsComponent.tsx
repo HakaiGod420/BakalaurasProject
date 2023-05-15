@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
   getAcceptedInvitations,
@@ -15,7 +16,6 @@ import EventAcceptedModal from "./EventAcceptedModal";
 import EventCard from "./core/EventCard";
 import LoadingComponent from "./core/LoadingComponent";
 import SectionDivider from "./core/SectionDivider";
-import { useNavigate } from "react-router-dom";
 
 function EventsInvitationComponent() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,8 +27,7 @@ function EventsInvitationComponent() {
 
   const [invitations, setInvitations] = useState<UserInvitation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [accpetedInvitation, setAcceptedInvitations] =
-    useRecoilState(acceptedInvitations);
+  const [, setAcceptedInvitations] = useRecoilState(acceptedInvitations);
 
   const navigate = useNavigate();
 

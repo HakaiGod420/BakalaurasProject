@@ -21,7 +21,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public CategoryRepositoryTests()
         {
             _optionsBuilder = new DbContextOptionsBuilder<DataBaseContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase");
+            .UseInMemoryDatabase(databaseName: "TestDatabase3");
             _context = new DataBaseContext(_optionsBuilder.Options);
 
             _repository = new CategoryRepository(_context);
