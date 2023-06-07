@@ -25,6 +25,9 @@ const EventCard: React.FC<EventInvitationProps> = ({
 }) => {
   const [showMap, setShowMap] = useState(false);
   const [parcipantsOpen, setParcipantsOpen] = useState(false);
+  const [acceptedParticipants, setAcceptedParticipants] = useState<number>(
+    invitation.AcceptedCount
+  );
 
   const toggleMap = () => {
     setShowMap(!showMap);
@@ -64,7 +67,7 @@ const EventCard: React.FC<EventInvitationProps> = ({
               Max Players: {invitation.MaxPlayerCount}
             </p>
             <p className="text-sm text-gray-600">
-              Accepted: {invitation.AcceptedCount}/{invitation.MaxPlayerCount}{" "}
+              Accepted: {acceptedParticipants}/{invitation.MaxPlayerCount}{" "}
               {createdInvitation && (
                 <div className="flex justify-center">
                   <button
@@ -151,6 +154,8 @@ const EventCard: React.FC<EventInvitationProps> = ({
       )}
       {parcipantsOpen && (
         <ParcipantsModal
+          setParticipantsCount={setAcceptedParticipants}
+          participantsNumber={acceptedParticipants}
           activeGameId={invitation.ActiveGameId}
           onClose={() => setParcipantsOpen(false)}
         />

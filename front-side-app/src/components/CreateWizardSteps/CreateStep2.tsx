@@ -25,7 +25,7 @@ function CreateStep2({
   averageTime,
   setAverageTime,
 }: Props) {
-  const {previousStep, nextStep } = useWizard();
+  const { previousStep, nextStep } = useWizard();
 
   const blockInvalidChar = (e: any) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
@@ -58,7 +58,7 @@ function CreateStep2({
             <input
               min={0}
               onKeyDown={blockInvalidChar}
-              onChange={(e) => setAge(parseInt(e.target.value))}
+              onChange={(e) => setAge(Number(e.target.value))}
               type="number"
               value={playerAge}
               placeholder="Player Age"
@@ -74,7 +74,7 @@ function CreateStep2({
             <input
               min={0}
               onKeyDown={blockInvalidChar}
-              onChange={(e) => setPlayerCount(parseInt(e.target.value))}
+              onChange={(e) => setPlayerCount(Number(e.target.value))}
               type="number"
               value={playerCount}
               placeholder="Players count"
@@ -90,7 +90,7 @@ function CreateStep2({
             <input
               min={0}
               onKeyDown={blockInvalidChar}
-              onChange={(e) => setAverageTime(parseInt(e.target.value))}
+              onChange={(e) => setAverageTime(Number(e.target.value))}
               value={averageTime}
               type="number"
               placeholder="Playing time"
@@ -111,8 +111,10 @@ function CreateStep2({
           disabled={
             playerAge === undefined ||
             playerCount === undefined ||
+            averageTime === undefined ||
             playerCount <= 0 ||
-            playerAge <= 0
+            playerAge <= 0 ||
+            averageTime <= 0
           }
           className="btn m-2 min-w-[100px]"
           onClick={() => inputHandlerNext()}

@@ -69,11 +69,11 @@ const BoardGameListForReview: React.FC = () => {
 
   useEffect(() => {
     fetchGameBoardsForReview(1);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setTotalCount]);
 
   return (
-    <div className="max-w-[1280px] mx-auto">
+    <div className="max-w-[1280px] mx-auto pb-[200px]">
       {gameBoardsForReview ? (
         <div>
           {totalCount && totalCount > 0 ? (
@@ -90,7 +90,8 @@ const BoardGameListForReview: React.FC = () => {
                       <th className="p-3 font-medium">Game board title</th>
                       <th className="p-3 font-medium">Created date</th>
                       <th className="p-3 font-medium">Creator name</th>
-                      <th className="p-3 font-medium">Actions</th>
+                      <th className="p-3 font-medium text-center">Actions</th>
+                      <th className="p-3 font-medium text-center">Approval</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -107,20 +108,24 @@ const BoardGameListForReview: React.FC = () => {
                           )}
                         </td>
                         <td className="p-3">{gameBoard.CreatorName}</td>
-                        <td className="p-3 flex  items-center">
-                          <button className="p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px]">
-                            <a href={`/gameboards/${gameBoard.GameBoardId}`}>
-                              View
-                            </a>
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleEditForm(gameBoard.GameBoardId)
-                            }
-                            className=" ml-10 p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px]"
-                          >
-                            Edit
-                          </button>
+                        <td className="p-3 flex items-center justify-center">
+                          <div>
+                            <button className="p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px]">
+                              <a href={`/gameboards/${gameBoard.GameBoardId}`}>
+                                View
+                              </a>
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleEditForm(gameBoard.GameBoardId)
+                              }
+                              className=" ml-10 p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px]"
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        </td>
+                        <td>
                           <div className=" ml-10 flex items-center">
                             <button
                               onClick={() =>

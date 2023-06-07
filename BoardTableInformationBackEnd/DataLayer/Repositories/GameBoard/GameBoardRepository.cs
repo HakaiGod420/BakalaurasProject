@@ -43,6 +43,34 @@ namespace DataLayer.Repositories.GameBoard
             return true;
         }
 
+        public async Task DeleteImage(int imageId)
+        {
+            var image = await _dbContext.Images.FindAsync(imageId);
+
+            if (image != null)
+            {
+                _dbContext.Images.Remove(image);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+
+        public async Task<GalleryForEdit> GalleryForEdit(int gameBoardId)
+        {
+            var galleryItems = await _dbContext.Images.Where(x => x.BoardGameId == gameBoardId)
+                .Select(x => new GalleryElement
+                {
+                    ImageId = x.ImageId,
+                    Location = x.Location + "/" + x.Alias,
+                })
+                .ToListAsync();
+
+            return new GalleryForEdit
+            {
+                GalleryElements = galleryItems,
+            };
+        }
+
         public async Task<List<BoardGameSimpleDto>> GetBoardsSimple(string titlePart)
         {
             if(titlePart == null)
@@ -75,6 +103,7 @@ namespace DataLayer.Repositories.GameBoard
                     BoardGameId = result.BoardGameId,
                     Title = result.Title,
                     PlayerCount = result.PlayerCount,
+                    PlayingTime = result.PlayingTime,
                     PlayableAge = result.PlayableAge,
                     Description = result.Description,
                     CreationTime = result.CreationTime,
@@ -161,6 +190,36 @@ namespace DataLayer.Repositories.GameBoard
                 TotalCount = count
             };
 
+        }
+
+        public async Task<EditGameBoardInfo> GetGameBoardInfo(int gameBoardId)
+        {
+          var result = await _dbContext.BoardGames
+                .Include(x => x.Categories)
+                .Include(x => x.BoardTypes)
+                .Where(x => x.BoardGameId == gameBoardId)
+                .Select(x => new EditGameBoardInfo
+                {
+                    GameBoardId = x.BoardGameId,
+                    Title = x.Title,
+                    PlayableAge = x.PlayableAge,
+                    Description = x.Description,
+                    IsBlocked  = x.IsBlocked,
+                    PlayerCount = x.PlayerCount,
+                    PlayingTime = x.PlayingTime,
+                    Rules = x.Rules,
+                    SelectedCategories = x.Categories.Select(y => new CategoryDTO { Label = y.CategoryName, Value = y.CategoryId.ToString()}).ToList(),
+                    SelectedTypes = x.BoardTypes.Select(y => new TypeDTO { Label = y.BoardTypeName, Value = y.BoardTypeId.ToString() }).ToList(),
+
+                })
+                .FirstOrDefaultAsync();
+
+            if(result == null)
+            {
+                throw new Exception("Game board not found");
+            }
+
+            return result;
         }
 
         public async Task<GameBoardListForAdmin> GetGameBoardListForAdmin(int pageIndex, int pageSize)
@@ -293,9 +352,29 @@ namespace DataLayer.Repositories.GameBoard
             return true;
         }
 
-        public Task UpdateGameBoard(UpdateBoardGame boardGameModel)
+        public async Task UpdateGameBoard(EditGameBoardInfo boardGameModel)
         {
-            throw new NotImplementedException();
+            var gameBoard = await _dbContext.BoardGames
+                .Include(x => x.Categories)
+                .Include(x => x.BoardTypes)
+                .FirstOrDefaultAsync(x => x.BoardGameId == boardGameModel.GameBoardId);
+
+            gameBoard.Title = boardGameModel.Title;
+            gameBoard.IsBlocked = boardGameModel.IsBlocked;
+            gameBoard.Rules = boardGameModel.Rules;
+            gameBoard.PlayableAge = boardGameModel.PlayableAge;
+            gameBoard.PlayingTime = boardGameModel.PlayingTime;
+            gameBoard.PlayerCount = boardGameModel.PlayerCount;
+            gameBoard.Description = boardGameModel.Description;
+            gameBoard.UpdateTime = DateTime.Now;
+
+            string[] ids = boardGameModel.SelectedCategories.Select(c => c.Value).ToArray();
+            gameBoard.Categories =  await _dbContext.Categories.Where(c => ids.Contains(c.CategoryId.ToString())).ToListAsync();
+
+            string[] idsTypes = boardGameModel.SelectedTypes.Select(c => c.Value).ToArray();
+            gameBoard.BoardTypes = await _dbContext.BoardTypes.Where(c => idsTypes.Contains(c.BoardTypeId.ToString())).ToListAsync();
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

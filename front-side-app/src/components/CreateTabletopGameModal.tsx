@@ -42,7 +42,7 @@ function CreateTabletopGameModal() {
   let TableTopGame: TabletopGameCreation = {
     Title: "",
     PlayerCount: 0,
-    PLayingAge: 0,
+    PlayableAge: 0,
     PlayingTime: 0,
     Description: "",
     ThumbnailName: "",
@@ -202,11 +202,12 @@ function CreateTabletopGameModal() {
       if (thumbnail !== undefined) {
         uploadedThumbnailName = await uploadThumbnail();
       }
+      console.log(playerAge);
 
       const CreatedTableTopGame: TabletopGameCreation = {
         Title: title,
         PlayerCount: playerCount,
-        PLayingAge: playerAge,
+        PlayableAge: playerAge,
         PlayingTime: averageTime,
         Description: description,
         Images: uploadedImages,
@@ -216,6 +217,8 @@ function CreateTabletopGameModal() {
         SaveAsDraft: false,
         ThumbnailName: uploadedThumbnailName,
       };
+
+      console.log(CreatedTableTopGame);
 
       await postTableTopGame(CreatedTableTopGame).catch((error) => {
         toast.error("Failed to create game", { id: loading });

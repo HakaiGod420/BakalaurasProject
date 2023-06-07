@@ -165,9 +165,21 @@ namespace ServiceLayer.Services
             return await _gameBoardRepository.GetGameBoardUsers(username, pageIndex, pageSize);
         }
 
-        public async Task UpdateGameBoard(UpdateBoardGame boardGameModel)
+        public async Task UpdateGameBoard(EditGameBoardInfo boardGameModel)
         {
              await _gameBoardRepository.UpdateGameBoard(boardGameModel);
+        }
+
+        public async Task<GetUpdateGameInfo> GetUpdateGameInfo(int gameBoardId)
+        {
+            var gameBoardInfo = new GetUpdateGameInfo
+            {
+                AllCategories = await _categoryRepository.GetCategories(),
+                AllTypes = await _boardTypeRepository.GetTypes(),
+                EditGameBoardInfo = await _gameBoardRepository.GetGameBoardInfo(gameBoardId)
+            };
+
+           return gameBoardInfo;
         }
     }
 }

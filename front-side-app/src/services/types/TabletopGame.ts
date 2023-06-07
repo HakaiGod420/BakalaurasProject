@@ -3,7 +3,7 @@ import { Dayjs } from "dayjs";
 export interface TabletopGameCreation {
   Title: string;
   PlayerCount: number | undefined;
-  PLayingAge: number | undefined;
+  PlayableAge: number | undefined;
   PlayingTime: number | undefined;
   Description: string;
   Rules?: string;
@@ -56,6 +56,7 @@ export interface SingleTabletopGame {
   Title: string;
   PlayerCount: number | undefined;
   PlayableAge: number | undefined;
+  PlayingTime: number | undefined;
   Rating: number | undefined;
   Description: string;
   CreationTime: string;
@@ -161,4 +162,32 @@ export interface UserCreatedGameBoard {
   GameBoardId: number;
   Title: string;
   ImageUrl: string;
+}
+
+export interface EditGameBoardInfo {
+  GameBoardId: number;
+  Title: string;
+  PlayerCount: number;
+  PlayingTime: number | undefined;
+  PlayableAge: number;
+  Description: string;
+  IsBlocked: boolean;
+  Rules: string | undefined;
+  SelectedTypes: TypesType[];
+  SelectedCategories: CategoryType[];
+}
+
+export interface GetUpdageGameInfoResponse {
+  EditGameBoardInfo: EditGameBoardInfo;
+  AllTypes: TypesType[];
+  AllCategories: CategoryType[];
+}
+
+export interface GalleryItem {
+  ImageId: number;
+  Location: string;
+}
+
+export interface GalleryForEdit {
+  GalleryElements: GalleryItem[];
 }

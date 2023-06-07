@@ -2,7 +2,9 @@ import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
 import {
   CategoriesAndTypes,
+  EditGameBoardInfo,
   Filter,
+  GetUpdageGameInfoResponse,
   SingleTabletopGame,
   TableTopGameCardsResponse,
   TabletopGameCreation,
@@ -154,6 +156,42 @@ export async function getGameBoardsCreatedByUser(
           pageSize: pageSize,
         },
       }
+    )
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+
+  return response?.data;
+}
+
+export async function getGameBoardForEdit(gameBoardId: number) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.get["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .get<GetUpdageGameInfoResponse>(
+      SERVER_API + "/api/gameboard/updateGameBoard",
+      {
+        params: { gameBoardId: gameBoardId },
+      }
+    )
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+
+  return response?.data;
+}
+
+export async function updateGameBoardWithNewInfo(gameBoard: EditGameBoardInfo) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.put["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .put<GetUpdageGameInfoResponse>(
+      SERVER_API + "/api/gameboard/updateGameBoard",
+      gameBoard
     )
     .catch((error) => {
       return Promise.reject(error);

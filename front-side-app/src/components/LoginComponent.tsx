@@ -35,7 +35,7 @@ function LoginComponent() {
 
     const loading = toast.loading("Trying to log in");
 
-    loginToSystem(crediantals)
+    await loginToSystem(crediantals)
       .then(() => {
         setShowError(false);
         toast.success("Successfully logged in", {
@@ -63,6 +63,7 @@ function LoginComponent() {
   };
 
   const loginToWeb = async () => {
+    console.log("IM HERE");
     await login();
     const isAdmin: boolean = await CheckJWTIsAdmin();
     setIsAdmin(isAdmin);

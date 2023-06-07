@@ -23,9 +23,19 @@ namespace ServiceLayer.Services
             return await _gameBoardRepository.SetGameBoardState(aproval);
         }
 
+        public async Task DeleteImage(int imageId)
+        {
+            await _gameBoardRepository.DeleteImage(imageId);
+        }
+
         public async Task<GameBoardReviewResponse> GetBoardForReview(GetGameBoardsForReviewRequestDTO request)
         {
             return await _gameBoardRepository.GetGameBoardsForReview(request);
+        }
+
+        public async Task<GalleryForEdit> GetGalleryForEdit(int gameBoardId)
+        {
+            return await _gameBoardRepository.GalleryForEdit(gameBoardId);
         }
 
         public async Task<GameBoardListForAdmin> GetGameBoardsForAdmin(int pageSize, int pageIndex)

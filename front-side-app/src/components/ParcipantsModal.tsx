@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -10,9 +11,16 @@ import { Participant, ParticipationState } from "../services/types/Invitation";
 type ModalProps = {
   onClose: () => void;
   activeGameId: number;
+  setParticipantsCount: (count: number) => void;
+  participantsNumber: number;
 };
 
-const ParcipantsModal: React.FC<ModalProps> = ({ onClose, activeGameId }) => {
+const ParcipantsModal: React.FC<ModalProps> = ({
+  onClose,
+  activeGameId,
+  setParticipantsCount,
+  participantsNumber,
+}) => {
   const [participants, setParticipants] = useState<Participant[] | undefined>(
     []
   );
@@ -27,18 +35,20 @@ const ParcipantsModal: React.FC<ModalProps> = ({ onClose, activeGameId }) => {
       )?.IsBlocked as boolean,
     };
 
-    const response = await changeParticipantState(newState);
-    console.log(response);
-    if (response) {
-      toast.success("Successfully changed participant state", {
-        id: loading,
-      });
-    } else {
-      toast.error("Failed to change participant state game", {
-        id: loading,
-      });
-    }
+    if (!newState.IsBlocked) setParticipantsCount(participantsNumber + 1);
+    else setParticipantsCount(participantsNumber - 1);
 
+    await changeParticipantState(newState)
+      .then(() => {
+        toast.success("Successfully changed participant state", {
+          id: loading,
+        });
+      })
+      .catch((error: AxiosError) => {
+        toast.error("Failed to change participant state game", {
+          id: loading,
+        });
+      });
     setParticipants((prevParticipants) => {
       if (prevParticipants) {
         const updatedParticipants = prevParticipants.map((participant) => {

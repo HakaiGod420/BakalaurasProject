@@ -10,6 +10,7 @@ namespace ModelLayer.DTO
     {
         public int BoardGameId { get; set; }
         public string Title { get; set; }
+        public int? PlayingTime { get; set; }
         public int PlayerCount { get; set; }
         public int PlayableAge { get; set; }
         public string Description { get; set; }

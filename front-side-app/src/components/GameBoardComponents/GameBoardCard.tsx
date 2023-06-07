@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { FaCalendarAlt, FaStar, FaUser } from "react-icons/fa";
+import { AiOutlineFieldTime } from "react-icons/ai";
+import { FaCalendarAlt, FaFlushed, FaStar, FaUser } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import NoImageFile from "../../assets/images/noImage.png";
@@ -37,7 +38,7 @@ const GameBoardCard: React.FC = () => {
     };
 
     getGameBoardAsync();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setGameBoard]);
 
   return (
@@ -106,7 +107,7 @@ const GameBoardCard: React.FC = () => {
                   <span className="mx-2 text-gray-400">&bull;</span>
                   <FaCalendarAlt className="h-5 w-5 text-gray-400" />
                   <p className="ml-2 text-sm font-medium text-gray-500">
-                    Last updated:
+                    Last updated:{" "}
                     {gameBoard.UpdateDate
                       ? dayjs(gameBoard.UpdateDate).format("YYYY-MM-DD")
                       : " Never"}
@@ -116,6 +117,18 @@ const GameBoardCard: React.FC = () => {
                   <FaUser className="h-5 w-5 text-gray-400" />
                   <p className="ml-2 text-sm font-medium text-gray-500">
                     Creator: {gameBoard.CreatorName}
+                  </p>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center">
+                  <FaFlushed className="h-5 w-5 text-gray-400" />
+                  <p className="ml-2 text-sm font-medium text-gray-500">
+                    Recommended Age: {gameBoard.PlayableAge}+
+                  </p>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center">
+                  <AiOutlineFieldTime className="h-5 w-5 text-gray-400" />
+                  <p className="ml-2 text-sm font-medium text-gray-500">
+                    Average game time: {gameBoard.PlayingTime} {" min"}
                   </p>
                 </div>
                 <div className="mt-2 flex flex-wrap items-center">

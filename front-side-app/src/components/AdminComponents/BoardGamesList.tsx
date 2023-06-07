@@ -10,6 +10,7 @@ import {
 } from "../../services/types/TabletopGame";
 import LoadingComponent from "../core/LoadingComponent";
 import SectionDivider from "../core/SectionDivider";
+import GameEditFormModal from "./GameEditFormModal";
 
 const BoardGameListAdmin: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,6 +20,8 @@ const BoardGameListAdmin: React.FC = () => {
 
   const [gameBoards, setGameBoards] = useState<TableTopGameForAdmin[]>();
 
+  const [selectedId, setSelectedId] = useState<number | undefined>(0);
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   // Example game board data
 
   const fetchGames = async (pageNumber: number) => {
@@ -52,9 +55,14 @@ const BoardGameListAdmin: React.FC = () => {
     setGameBoards([...gameBoards!]);
   };
 
+  const handleEditForm = (gameBoardId: number) => {
+    setSelectedId(gameBoardId);
+    setOpenEditModal(true);
+  };
+
   useEffect(() => {
     fetchGames(1);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setTotalCount]);
 
   return (
@@ -76,7 +84,7 @@ const BoardGameListAdmin: React.FC = () => {
                       <th className="p-3 font-medium">Created date</th>
                       <th className="p-3 font-medium">Creator name</th>
                       <th className="p-3 font-medium">State</th>
-                      <th className="p-3 font-medium">Actions</th>
+                      <th className="p-3 font-medium text-center">Actions</th>
                       <th className="p-3 font-medium">Blocked</th>
                     </tr>
                   </thead>
@@ -96,10 +104,18 @@ const BoardGameListAdmin: React.FC = () => {
                         <td className="p-3">{gameBoard.CreatorName}</td>
                         <td className="p-3">{gameBoard.State}</td>
                         <td className="p-3 flex justify-between items-center">
-                          <button className="p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px]">
+                          <button className="p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px] mr-[-80px]">
                             <a href={`/gameboards/${gameBoard.GameBoardId}`}>
                               View
                             </a>
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleEditForm(gameBoard.GameBoardId)
+                            }
+                            className=" ml-10 p-2 bg-green-600 rounded-md text-white hover:bg-green-500 w-[100px]"
+                          >
+                            Edit
                           </button>
                         </td>
                         <td>
@@ -192,6 +208,12 @@ const BoardGameListAdmin: React.FC = () => {
         <div className="flex justify-center items-center h-[500px]">
           <LoadingComponent />
         </div>
+      )}
+      {openEditModal && (
+        <GameEditFormModal
+          gameBoardId={selectedId}
+          onClose={() => setOpenEditModal(false)}
+        />
       )}
     </div>
   );

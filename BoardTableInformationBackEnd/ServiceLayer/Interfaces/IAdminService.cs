@@ -13,5 +13,7 @@ namespace ServiceLayer.Interfaces
         public Task<bool> ChangeGameBoardState(GameBoardApprove aproval);
         public Task<GameBoardListForAdmin> GetGameBoardsForAdmin(int pageSize,int pageIndex);
         public Task<bool> UpdateIsBlocked(int gameBoardId, bool isBlocked);
+        public Task<GalleryForEdit> GetGalleryForEdit(int gameBoardId);
+        public Task DeleteImage(int imageId);
     }
 }

@@ -21,7 +21,7 @@ export async function CheckJWTAndSession() {
 
 export async function CheckJWTIsAdmin() {
   const token = JSON.parse(localStorage.getItem("token") || "false");
-
+  console.log(token);
   if (token === false) {
     return false;
   }

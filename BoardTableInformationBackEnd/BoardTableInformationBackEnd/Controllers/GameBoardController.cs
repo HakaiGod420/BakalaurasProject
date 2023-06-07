@@ -128,22 +128,28 @@ namespace BoardTableInformationBackEnd.Controllers
         [HttpPut("updateGameBoard")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateGameBoard([FromForm] UpdateBoardGame boardGameModel)
+        public async Task<IActionResult> UpdateGameBoard([FromBody] EditGameBoardInfo boardGameModel)
         {
-
-            if (boardGameModel == null)
-            {
-                return BadRequest("Wrong gameBoardModal");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Model is not correct");
-            }
-
              await _gameBoardService.UpdateGameBoard(boardGameModel);
 
             return new OkObjectResult(true);
         }
 
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("updateGameBoard")]
+        [ProducesResponseType(typeof(GetUpdateGameInfo), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUpdateGameInfo([FromQuery] int gameBoardId)
+        {
+            if(gameBoardId == 0 || gameBoardId == null)
+            {
+                return BadRequest("Wrong game board id");
+            }
+
+            var result = await _gameBoardService.GetUpdateGameInfo(gameBoardId);
+
+            return new OkObjectResult(result);
+        }
     }
 }

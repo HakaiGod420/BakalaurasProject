@@ -55,5 +55,25 @@ namespace BoardTableInformationBackEnd.Controllers
             return Ok(response);
         }
 
+        [HttpGet("getGalleryForEdit")]
+        [ProducesResponseType(typeof(GalleryForEdit), StatusCodes.Status200OK)]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetGalleryForEdit([FromQuery] int gameBoardId)
+        {
+            var response = await _adminService.GetGalleryForEdit(gameBoardId);
+
+            return Ok(response);
+        }
+
+        [HttpDelete("deleteImage")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteImage([FromQuery] int imageId)
+        {
+            await _adminService.DeleteImage(imageId);
+
+            return Ok();
+        }
+
     }
 }

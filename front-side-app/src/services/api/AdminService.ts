@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SERVER_API } from "../constants/ClienConstants";
 import {
+  GalleryForEdit,
   TableTopGameIsBlocked,
   TableTopGameListForAdminResponse,
   TableTopGamesForReviewResponse,
@@ -77,6 +78,38 @@ export async function getBoardGamesListForAdmin(
     )
     .catch((error) => {
       console.log(error);
+    });
+
+  return response?.data;
+}
+
+export async function getGalleryItems(gameBoardId: number) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.get["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .get<GalleryForEdit>(SERVER_API + "/api/admin/getGalleryForEdit", {
+      params: { gameBoardId: gameBoardId },
+    })
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+
+  return response?.data;
+}
+
+export async function deleteImage(imageId: number) {
+  const token = JSON.parse(localStorage.getItem("token") ?? "{}");
+
+  axios.defaults.headers.delete["Authorization"] = `Bearer ${token.token}`;
+
+  const response = await axios
+    .delete(SERVER_API + "/api/admin/deleteImage", {
+      params: { imageId: imageId },
+    })
+    .catch((error) => {
+      return Promise.reject(error);
     });
 
   return response?.data;
