@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models
 {
-    public class AditionalFileEntity
+    public class AdditionalFileEntity
     {
         [Key]
         public int AditionalFilesId { get; set; }

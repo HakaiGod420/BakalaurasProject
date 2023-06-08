@@ -31,7 +31,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task AddFile_ValidFile_ReturnsAditionalFileEntity()
         {
             // Arrange
-            var file = new AditionalFileEntity { FileName = "Test File", FileLocation = "/test/file/path",BoardGameId = 1 };
+            var file = new AdditionalFileEntity { FileName = "Test File", FileLocation = "/test/file/path",BoardGameId = 1 };
 
             // Act
             var result = await _repository.AddFile(file);

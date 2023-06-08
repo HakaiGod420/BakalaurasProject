@@ -1,17 +1,20 @@
+import { useEffect } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
   publishTabletopGame: () => void;
+  resetWizard: boolean;
 }
 
 function CreateStep7({
   stepNumber,
   setStepNumber,
   publishTabletopGame,
+  resetWizard,
 }: Props) {
-  const { previousStep } = useWizard();
+  const { previousStep, goToStep } = useWizard();
 
   const inputHandlerNext = async () => {
     await publishTabletopGame();
@@ -21,6 +24,14 @@ function CreateStep7({
     setStepNumber(stepNumber - 1);
     previousStep();
   };
+
+  useEffect(() => {
+    if (resetWizard) {
+      goToStep(0);
+      console.log("resetWizard");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetWizard]);
 
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">

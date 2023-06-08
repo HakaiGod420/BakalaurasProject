@@ -48,9 +48,9 @@ namespace DataLayer.Repositories.Invitation
                     EventDate = j.SelectedActiveGame.MeetDate,
                     EventFullLocation = j.SelectedActiveGame.Address.FullAddress,
                     MaxPlayerCount = j.SelectedActiveGame.PlayersNeed,
-                    AcceptedCount = j.SelectedActiveGame.RegistredPlayerCount,
-                    Map_X_Cords = j.SelectedActiveGame.Map_X_Cords,
-                    Map_Y_Cords = j.SelectedActiveGame.Map_Y_Cords
+                    AcceptedCount = j.SelectedActiveGame.RegisteredPlayerCount,
+                    Map_X_Cords = j.SelectedActiveGame.Map_X_Coords,
+                    Map_Y_Cords = j.SelectedActiveGame.Map_Y_Coords
                 })
                 .ToListAsync();
 
@@ -73,9 +73,9 @@ namespace DataLayer.Repositories.Invitation
                     EventDate = j.SelectedActiveGame.MeetDate,
                     EventFullLocation = j.SelectedActiveGame.Address.FullAddress,
                     MaxPlayerCount = j.SelectedActiveGame.PlayersNeed,
-                    AcceptedCount = j.SelectedActiveGame.RegistredPlayerCount,
-                    Map_X_Cords = j.SelectedActiveGame.Map_X_Cords,
-                    Map_Y_Cords = j.SelectedActiveGame.Map_Y_Cords
+                    AcceptedCount = j.SelectedActiveGame.RegisteredPlayerCount,
+                    Map_X_Cords = j.SelectedActiveGame.Map_X_Coords,
+                    Map_Y_Cords = j.SelectedActiveGame.Map_Y_Coords
                 })
                 .ToListAsync();
 
@@ -97,9 +97,9 @@ namespace DataLayer.Repositories.Invitation
                     EventDate = j.MeetDate,
                     EventFullLocation = j.Address.FullAddress,
                     MaxPlayerCount = j.PlayersNeed,
-                    AcceptedCount = j.RegistredPlayerCount,
-                    Map_X_Cords = j.Map_X_Cords,
-                    Map_Y_Cords = j.Map_Y_Cords
+                    AcceptedCount = j.RegisteredPlayerCount,
+                    Map_X_Cords = j.Map_X_Coords,
+                    Map_Y_Cords = j.Map_Y_Coords
                 })
                 .ToListAsync();
 
@@ -139,19 +139,19 @@ namespace DataLayer.Repositories.Invitation
             {
                 if (reducePlayer)
                 {
-                    invitation.RegistredPlayerCount--;
+                    invitation.RegisteredPlayerCount--;
                 }
                 else
                 {
-                    invitation.RegistredPlayerCount++;
+                    invitation.RegisteredPlayerCount++;
                 }
 
-                if(invitation.RegistredPlayerCount == invitation.PlayersNeed)
+                if(invitation.RegisteredPlayerCount == invitation.PlayersNeed)
                 {
                     invitation.InvitationStateId = ActiveGameState.Closed;
                 }
 
-                else if(invitation.RegistredPlayerCount > invitation.PlayersNeed)
+                else if(invitation.RegisteredPlayerCount > invitation.PlayersNeed)
                 {
                     return false;
                 }
@@ -199,8 +199,8 @@ namespace DataLayer.Repositories.Invitation
                     Date = x.MeetDate,
                     Location = x.Address.FullAddress,
                     MaxPlayer = x.PlayersNeed,
-                    AcceptedPlayer = x.RegistredPlayerCount,
-                    ImageUrl = "Images/" + Regex.Replace(x.BoardGame.Title, @"[^\w\s]+", "").Replace(" ", "_") + "/" + x.BoardGame.Thubnail_Location,
+                    AcceptedPlayer = x.RegisteredPlayerCount,
+                    ImageUrl = "Images/" + Regex.Replace(x.BoardGame.Title, @"[^\w\s]+", "").Replace(" ", "_") + "/" + x.BoardGame.Thumbnail_Location,
                 });
 
             var totalCount = await query.CountAsync();
@@ -229,7 +229,7 @@ namespace DataLayer.Repositories.Invitation
         public async Task<List<Parcipant>> GetParticipants(int invitationId)
         {
             var result = await _dbContext.SentInvitations
-                .Where(x => x.SelectedActiveGameId == invitationId)
+                .Where(x => x.SelectedActiveGameId == invitationId && x.InvitationStateId == 2)
                 .Select(x => new Parcipant
                 {
                     UserId = x.UserId,

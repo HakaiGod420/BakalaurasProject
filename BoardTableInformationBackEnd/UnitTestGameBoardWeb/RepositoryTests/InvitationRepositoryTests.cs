@@ -37,10 +37,10 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             var invitation = new ActiveGameEntity
             {
                 PlayersNeed = 4,
-                RegistredPlayerCount = 0,
+                RegisteredPlayerCount = 0,
                 InvitationStateId = ActiveGameState.Open,
-                Map_X_Cords = 1.0f,
-                Map_Y_Cords = 2.0f,
+                Map_X_Coords = 1.0f,
+                Map_Y_Coords = 2.0f,
                 CreatorId = 1,
                 AddressId = 1,
                 MeetDate = DateTime.Now,
@@ -63,10 +63,10 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             var invitation = new ActiveGameEntity
             {
                 PlayersNeed = 4,
-                RegistredPlayerCount = 0,
+                RegisteredPlayerCount = 0,
                 InvitationStateId = ActiveGameState.Open,
-                Map_X_Cords = 1.0f,
-                Map_Y_Cords = 2.0f,
+                Map_X_Coords = 1.0f,
+                Map_Y_Coords = 2.0f,
                 CreatorId = 1,
                 AddressId = 1,
                 MeetDate = DateTime.Now,
@@ -101,10 +101,10 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             var activeGame = new ActiveGameEntity
             {
                 PlayersNeed = 5,
-                RegistredPlayerCount = 3,
+                RegisteredPlayerCount = 3,
                 InvitationStateId = ActiveGameState.Open,
-                Map_X_Cords = 10.0f,
-                Map_Y_Cords = 20.0f,
+                Map_X_Coords = 10.0f,
+                Map_Y_Coords = 20.0f,
                 MeetDate = DateTime.Now.AddDays(1),
                 CreatorId = 1,
                 BoardGameId = 1,
@@ -225,7 +225,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         {
             // Arrange
             var invitation = new SentInvitationEntity { SentInvitationId = 1, SelectedActiveGameId = 1 };
-            var game = new ActiveGameEntity { ActiveGameId = 1, PlayersNeed = 1, RegistredPlayerCount = 1, InvitationStateId = ActiveGameState.Open };
+            var game = new ActiveGameEntity { ActiveGameId = 1, PlayersNeed = 1, RegisteredPlayerCount = 1, InvitationStateId = ActiveGameState.Open };
             _context.SentInvitations.Add(invitation);
             _context.ActiveGames.Add(game);
             await _context.SaveChangesAsync();
@@ -243,7 +243,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         {
             // Arrange
             var invitation = new SentInvitationEntity { SentInvitationId = 1, SelectedActiveGameId = 1 };
-            var game = new ActiveGameEntity { ActiveGameId = 1, PlayersNeed = 2, RegistredPlayerCount = 1, InvitationStateId = ActiveGameState.Open };
+            var game = new ActiveGameEntity { ActiveGameId = 1, PlayersNeed = 2, RegisteredPlayerCount = 1, InvitationStateId = ActiveGameState.Open };
             _context.SentInvitations.Add(invitation);
             _context.ActiveGames.Add(game);
             await _context.SaveChangesAsync();
@@ -263,7 +263,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             _context.Database.EnsureDeleted();
 
             var invitation = new SentInvitationEntity { SentInvitationId = 1, SelectedActiveGameId = 1 };
-            var game = new ActiveGameEntity { ActiveGameId = 1, PlayersNeed = 1, RegistredPlayerCount = 0, InvitationStateId = ActiveGameState.Open };
+            var game = new ActiveGameEntity { ActiveGameId = 1, PlayersNeed = 1, RegisteredPlayerCount = 0, InvitationStateId = ActiveGameState.Open };
             _context.SentInvitations.Add(invitation);
             _context.ActiveGames.Add(game);
             await _context.SaveChangesAsync();
@@ -352,8 +352,8 @@ namespace UnitTestGameBoardWeb.RepositoryTests
             var address2 = new AddressEntity { AddressId = 2, Country = "USA", FullAddress = "456 Main St", City = "city1", Province = "t", StreetName = "t", PostalCode = "LT" };
             activeGame1.Address = address1;
             activeGame2.Address = address2;
-            activeGame1.BoardGame = new BoardGameEntity { BoardGameId = 1, Title = "Monopoly", Thubnail_Location = "monopoly.png", Description = "t" };
-            activeGame2.BoardGame = new BoardGameEntity { BoardGameId = 2, Title = "Catan", Thubnail_Location = "catan.png", Description = "t" };
+            activeGame1.BoardGame = new BoardGameEntity { BoardGameId = 1, Title = "Monopoly", Thumbnail_Location = "monopoly.png", Description = "t" };
+            activeGame2.BoardGame = new BoardGameEntity { BoardGameId = 2, Title = "Catan", Thumbnail_Location = "catan.png", Description = "t" };
             var activeGames = new List<ActiveGameEntity> { activeGame1, activeGame2 };
             _context.Addresses.AddRange(new List<AddressEntity> { address1, address2 });
             _context.BoardGames.AddRange(new List<BoardGameEntity> { activeGame1.BoardGame, activeGame2.BoardGame });

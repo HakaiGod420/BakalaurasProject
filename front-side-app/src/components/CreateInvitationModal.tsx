@@ -38,6 +38,7 @@ function CreateInvitationModal() {
   const [date, setDate] = useState<Dayjs | null>();
   const [selectedGame] = useRecoilState(selectedGameBoard);
   const [address, setAddress] = useState<Address>(DefaultAddress);
+  const [resetWizard, setResetWizard] = useState<boolean>(false);
 
   const Footer = () => (
     <div className="mt-5 flex justify-center">
@@ -84,6 +85,10 @@ function CreateInvitationModal() {
     toast.success("Successfully created", {
       id: loading,
     });
+
+    await Promise.resolve(setResetWizard(true));
+    await Promise.resolve(setResetWizard(false));
+
     navigate("/myeventes/created");
   };
   return (
@@ -143,6 +148,7 @@ function CreateInvitationModal() {
                 setAddress={setAddress}
               />
               <InviteStep4
+                resetWizard={resetWizard}
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
                 date={date}

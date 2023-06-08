@@ -47,7 +47,7 @@ namespace ServiceLayer.Services
                 CreationTime = DateTime.Now,
                 UpdateTime = null,
                 Rules = board.Rules,
-                Thubnail_Location = board.ThumbnailName,
+                Thumbnail_Location = board.ThumbnailName,
                 UserId = userId,
                 TableBoardStateId = ModelLayer.Enum.TableBoardState.Reviewing,
             };
@@ -76,7 +76,7 @@ namespace ServiceLayer.Services
                 foreach (var item in board.AditionalFiles)
                 {
                     var file = await AddFile(item,boardEntity.BoardGameId);
-                    gameBoard.AditionalFiles.Add(file);
+                    gameBoard.AdditionalFiles.Add(file);
                 }
             }
 
@@ -129,9 +129,9 @@ namespace ServiceLayer.Services
             return await _imageRepository.AddImage(newImage);
         }
 
-        private async Task<AditionalFileEntity> AddFile(CreateAditionalFiles file,int id)
+        private async Task<AdditionalFileEntity> AddFile(CreateAditionalFiles file,int id)
         {
-            var newFile = new AditionalFileEntity
+            var newFile = new AdditionalFileEntity
             {
                 FileLocation = file.Location,
                 FileName = file.Name,

@@ -15,7 +15,7 @@ namespace DataLayer.Models
             Images = new HashSet<ImageEntity>();
             Categories = new HashSet<CategoryEntity>();
             BoardTypes = new HashSet<BoardTypeEntity>();
-            AditionalFiles = new HashSet<AditionalFileEntity>();
+            AdditionalFiles = new HashSet<AdditionalFileEntity>();
             ActiveGames = new HashSet<ActiveGameEntity>();
             Reviews = new HashSet<ReviewEntity>();
         }
@@ -45,7 +45,7 @@ namespace DataLayer.Models
         [MaxLength(2000)]
         public string? Rules { get; set; }
 
-        public string Thubnail_Location { get; set; }
+        public string Thumbnail_Location { get; set; }
         public bool IsBlocked { get; set; } = false;
 
         [MaxLength(10)]
@@ -54,7 +54,7 @@ namespace DataLayer.Models
         public virtual ICollection<BoardTypeEntity> BoardTypes { get; set; }
 
         [MaxLength(5)]
-        public virtual ICollection<AditionalFileEntity> AditionalFiles { get; set; }
+        public virtual ICollection<AdditionalFileEntity> AdditionalFiles { get; set; }
         public int UserId { get; set; }
         public virtual UserEntity User { get; set; }
         public TableBoardState TableBoardStateId { get; set; }

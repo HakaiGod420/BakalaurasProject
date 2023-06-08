@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useWizard } from "react-use-wizard";
 import { TabletopGameCreation } from "../../services/types/TabletopGame";
 
@@ -12,6 +13,7 @@ interface Props {
   setPlayerCount: React.Dispatch<React.SetStateAction<number | undefined>>;
   averageTime: number | undefined;
   setAverageTime: React.Dispatch<React.SetStateAction<number | undefined>>;
+  resetWizard: boolean;
 }
 
 function CreateStep2({
@@ -24,8 +26,9 @@ function CreateStep2({
   setPlayerCount,
   averageTime,
   setAverageTime,
+  resetWizard,
 }: Props) {
-  const { previousStep, nextStep } = useWizard();
+  const { previousStep, nextStep, goToStep } = useWizard();
 
   const blockInvalidChar = (e: any) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
@@ -39,6 +42,13 @@ function CreateStep2({
     setStepNumber(stepNumber - 1);
     previousStep();
   };
+
+  useEffect(() => {
+    if (resetWizard) {
+      goToStep(0);
+      console.log("resetWizard");
+    }
+  }, [goToStep, resetWizard]);
 
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">

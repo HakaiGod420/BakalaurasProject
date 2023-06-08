@@ -17,7 +17,7 @@ namespace DataLayer.Repositories.AditionalFiles
             _dbContext = dbContext;
         }
 
-        public async Task<AditionalFileEntity> AddFile(AditionalFileEntity file)
+        public async Task<AdditionalFileEntity> AddFile(AdditionalFileEntity file)
         {
             if (file == null)
             {

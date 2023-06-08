@@ -15,10 +15,10 @@ namespace DataLayer.Models
         [Key]
         public int ActiveGameId { get; set; }
         public int PlayersNeed { get; set; }
-        public int RegistredPlayerCount { get; set; }
+        public int RegisteredPlayerCount { get; set; }
         public ActiveGameState InvitationStateId { get; set; }
-        public float Map_X_Cords { get; set; }
-        public float Map_Y_Cords { get; set; }
+        public float Map_X_Coords { get; set; }
+        public float Map_Y_Coords { get; set; }
 
         public virtual ICollection<UserEntity> Users { get; set; }
 

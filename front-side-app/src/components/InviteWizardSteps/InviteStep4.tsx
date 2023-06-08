@@ -2,6 +2,7 @@ import { DatePicker } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { useEffect } from "react";
 import { useWizard } from "react-use-wizard";
 
 dayjs.extend(customParseFormat);
@@ -9,6 +10,7 @@ dayjs.extend(customParseFormat);
 interface Props {
   stepNumber: number;
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
+  resetWizard: boolean;
 
   date: Dayjs | undefined | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | undefined | null>>;
@@ -22,8 +24,9 @@ function InviteStep4({
   date,
   setDate,
   finishMethod,
+  resetWizard,
 }: Props) {
-  const { previousStep } = useWizard();
+  const { previousStep, goToStep } = useWizard();
 
   const inputHandlerNext = () => {
     finishMethod();
@@ -38,6 +41,14 @@ function InviteStep4({
     setStepNumber(stepNumber - 1);
     previousStep();
   };
+
+  useEffect(() => {
+    if (resetWizard) {
+      goToStep(0);
+      console.log("resetWizard");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetWizard]);
 
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">

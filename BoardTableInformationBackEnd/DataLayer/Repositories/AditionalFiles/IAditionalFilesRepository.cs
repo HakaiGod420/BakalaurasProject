@@ -9,6 +9,6 @@ namespace DataLayer.Repositories.AditionalFiles
 {
     public interface IAditionalFilesRepository
     {
-        public Task<AditionalFileEntity> AddFile(AditionalFileEntity file);
+        public Task<AdditionalFileEntity> AddFile(AdditionalFileEntity file);
     }
 }

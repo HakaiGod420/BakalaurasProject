@@ -12,7 +12,7 @@ namespace DataLayer.Models
     {
         public UserEntity()
         {
-            ActiveGamesParcipators = new HashSet<ActiveGameEntity>();
+            ActiveGamesParticipants = new HashSet<ActiveGameEntity>();
             ActiveGamesCreators = new HashSet<ActiveGameEntity>();
             ReceivedInvitations = new HashSet<SentInvitationEntity>();
             Reviews = new HashSet<ReviewEntity>();
@@ -53,7 +53,7 @@ namespace DataLayer.Models
 
         public int? AddressId { get; set; } = null;
         public virtual UserAddressEntity Address { get; set; } = null;
-        public virtual ICollection<ActiveGameEntity> ActiveGamesParcipators { get; set; }
+        public virtual ICollection<ActiveGameEntity> ActiveGamesParticipants { get; set; }
         public virtual ICollection<ActiveGameEntity> ActiveGamesCreators { get; set; }
         public virtual ICollection<SentInvitationEntity> ReceivedInvitations { get; set;}
         public virtual ICollection<ReviewEntity> Reviews { get; set; }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
@@ -6,10 +6,11 @@ interface Props {
   setStepNumber: React.Dispatch<React.SetStateAction<number>>;
   rules: string | undefined;
   setRules: React.Dispatch<React.SetStateAction<string | undefined>>;
+  resetWizard: boolean;
 }
 
-function CreateStep4({ stepNumber, setStepNumber }: Props) {
-  const { previousStep, nextStep } = useWizard();
+function CreateStep4({ stepNumber, setStepNumber, resetWizard }: Props) {
+  const { previousStep, nextStep, goToStep } = useWizard();
 
   const [rules, setRules] = useState<string>("");
 
@@ -27,6 +28,14 @@ function CreateStep4({ stepNumber, setStepNumber }: Props) {
     setStepNumber(stepNumber - 1);
     previousStep();
   };
+
+  useEffect(() => {
+    if (resetWizard) {
+      goToStep(0);
+      console.log("resetWizard");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetWizard]);
 
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">

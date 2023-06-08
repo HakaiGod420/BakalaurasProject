@@ -25,6 +25,8 @@ import CreateStep8 from "./CreateWizardSteps/CreateStep8";
 function CreateTabletopGameModal() {
   const [stepNumber, setStetpNumber] = useState<number>(1);
 
+  const [resetWizard, setResetWizard] = useState<boolean>(false);
+
   const [title, setTitle] = useState<string>("");
   const [playerAge, setPlayerAge] = useState<number>();
   const [averageTime, setAverageTime] = useState<number | undefined>();
@@ -84,7 +86,8 @@ function CreateTabletopGameModal() {
     </div>
   );
 
-  const handleOnClose = () => {
+  const handleOnClose = async () => {
+    console.log("heres");
     setTitle("");
     setPlayerAge(undefined);
     setPlayerCount(undefined);
@@ -92,6 +95,8 @@ function CreateTabletopGameModal() {
     setRules(undefined);
     setDescription("");
     setStetpNumber(1);
+    await Promise.resolve(setResetWizard(true));
+    await Promise.resolve(setResetWizard(false));
   };
 
   const postAdditionalFiles = async () => {
@@ -271,6 +276,7 @@ function CreateTabletopGameModal() {
                 setTitle={setTitle}
               />
               <CreateStep2
+                resetWizard={resetWizard}
                 setAge={setPlayerAge}
                 playerAge={playerAge}
                 setAverageTime={setAverageTime}
@@ -282,18 +288,21 @@ function CreateTabletopGameModal() {
                 tableTopGame={TableTopGame}
               />
               <CreateStep3
+                resetWizard={resetWizard}
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
                 setDescription={setDescription}
                 description={description}
               />
               <CreateStep4
+                resetWizard={resetWizard}
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
                 rules={rules}
                 setRules={setRules}
               />
               <CreateStep5
+                resetWizard={resetWizard}
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
                 images={images}
@@ -302,6 +311,7 @@ function CreateTabletopGameModal() {
                 setThumbnail={setThumbnail}
               />
               <CreateStep8
+                resetWizard={resetWizard}
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
                 categories={categories}
@@ -310,12 +320,14 @@ function CreateTabletopGameModal() {
                 setTypes={setTypes}
               />
               <CreateStep6
+                resetWizard={resetWizard}
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
                 files={files}
                 setFiles={setFiles}
               />
               <CreateStep7
+                resetWizard={resetWizard}
                 setStepNumber={setStetpNumber}
                 stepNumber={stepNumber}
                 publishTabletopGame={publishTableTopGame}

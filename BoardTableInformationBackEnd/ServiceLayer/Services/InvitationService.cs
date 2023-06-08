@@ -80,9 +80,9 @@ namespace ServiceLayer.Services
             {
                 BoardGameId = data.ActiveGameId,
                 PlayersNeed = data.PlayersNeeded,
-                RegistredPlayerCount = 0,
-                Map_X_Cords = data.Map_X_Cords,
-                Map_Y_Cords = data.Map_Y_Cords,
+                RegisteredPlayerCount = 0,
+                Map_X_Coords = data.Map_X_Cords,
+                Map_Y_Coords = data.Map_Y_Cords,
                 CreatorId = id,
                 AddressId = addressEntity.AddressId,
                 MeetDate = Convert.ToDateTime(data.InvitationDate),

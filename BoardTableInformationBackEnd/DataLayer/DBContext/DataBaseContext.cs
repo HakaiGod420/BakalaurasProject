@@ -19,7 +19,7 @@ namespace DataLayer.DBContext
         public virtual DbSet<BoardGameEntity> BoardGames { get; set; }
         public virtual DbSet<BoardTypeEntity> BoardTypes { get; set; }
         public virtual DbSet<CategoryEntity> Categories { get; set; }
-        public virtual DbSet<AditionalFileEntity> AditionalFiles { get; set; }
+        public virtual DbSet<AdditionalFileEntity> AditionalFiles { get; set; }
         public virtual DbSet<ImageEntity> Images { get; set; }
         public virtual DbSet<TableBoardStateEntity> TableBoardStates { get; set; }
         public virtual DbSet<ActiveGameEntity> ActiveGames { get; set; }
@@ -66,7 +66,7 @@ namespace DataLayer.DBContext
                 .UsingEntity(j => j.ToTable("BoardGameType"));
 
             builder.Entity<UserEntity>()
-                .HasMany(x => x.ActiveGamesParcipators)
+                .HasMany(x => x.ActiveGamesParticipants)
                 .WithMany(y => y.Users)
                 .UsingEntity(j => j.ToTable("UserActiveGame"));
 

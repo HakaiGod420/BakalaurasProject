@@ -31,9 +31,9 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         {
             // Arrange
             
-            var boardGame1 = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thubnail_Location = "monopoly.png", Description = "t" };
-            var boardGame2 = new BoardGameEntity { BoardGameId = 2, Title = "Test Game 2", Thubnail_Location = "monopoly.png", Description = "t" };
-            var boardGame3 = new BoardGameEntity { BoardGameId = 3, Title = "Game 3", Thubnail_Location = "monopoly.png", Description = "t" };
+            var boardGame1 = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thumbnail_Location = "monopoly.png", Description = "t" };
+            var boardGame2 = new BoardGameEntity { BoardGameId = 2, Title = "Test Game 2", Thumbnail_Location = "monopoly.png", Description = "t" };
+            var boardGame3 = new BoardGameEntity { BoardGameId = 3, Title = "Game 3", Thumbnail_Location = "monopoly.png", Description = "t" };
 
             await _context.BoardGames.AddRangeAsync(boardGame1, boardGame2, boardGame3);
             await _context.SaveChangesAsync();
@@ -52,7 +52,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         public async Task GetBoardsSimple_ReturnsEmptyListWhenNoMatches()
         {
             // Arrange
-            var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thubnail_Location = "monopoly.png", Description = "t" };
+            var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thumbnail_Location = "monopoly.png", Description = "t" };
 
             _context.BoardGames.Add(boardGame);
             await _context.SaveChangesAsync();
@@ -70,7 +70,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         {
             // Arrange
 
-            var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thubnail_Location = "monopoly.png", Description = "t" };
+            var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game 1", Thumbnail_Location = "monopoly.png", Description = "t" };
 
             _context.BoardGames.Add(boardGame);
             await _context.SaveChangesAsync();
@@ -89,7 +89,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         {
             // Arrange
 
-            var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game", Thubnail_Location = "monopoly.png", Description = "t" };
+            var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game", Thumbnail_Location = "monopoly.png", Description = "t" };
 
             // Act
             var result = await _repository.AddGameBoard(boardGame);
@@ -115,7 +115,7 @@ namespace UnitTestGameBoardWeb.RepositoryTests
         {
             // Arrange
 
-            var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game", Thubnail_Location = "monopoly.png", Description = "t" };
+            var boardGame = new BoardGameEntity { BoardGameId = 1, Title = "Test Game", Thumbnail_Location = "monopoly.png", Description = "t" };
             _context.BoardGames.Add(boardGame);
             await _context.SaveChangesAsync();
 

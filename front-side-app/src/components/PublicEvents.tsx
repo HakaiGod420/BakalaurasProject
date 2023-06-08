@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getInvitationList,
   joinToInvitation,
@@ -79,7 +79,7 @@ function PublicEvents() {
     };
 
     getInvitations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -99,7 +99,9 @@ function PublicEvents() {
               />
               <div className="flex-1 p-4">
                 <h2 className="text-xl font-bold mb-2">
-                  {event.BoardGameTitle}
+                  <Link to={"/gameboards/" + event.BoardGameId}>
+                    {event.BoardGameTitle}
+                  </Link>
                 </h2>
                 <p className="text-gray-700 mb-1">
                   <span className="font-bold">Date:</span>{" "}

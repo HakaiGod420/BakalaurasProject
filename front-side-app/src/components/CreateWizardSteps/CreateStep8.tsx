@@ -1,5 +1,5 @@
 import { Chips } from "primereact/chips";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
   setCategories: Dispatch<SetStateAction<never[]>>;
   types: string[];
   setTypes: Dispatch<SetStateAction<never[]>>;
+  resetWizard: boolean;
 }
 
 function CreateStep8({
@@ -18,8 +19,9 @@ function CreateStep8({
   setCategories,
   types,
   setTypes,
+  resetWizard,
 }: Props) {
-  const { previousStep, nextStep } = useWizard();
+  const { previousStep, nextStep, goToStep } = useWizard();
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);
@@ -38,6 +40,14 @@ function CreateStep8({
   const inputHandleAddTypes = (value: any) => {
     setTypes(value);
   };
+
+  useEffect(() => {
+    if (resetWizard) {
+      goToStep(0);
+      console.log("resetWizard");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetWizard]);
 
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">

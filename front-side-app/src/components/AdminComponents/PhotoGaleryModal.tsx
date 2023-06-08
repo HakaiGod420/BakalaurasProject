@@ -43,7 +43,7 @@ const PhotoGalleryModal: React.FC<PhotoGalleryModalProps> = ({
       setGallery(response.GalleryElements);
     };
     getGallery();
-  }, [refetch]);
+  }, [gameBoardId, refetch]);
 
   return (
     <div

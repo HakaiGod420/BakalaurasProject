@@ -4,6 +4,7 @@ using DataLayer.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230608160121_renaming")]
+    partial class renaming
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +112,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("ActiveGames", (string)null);
+                    b.ToTable("ActiveGames");
                 });
 
             modelBuilder.Entity("DataLayer.Models.ActiveGameStateEntity", b =>
@@ -127,7 +129,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("ActiveGameStateId");
 
-                    b.ToTable("ActiveGameStates", (string)null);
+                    b.ToTable("ActiveGameStates");
                 });
 
             modelBuilder.Entity("DataLayer.Models.AddressEntity", b =>
@@ -164,7 +166,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("DataLayer.Models.AditionalFileEntity", b =>
@@ -191,7 +193,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("BoardGameId");
 
-                    b.ToTable("AditionalFiles", (string)null);
+                    b.ToTable("AditionalFiles");
                 });
 
             modelBuilder.Entity("DataLayer.Models.BoardGameEntity", b =>
@@ -250,7 +252,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BoardGames", (string)null);
+                    b.ToTable("BoardGames");
                 });
 
             modelBuilder.Entity("DataLayer.Models.BoardTypeEntity", b =>
@@ -271,7 +273,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("BoardTypeId");
 
-                    b.ToTable("BoardTypes", (string)null);
+                    b.ToTable("BoardTypes");
                 });
 
             modelBuilder.Entity("DataLayer.Models.CategoryEntity", b =>
@@ -292,7 +294,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("DataLayer.Models.ImageEntity", b =>
@@ -318,7 +320,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("BoardGameId");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("DataLayer.Models.InvitationStateEntity", b =>
@@ -335,7 +337,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InvitationStates", (string)null);
+                    b.ToTable("InvitationStates");
                 });
 
             modelBuilder.Entity("DataLayer.Models.ReviewEntity", b =>
@@ -370,7 +372,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("WriterId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("DataLayer.Models.RoleEntity", b =>
@@ -385,7 +387,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("DataLayer.Models.SentInvitationEntity", b =>
@@ -416,7 +418,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SentInvitations", (string)null);
+                    b.ToTable("SentInvitations");
                 });
 
             modelBuilder.Entity("DataLayer.Models.TableBoardStateEntity", b =>
@@ -431,7 +433,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("TableBoardStateId");
 
-                    b.ToTable("TableBoardStates", (string)null);
+                    b.ToTable("TableBoardStates");
                 });
 
             modelBuilder.Entity("DataLayer.Models.UserAddressEntity", b =>
@@ -466,7 +468,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("UserAddressId");
 
-                    b.ToTable("UserAddress", (string)null);
+                    b.ToTable("UserAddress");
                 });
 
             modelBuilder.Entity("DataLayer.Models.UserEntity", b =>
@@ -523,7 +525,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("UserStateId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("DataLayer.Models.UserStateEntity", b =>
@@ -538,7 +540,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("UserStateId");
 
-                    b.ToTable("UserStates", (string)null);
+                    b.ToTable("UserStates");
                 });
 
             modelBuilder.Entity("ActiveGameEntityUserEntity", b =>

@@ -1,4 +1,5 @@
 import { FileUpload, FileUploadHandlerEvent } from "primereact/fileupload";
+import { useEffect } from "react";
 import { useWizard } from "react-use-wizard";
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
   setImages: React.Dispatch<React.SetStateAction<File[]>>;
   thumbnail: File | undefined;
   setThumbnail: React.Dispatch<React.SetStateAction<File | undefined>>;
+  resetWizard: boolean;
 }
 
 function CreateStep5({
@@ -17,8 +19,9 @@ function CreateStep5({
   setImages,
   thumbnail,
   setThumbnail,
+  resetWizard,
 }: Props) {
-  const { previousStep, nextStep } = useWizard();
+  const { previousStep, nextStep, goToStep } = useWizard();
 
   const inputHandlerNext = () => {
     setStepNumber(stepNumber + 1);
@@ -46,6 +49,14 @@ function CreateStep5({
     });
     setThumbnail(preFiles[0]);
   };
+
+  useEffect(() => {
+    if (resetWizard) {
+      goToStep(0);
+      console.log("resetWizard");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetWizard]);
 
   return (
     <div className="flex items-center justify-center min-h-[450px] flex-wrap">

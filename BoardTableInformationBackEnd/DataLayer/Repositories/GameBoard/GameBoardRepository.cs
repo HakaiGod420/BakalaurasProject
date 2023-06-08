@@ -92,7 +92,7 @@ namespace DataLayer.Repositories.GameBoard
                 .Include(a=> a.BoardTypes)
                 .Include(a=>a.User)
                 .Include(a=>a.Images)
-                .Include(a=>a.AditionalFiles)
+                .Include(a=>a.AdditionalFiles)
                 .Include(a=>a.Reviews)
                 .SingleOrDefaultAsync(x=> x.BoardGameId == id);
 
@@ -109,13 +109,13 @@ namespace DataLayer.Repositories.GameBoard
                     CreationTime = result.CreationTime,
                     UpdateDate = result.UpdateTime,
                     Rules = result.Rules,
-                    Thumbnail_Location = "Images/" + Regex.Replace(result.Title, @"[^\w\s]+", "").Replace(" ", "_") + "/" + result.Thubnail_Location,
+                    Thumbnail_Location = "Images/" + Regex.Replace(result.Title, @"[^\w\s]+", "").Replace(" ", "_") + "/" + result.Thumbnail_Location,
                     CreatorId = result.UserId,
                     CreatorName = result.User.UserName,
                     Categories = result.Categories.Select(x => x.CategoryName).ToList(),
                     Types = result.BoardTypes.Select(x => x.BoardTypeName).ToList(),
                     Images = result.Images.Select(x => new GetImageDTO { Location = x.Location + "/" + x.Alias, FileName = x.Alias }).ToList(),
-                    Files = result.AditionalFiles.Select(x => new GetAditionalFilesDTO { Location = x.FileLocation + "/" + x.FileName, FileName = x.FileName }).ToList(),
+                    Files = result.AdditionalFiles.Select(x => new GetAditionalFilesDTO { Location = x.FileLocation + "/" + x.FileName, FileName = x.FileName }).ToList(),
                     Rating = result.Reviews.Any() ? result.Reviews.Average(r => r.Rating) : 0.0,
                     RatingCount = result.Reviews.Count()
             };
@@ -145,7 +145,7 @@ namespace DataLayer.Repositories.GameBoard
                     GameBoardId = x.BoardGameId,
                     Title = x.Title,
                     ReleaseDate = x.CreationTime,
-                    ThumbnailName = x.Thubnail_Location,
+                    ThumbnailName = x.Thumbnail_Location,
                     Rating = x.Reviews.Average(r => r.Rating) != null ? x.Reviews.Average(r => r.Rating) : 0.0
                 });
 
@@ -288,7 +288,7 @@ namespace DataLayer.Repositories.GameBoard
                 {
                     GameBoardId = x.BoardGameId,
                     Title = x.Title,
-                    ImageUrl = "Images/" + Regex.Replace(x.Title, @"[^\w\s]+", "").Replace(" ", "_") + "/" + x.Thubnail_Location,
+                    ImageUrl = "Images/" + Regex.Replace(x.Title, @"[^\w\s]+", "").Replace(" ", "_") + "/" + x.Thumbnail_Location,
                 });
 
             var totalCount = await query.CountAsync();
